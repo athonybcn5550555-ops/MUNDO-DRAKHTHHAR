@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etsy Fee & Price Calculator</title>
+<style>
+:root{--bg:#f4f5f8;--card:#fff;--ink:#1c1f2a;--muted:#5d6272;--line:#dfe2ea;--accent:#5b3df5;--accent2:#12b5a5;--ok:#1a9e5c;--warn:#d98a00;--bad:#d7263d;--okbg:#e6f7ee;--warnbg:#fff4e0;--badbg:#fde8ec;--r:12px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header{background:linear-gradient(120deg,#1b1340,#3a1f7a 55%,#0f6f78);color:#fff;padding:18px 20px}
+.wrap{max-width:1100px;margin:0 auto}
+header h1{margin:0;font-size:22px;letter-spacing:.2px}
+header p{margin:4px 0 0;opacity:.85;font-size:13px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button,.btn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer}
+main button{border-color:var(--line);background:#fff;color:var(--ink)}
+main button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+main button.danger{color:var(--bad)}
+main button:hover{filter:brightness(.96)}
+main{padding:16px 20px 60px}
+section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 16px}
+section h2{margin:0 0 4px;font-size:17px}
+.hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 14px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
+input[type=text],input[type=number],select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+input[type=number]{text-align:right}
+.inline{display:flex;align-items:center;gap:8px}
+.inline input[type=checkbox]{width:18px;height:18px}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;background:#eef;color:#3b2fa0;margin-left:6px;vertical-align:middle}
+.tag.warn{background:var(--warnbg);color:#8a5a00}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+td.num,th.num{text-align:right;white-space:nowrap}
+td input[type=number]{padding:5px 6px;width:84px;min-width:84px}
+.tablewrap table{min-width:640px}
+.tablewrap{overflow-x:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.product{border:1px solid var(--line);border-radius:var(--r);padding:14px;background:#fbfbfd;display:flex;flex-direction:column;gap:10px}
+.product .top{display:flex;gap:8px;align-items:center}
+.product .top input[type=text]{flex:1;font-weight:600}
+.product .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.result{display:flex;justify-content:space-between;align-items:center;border-radius:10px;padding:10px 12px;font-weight:600}
+.result.ok{background:var(--okbg);color:var(--ok)}
+.result.warn{background:var(--warnbg);color:#8a5a00}
+.result.bad{background:var(--badbg);color:var(--bad)}
+.result small{font-weight:400;color:var(--muted);display:block;font-size:12px}
+details summary{cursor:pointer;font-size:13px;color:var(--accent)}
+.breakdown{font-size:13px;margin-top:6px}
+.breakdown div{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed var(--line)}
+.breakdown div.total{font-weight:600;border-bottom:none}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{padding:6px 10px;font-size:12px}
+.big{font-size:26px;font-weight:700;color:var(--accent)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi div{background:#f6f5ff;border-radius:10px;padding:12px}
+.kpi span{display:block;font-size:12px;color:var(--muted)}
+.overlay[hidden]{display:none}
+.overlay{position:fixed;inset:0;background:rgba(15,12,40,.72);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
+.overlay .box{background:#fff;color:var(--ink);border-radius:16px;max-width:560px;width:100%;padding:24px}
+.overlay ol{padding-left:20px}
+.overlay li{margin-bottom:8px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c1f2a;color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (max-width:560px){main{padding:12px}section{padding:12px}.product .fields{grid-template-columns:1fr 1fr}header h1{font-size:19px}}
+@media print{header .bar,main button,.actions,footer,#guide,.toast{display:none!important}body{background:#fff}section{break-inside:avoid;border:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Etsy Fee &amp; Price Calculator</h1>
+    <p>Works offline · Your data stays in this browser · One-time purchase, no subscription</p>
+    <div class="bar">
+      <button id="btnGuide">Quick guide</button>
+      <button id="btnExport">Export backup</button>
+      <button id="btnImport">Import backup</button>
+      <button id="btnCsv">Export CSV</button>
+      <button id="btnPrint">Print / PDF</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="shop">
+  <h2>1 · Your shop</h2>
+  <p class="hint">Pick your country. Every fee below is editable: check them in Shop Manager → Finances → Fees and update the date. Fees change; the app never guesses.</p>
+  <div class="grid">
+    <div><label>Seller country (fee profile)</label><select id="country"></select></div>
+    <div><label>Shop currency symbol</label><input type="text" id="cur" maxlength="4"></div>
+    <div><label>Fees last verified on</label><input type="text" id="feeDate" placeholder="YYYY-MM-DD"></div>
+    <div><label>Hourly rate for your labor</label><input type="number" id="hourly" step="0.5" min="0"></div>
+  </div>
+  <div class="tablewrap" style="margin-top:12px">
+  <table>
+    <thead><tr><th>Fee</th><th class="num">%</th><th class="num">Fixed</th><th>Applies to</th></tr></thead>
+    <tbody>
+      <tr><td>Listing fee <span class="tag">USD 0.20 per listing and per sale</span></td><td class="num">–</td><td class="num"><input type="number" id="f_listing" step="0.01" min="0"></td><td>Each order (multi-quantity listings renew on every sale)</td></tr>
+      <tr><td>Transaction fee</td><td class="num"><input type="number" id="f_trans" step="0.1" min="0"></td><td class="num">–</td><td>Price + shipping charged + gift wrap</td></tr>
+      <tr><td>Payment processing</td><td class="num"><input type="number" id="f_proc" step="0.1" min="0"></td><td class="num"><input type="number" id="f_procfix" step="0.01" min="0"></td><td>Order total, per order</td></tr>
+      <tr><td>Regulatory operating fee <span class="tag" id="regTag"></span></td><td class="num"><input type="number" id="f_reg" step="0.01" min="0"></td><td class="num">–</td><td>Price + shipping (not charged in the US or Germany)</td></tr>
+      <tr><td>Currency conversion</td><td class="num"><input type="number" id="f_conv" step="0.1" min="0"></td><td class="num">–</td><td>Only if listing currency ≠ payout currency</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="grid" style="margin-top:14px">
+    <div>
+      <label>Offsite Ads</label>
+      <select id="offsite">
+        <option value="none">Not attributed (organic sale)</option>
+        <option value="15">Attributed · shop under USD 10k/yr · 15%</option>
+        <option value="12">Attributed · shop over USD 10k/yr · 12%</option>
+      </select>
+    </div>
+    <div><label>Offsite Ads cap per order</label><input type="number" id="f_offcap" step="1" min="0"></div>
+    <div><label>Etsy Ads (your average cost per order)</label><input type="number" id="f_etsyads" step="0.01" min="0"></div>
+    <div>
+      <label>VAT charged on Etsy fees</label>
+      <div class="inline"><input type="checkbox" id="vatOn"><input type="number" id="f_vat" step="0.5" min="0" style="max-width:90px"><span style="font-size:12px;color:var(--muted)">%</span></div>
+    </div>
+    <div class="inline" style="align-self:end"><input type="checkbox" id="convOn"><label style="margin:0">Apply currency conversion fee</label></div>
+  </div>
+  <p class="hint" style="margin-top:10px">Offsite Ads are charged on the full order (price + shipping + gift wrap), which is why they cut margins more than the headline percentage. Etsy Ads are pay-per-click: enter what you actually spend per resulting order (Shop Manager → Marketing → Etsy Ads → cost ÷ orders). VAT on fees applies to EU/UK sellers without a VAT ID.</p>
+</section>
+
+<section id="products">
+  <h2>2 · Your products</h2>
+  <p class="hint">Add every product you sell. Enter what you charge and what it costs you; the app shows fees, profit and margin per sale. Green ≥ 25% margin, amber 10–25%, red under 10% or a loss.</p>
+  <div class="cards" id="cards"></div>
+  <div class="actions" style="margin-top:12px"><button class="primary" id="btnAdd">+ Add product</button></div>
+</section>
+
+<section id="reverse">
+  <h2>3 · Price finder</h2>
+  <p class="hint">Start from the profit you want and get the price you need. Uses the fees above and the costs of the product you pick.</p>
+  <div class="grid">
+    <div><label>Product</label><select id="rvProduct"></select></div>
+    <div><label>Target</label><select id="rvMode"><option value="amount">Profit per sale (amount)</option><option value="margin">Margin (% of price)</option></select></div>
+    <div><label>Target value</label><input type="number" id="rvTarget" step="0.5" min="0" value="10"></div>
+    <div><label>Monthly profit goal</label><input type="number" id="rvGoal" step="10" min="0" value="500"></div>
+  </div>
+  <div class="kpi" style="margin-top:14px">
+    <div><span>Price you need</span><b class="big" id="rvPrice">–</b></div>
+    <div><span>Profit at that price</span><b class="big" id="rvProfit">–</b></div>
+    <div><span>Margin at that price</span><b class="big" id="rvMargin">–</b></div>
+    <div><span>Sales needed per month</span><b class="big" id="rvSales">–</b></div>
+  </div>
+  <p class="hint" id="rvNote" style="margin-top:10px"></p>
+</section>
+
+</main>
+
+<footer>Everything is saved in this browser only. Use "Export backup" before clearing browser data or switching devices. Fees are yours to verify in Shop Manager; the defaults were checked on the date shown.</footer>
+
+<div class="overlay" id="guide" hidden>
+  <div class="box">
+    <h2 style="margin-top:0">Three steps and you're done</h2>
+    <ol>
+      <li><b>Pick your country</b> in section 1 and glance at the fee table. If Etsy has changed a fee since the date shown, edit the number.</li>
+      <li><b>Add your products</b> in section 2 with price, shipping and costs. Profit and margin update as you type.</li>
+      <li><b>Use the price finder</b> in section 3 to work backwards from the profit you want.</li>
+    </ol>
+    <p style="font-size:13px;color:var(--muted)">Your data is saved automatically in this browser. Click "Export backup" now and then to keep a copy. Nothing is sent anywhere: this file works with the internet switched off.</p>
+    <div class="actions"><button class="primary" id="btnGuideClose">Start</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<input type="file" id="fileImport" accept="application/json" hidden>
+
+<script>
+(function(){
+'use strict';
+const VERIFIED = '2026-09-06';
+// Fee profiles. verified=true: checked on Etsy Help Center on VERIFIED date. verified=false: fill from your Shop Manager.
+const PROFILES = {
+  US: {name:'United States', cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:true},
+  ES: {name:'Spain', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.88, vat:21, verified:true},
+  FR: {name:'France', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:1.14, vat:20, verified:true},
+  IT: {name:'Italy', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.80, vat:22, verified:true},
+  DE: {name:'Germany', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:19, verified:true},
+  EU: {name:'Other EU (euro)', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:21, verified:false},
+  UK: {name:'United Kingdom', cur:'£', listing:0.16, trans:6.5, proc:4, procfix:0.20, reg:0.48, vat:20, verified:false},
+  CA: {name:'Canada', cur:'C$', listing:0.27, trans:6.5, proc:3, procfix:0.25, reg:0.50, vat:0, verified:false},
+  AU: {name:'Australia', cur:'A$', listing:0.30, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
+  XX: {name:'Other / custom', cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
+};
+const KEY = 'etsyFeeCalc.v1';
+const $ = id => document.getElementById(id);
+const n = v => { const x = parseFloat(v); return isFinite(x) ? x : 0; };
+
+const defaultProduct = () => ({id: Date.now() + Math.random(), name:'', price:25, ship:0, mat:5, hours:0.5, pack:0.5, shipcost:0, pod:0, over:0, note:''});
+let S = {
+  country:'US', cur:'$', feeDate:VERIFIED, hourly:15,
+  listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, conv:2.5, convOn:false,
+  offsite:'none', offcap:100, etsyads:0, vatOn:false, vat:0,
+  products:[], seen:false
+};
+
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); S=Object.assign(S,o); } }catch(e){} if(!S.products.length){ const p=defaultProduct(); p.name='Example product'; S.products.push(p);} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); }
+const money = v => S.cur + (Math.round(v*100)/100).toFixed(2);
+const pct = v => (Math.round(v*10)/10).toFixed(1)+'%';
+
+// ---- core calculation ----
+function fees(price, ship){
+  const total = price + ship;
+  const f = {};
+  f.listing = S.listing;
+  f.trans = total * S.trans/100;
+  f.proc = total * S.proc/100 + S.procfix;
+  f.reg = total * S.reg/100;
+  f.conv = S.convOn ? total * S.conv/100 : 0;
+  f.offsite = S.offsite==='none' ? 0 : Math.min(total * n(S.offsite)/100, S.offcap);
+  f.etsyads = S.etsyads;
+  const sub = f.listing+f.trans+f.proc+f.reg+f.conv+f.offsite+f.etsyads;
+  f.vat = S.vatOn ? sub * S.vat/100 : 0;
+  f.total = sub + f.vat;
+  return f;
+}
+function costs(p){
+  const c = {};
+  c.mat = p.mat; c.labor = p.hours * S.hourly; c.pack = p.pack; c.shipcost = p.shipcost; c.pod = p.pod; c.over = p.over;
+  c.total = c.mat+c.labor+c.pack+c.shipcost+c.pod+c.over;
+  return c;
+}
+function calc(p, priceOverride){
+  const price = priceOverride!==undefined ? priceOverride : p.price;
+  const f = fees(price, p.ship), c = costs(p);
+  const revenue = price + p.ship;
+  const profit = revenue - f.total - c.total;
+  const margin = price>0 ? profit/price*100 : 0;
+  return {price, revenue, f, c, profit, margin};
+}
+function priceFor(p, mode, target){
+  // bisection on price; profit is monotonic increasing in price
+  let lo=0, hi=10000;
+  for(let i=0;i<60;i++){
+    const mid=(lo+hi)/2, r=calc(p, mid);
+    const ok = mode==='amount' ? r.profit>=target : r.margin>=target;
+    if(ok) hi=mid; else lo=mid;
+  }
+  return Math.ceil(hi*100)/100;
+}
+function badge(m, profit){ if(profit<0||m<10) return 'bad'; if(m<25) return 'warn'; return 'ok'; }
+
+// ---- render ----
+function fillCountries(){ const s=$('country'); s.innerHTML=''; for(const k in PROFILES){ const o=document.createElement('option'); o.value=k; o.textContent=PROFILES[k].name; s.appendChild(o);} }
+function applyProfile(k){ const p=PROFILES[k]; S.country=k; S.cur=p.cur; S.listing=p.listing; S.trans=p.trans; S.proc=p.proc; S.procfix=p.procfix; S.reg=p.reg; S.vat=p.vat; S.vatOn=false; S.feeDate = p.verified? VERIFIED : ''; }
+function renderShop(){
+  $('country').value=S.country; $('cur').value=S.cur; $('feeDate').value=S.feeDate; $('hourly').value=S.hourly;
+  $('f_listing').value=S.listing; $('f_trans').value=S.trans; $('f_proc').value=S.proc; $('f_procfix').value=S.procfix; $('f_reg').value=S.reg; $('f_conv').value=S.conv;
+  $('offsite').value=S.offsite; $('f_offcap').value=S.offcap; $('f_etsyads').value=S.etsyads; $('vatOn').checked=S.vatOn; $('f_vat').value=S.vat; $('convOn').checked=S.convOn;
+  const v = PROFILES[S.country] && PROFILES[S.country].verified;
+  const t=$('regTag'); t.textContent = v ? 'verified '+VERIFIED : 'check in Shop Manager'; t.className = 'tag'+(v?'':' warn');
+}
+function productCard(p){
+  const el=document.createElement('div'); el.className='product'; el.dataset.id=p.id;
+  el.innerHTML = `
+    <div class="top"><input type="text" data-k="name" placeholder="Product name" value="${esc(p.name)}"></div>
+    <div class="fields">
+      <div><label>Price you charge</label><input type="number" data-k="price" step="0.01" min="0" value="${p.price}"></div>
+      <div><label>Shipping you charge</label><input type="number" data-k="ship" step="0.01" min="0" value="${p.ship}"></div>
+      <div><label>Materials / cost of goods</label><input type="number" data-k="mat" step="0.01" min="0" value="${p.mat}"></div>
+      <div><label>Hours of work</label><input type="number" data-k="hours" step="0.05" min="0" value="${p.hours}"></div>
+      <div><label>Packaging</label><input type="number" data-k="pack" step="0.01" min="0" value="${p.pack}"></div>
+      <div><label>Shipping you actually pay</label><input type="number" data-k="shipcost" step="0.01" min="0" value="${p.shipcost}"></div>
+      <div><label>Print-on-demand cost (Printify, Printful…)</label><input type="number" data-k="pod" step="0.01" min="0" value="${p.pod}"></div>
+      <div><label>Overhead per unit (tools, fees, software)</label><input type="number" data-k="over" step="0.01" min="0" value="${p.over}"></div>
+    </div>
+    <div class="result" data-r="box"><div><span data-r="profit"></span><small data-r="sub"></small></div><div data-r="margin"></div></div>
+    <details><summary>Fee and cost breakdown</summary><div class="breakdown" data-r="bd"></div></details>
+    <div class="actions"><button data-a="dup">Duplicate</button><button data-a="del" class="danger">Delete</button></div>`;
+  return el;
+}
+function esc(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function renderProducts(){ const c=$('cards'); c.innerHTML=''; S.products.forEach(p=>c.appendChild(productCard(p))); updateAll(); }
+function updateCard(el, p){
+  const r=calc(p), b=badge(r.margin, r.profit);
+  const box=el.querySelector('[data-r=box]'); box.className='result '+b;
+  el.querySelector('[data-r=profit]').textContent = (r.profit<0?'Loss ':'Profit ')+money(Math.abs(r.profit))+' per sale';
+  el.querySelector('[data-r=sub]').textContent = 'Fees '+money(r.f.total)+' · Costs '+money(r.c.total)+' · You receive '+money(r.revenue-r.f.total);
+  el.querySelector('[data-r=margin]').textContent = pct(r.margin);
+  const f=r.f, c=r.c, rows=[
+    ['Revenue (price + shipping charged)', r.revenue],
+    ['Listing fee', -f.listing],['Transaction fee '+pct(S.trans), -f.trans],['Payment processing', -f.proc]];
+  if(f.reg) rows.push(['Regulatory operating fee', -f.reg]);
+  if(f.conv) rows.push(['Currency conversion', -f.conv]);
+  if(f.offsite) rows.push(['Offsite Ads', -f.offsite]);
+  if(f.etsyads) rows.push(['Etsy Ads', -f.etsyads]);
+  if(f.vat) rows.push(['VAT on fees', -f.vat]);
+  rows.push(['Materials', -c.mat]); if(c.labor) rows.push(['Labor ('+p.hours+' h × '+money(S.hourly)+')', -c.labor]);
+  if(c.pack) rows.push(['Packaging', -c.pack]); if(c.shipcost) rows.push(['Shipping paid', -c.shipcost]); if(c.pod) rows.push(['Print-on-demand', -c.pod]); if(c.over) rows.push(['Overhead', -c.over]);
+  const bd=el.querySelector('[data-r=bd]');
+  bd.innerHTML = rows.map(x=>`<div><span>${x[0]}</span><span>${x[1]<0?'−':''}${money(Math.abs(x[1]))}</span></div>`).join('') + `<div class="total"><span>Profit</span><span>${money(r.profit)}</span></div>`;
+}
+function updateAll(){ document.querySelectorAll('.product').forEach(el=>{ const p=S.products.find(x=>String(x.id)===el.dataset.id); if(p) updateCard(el,p); }); renderReverseOptions(); updateReverse(); save(); }
+function renderReverseOptions(){ const s=$('rvProduct'); const cur=s.value; s.innerHTML=''; S.products.forEach((p,i)=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name||('Product '+(i+1)); s.appendChild(o); }); if([...s.options].some(o=>o.value===cur)) s.value=cur; }
+function updateReverse(){
+  const p=S.products.find(x=>String(x.id)===$('rvProduct').value); if(!p){ return; }
+  const mode=$('rvMode').value, target=n($('rvTarget').value), goal=n($('rvGoal').value);
+  if(mode==='margin' && target>=95){ $('rvNote').textContent='A margin that high is not reachable once fees are taken into account.'; return; }
+  const price=priceFor(p, mode, target), r=calc(p, price);
+  $('rvPrice').textContent=money(price); $('rvProfit').textContent=money(r.profit); $('rvMargin').textContent=pct(r.margin);
+  $('rvSales').textContent = r.profit>0 ? Math.ceil(goal/r.profit) : '–';
+  $('rvNote').textContent = 'Compared with your current price of '+money(p.price)+' (profit '+money(calc(p).profit)+'). Prices ending in 9 (e.g. '+money(Math.max(price, Math.ceil(price)-0.01))+') tend to convert better in the US market.';
+}
+
+// ---- events ----
+function bindShop(){
+  $('country').addEventListener('change', e=>{ applyProfile(e.target.value); renderShop(); updateAll(); toast('Fees set for '+PROFILES[S.country].name); });
+  const map={cur:'cur',feeDate:'feeDate',hourly:'hourly',f_listing:'listing',f_trans:'trans',f_proc:'proc',f_procfix:'procfix',f_reg:'reg',f_conv:'conv',f_offcap:'offcap',f_etsyads:'etsyads',f_vat:'vat'};
+  for(const id in map){ $(id).addEventListener('input', e=>{ const k=map[id]; S[k] = (id==='cur'||id==='feeDate') ? e.target.value : n(e.target.value); updateAll(); }); }
+  $('offsite').addEventListener('change', e=>{ S.offsite=e.target.value; updateAll(); });
+  $('vatOn').addEventListener('change', e=>{ S.vatOn=e.target.checked; updateAll(); });
+  $('convOn').addEventListener('change', e=>{ S.convOn=e.target.checked; updateAll(); });
+  ['rvProduct','rvMode','rvTarget','rvGoal'].forEach(id=>$(id).addEventListener('input', updateReverse));
+}
+$('cards').addEventListener('input', e=>{
+  const el=e.target.closest('.product'); if(!el) return; const p=S.products.find(x=>String(x.id)===el.dataset.id); if(!p) return;
+  const k=e.target.dataset.k; if(!k) return; p[k] = k==='name' ? e.target.value : n(e.target.value);
+  updateCard(el,p); renderReverseOptions(); updateReverse(); save();
+});
+$('cards').addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return; const el=b.closest('.product'); const i=S.products.findIndex(x=>String(x.id)===el.dataset.id); if(i<0) return;
+  if(b.dataset.a==='del'){ if(S.products.length===1){ toast('Keep at least one product'); return; } S.products.splice(i,1); renderProducts(); }
+  if(b.dataset.a==='dup'){ const c=Object.assign({}, S.products[i], {id:Date.now()+Math.random(), name:(S.products[i].name||'Product')+' (copy)'}); S.products.splice(i+1,0,c); renderProducts(); }
+});
+$('btnAdd').addEventListener('click', ()=>{ S.products.push(defaultProduct()); renderProducts(); const last=$('cards').lastElementChild; last.querySelector('input[type=text]').focus(); });
+$('btnGuide').addEventListener('click', ()=>{ $('guide').hidden=false; });
+$('btnGuideClose').addEventListener('click', ()=>{ $('guide').hidden=true; S.seen=true; save(); });
+$('btnPrint').addEventListener('click', ()=>window.print());
+$('btnExport').addEventListener('click', ()=>{ download('etsy-fee-calculator-backup.json', JSON.stringify(S,null,2), 'application/json'); toast('Backup downloaded'); });
+$('btnImport').addEventListener('click', ()=>$('fileImport').click());
+$('fileImport').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.products)) throw 0; S=Object.assign(S,o); renderShop(); renderProducts(); toast('Backup restored'); }catch(err){ toast('That file is not a backup from this app'); } }; r.readAsText(f); e.target.value=''; });
+$('btnCsv').addEventListener('click', ()=>{
+  const head=['Product','Price','Shipping charged','Revenue','Etsy fees','Costs','Profit','Margin %'];
+  const rows=S.products.map(p=>{ const r=calc(p); return [p.name, r.price, p.ship, r.revenue, r.f.total, r.c.total, r.profit, r.margin].map((v,i)=> i===0 ? '"'+String(v).replace(/"/g,'""')+'"' : (Math.round(v*100)/100)); });
+  download('etsy-products.csv', [head.join(','), ...rows.map(r=>r.join(','))].join('\n'), 'text/csv'); toast('CSV downloaded');
+});
+function download(name, text, type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
+
+// ---- boot ----
+load(); fillCountries(); renderShop(); bindShop(); renderProducts();
+if(!S.seen) $('guide').hidden=false;
+window.__calc = {calc, fees, priceFor, state:()=>S}; // for tests
+})();
+</script>
+</body>
+</html>
