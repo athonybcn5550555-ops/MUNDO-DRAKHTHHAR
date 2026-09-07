@@ -21,6 +21,8 @@ jobs:
             args: '--target universal-apple-darwin'
             targets: 'aarch64-apple-darwin,x86_64-apple-darwin'
     runs-on: ${{ matrix.platform }}
+    permissions:
+      contents: write
     defaults:
       run:
         working-directory: productos/etsy-fee-calculator/desktop
@@ -29,7 +31,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -42,11 +44,26 @@ jobs:
       - name: Install Tauri CLI
         run: npm install
 
-      - name: Build installer
+      - name: Build installer and publish release
         uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           projectPath: productos/etsy-fee-calculator/desktop
           args: ${{ matrix.args }}
+          tagName: calculator-v__VERSION__
+          releaseName: Fee & Price Calculator v__VERSION__
+          releaseBody: |
+            Instaladores de la calculadora de comisiones y precios.
+
+            - Windows 10/11: descarga el archivo `.exe`.
+            - macOS 10.15 o superior: descarga el archivo `.dmg` (Intel y Apple Silicon).
+
+            Los instaladores no están firmados todavía. En Windows aparecerá el aviso
+            de SmartScreen: pulsa "Más información" y luego "Ejecutar de todas formas".
+            En macOS, la primera vez ábrelo con clic derecho y "Abrir".
+          releaseDraft: false
+          prerelease: false
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
