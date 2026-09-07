@@ -62,6 +62,17 @@ en pantallas pequeñas (ventana no desplazable); la guía no recibía el foco;
 importes no seguían el formato del idioma (ahora "16,36 €" en español y
 "$16.36" en inglés); el CSV no abría bien en Excel en español.
 
+`tests/test_soak.js` simula 120 días de uso real: cada día entre 2 y 6
+acciones al azar (añadir, editar con valores válidos e inválidos, duplicar,
+borrar, marcar digital, cambiar Offsite Ads, IVA, país e idioma, usar el
+buscador), copia de seguridad semanal, restauración mensual, y cierre y
+reapertura diaria comprobando que el estado es idéntico. Cada día contrasta
+el beneficio mostrado de todos los productos con un cálculo independiente
+escrito aparte. Además pulsa cada botón y campo una vez, y hace una prueba
+de estrés con 150 productos. Resultado: 0 fallos; 60 productos ocupan 9 KB;
+acción mediana 32 ms; con 150 productos, escribir un precio 30 ms y cambiar
+de idioma 201 ms.
+
 ## Pendiente para versión 1.5
 
 - Verificar en el panel de Etsy las tarifas de procesamiento de Reino Unido,
