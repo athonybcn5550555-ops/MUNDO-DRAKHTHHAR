@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>Fee & Price Calculator</title>
+<style>
+:root{--bg:#f4f5f8;--card:#fff;--ink:#1c1f2a;--muted:#5d6272;--line:#dfe2ea;--accent:#5b3df5;--accent2:#12b5a5;--ok:#1a9e5c;--warn:#d98a00;--bad:#d7263d;--okbg:#e6f7ee;--warnbg:#fff4e0;--badbg:#fde8ec;--r:12px}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header{background:linear-gradient(120deg,#1b1340,#3a1f7a 55%,#0f6f78);color:#fff;padding:18px 20px}
+.wrap{max-width:1100px;margin:0 auto}
+header .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:22px;letter-spacing:.2px}
+header p{margin:4px 0 0;opacity:.85;font-size:13px}
+header select{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 10px;font:inherit;font-size:13px}
+header select option{color:#1c1f2a}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button,.btn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer}
+main button{border-color:var(--line);background:#fff;color:var(--ink)}
+main button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+main button.danger{color:var(--bad)}
+main button:hover{filter:brightness(.96)}
+main{padding:16px 20px 60px}
+section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 16px}
+section h2{margin:0 0 4px;font-size:17px}
+.hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 14px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
+input[type=text],select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+input[inputmode=decimal]{text-align:right;font-variant-numeric:tabular-nums}
+input.bad{border-color:var(--bad);background:var(--badbg)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+.inline{display:flex;align-items:center;gap:8px}
+.inline input[type=checkbox]{width:18px;height:18px}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;background:#eef;color:#3b2fa0;margin-left:6px;vertical-align:middle}
+.tag.warn{background:var(--warnbg);color:#8a5a00}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+td.num,th.num{text-align:right;white-space:nowrap}
+td input[inputmode=decimal]{padding:5px 6px;width:84px;min-width:84px}
+.tablewrap{overflow-x:auto}
+.tablewrap table{min-width:640px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.product{border:1px solid var(--line);border-radius:var(--r);padding:14px;background:#fbfbfd;display:flex;flex-direction:column;gap:10px}
+.product .top{display:flex;gap:8px;align-items:center}
+.product .top input[type=text]{flex:1;font-weight:600}
+.product .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.product.digital .fields [data-phys]{display:none}
+.product .digi{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.product .digi input{width:16px;height:16px}
+.result{display:flex;justify-content:space-between;align-items:center;border-radius:10px;padding:10px 12px;font-weight:600}
+.result.ok{background:var(--okbg);color:var(--ok)}
+.result.warn{background:var(--warnbg);color:#8a5a00}
+.result.bad{background:var(--badbg);color:var(--bad)}
+.result small{font-weight:400;color:var(--muted);display:block;font-size:12px}
+details summary{cursor:pointer;font-size:13px;color:var(--accent)}
+.breakdown{font-size:13px;margin-top:6px}
+.breakdown div{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed var(--line)}
+.breakdown div.total{font-weight:600;border-bottom:none}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{padding:6px 10px;font-size:12px}
+.big{font-size:26px;font-weight:700;color:var(--accent)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi div{background:#f6f5ff;border-radius:10px;padding:12px}
+.kpi span{display:block;font-size:12px;color:var(--muted)}
+.overlay[hidden]{display:none}
+.overlay{position:fixed;inset:0;background:rgba(15,12,40,.72);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}
+.overlay .box{background:#fff;color:var(--ink);border-radius:16px;max-width:560px;width:100%;padding:20px 22px;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;margin:auto}
+/* El manual es un panel acoplado: no tapa la aplicación y se puede minimizar. */
+#manual[hidden]{display:none}
+#manual{position:fixed;top:14px;right:14px;bottom:14px;width:min(430px,42vw);z-index:40;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 12px 40px rgba(20,15,60,.22);display:flex;flex-direction:column;overflow:hidden}
+#manual.min{top:auto;height:auto;bottom:14px;width:min(430px,90vw)}
+#manual.min .manbody{display:none}
+#manual.min .manhead{border-bottom:none}
+#manual button{border-color:var(--line);background:#fff;color:var(--ink)}
+#manual button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+#manual button:hover{filter:brightness(.96)}
+.manhead{display:flex;align-items:center;gap:8px;padding:11px 12px 11px 15px;border-bottom:1px solid var(--line);flex:none}
+.manhead h2{margin:0;font-size:14px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.manactions{display:flex;gap:5px;flex:none}
+.manactions button{padding:5px 9px;font-size:12px}
+.iconbtn{width:28px;height:28px;padding:0!important;font-size:15px!important;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+.manbody{overflow:auto;padding:2px 15px 16px;flex:1}
+.mannow{font-size:11.5px;color:var(--muted);padding:0 15px 10px;display:none}
+#manual.min .mannow.on{display:block}
+@media (max-width:760px){ #manual{left:10px;right:10px;top:10px;bottom:10px;width:auto}
+  #manual.min{top:auto;left:10px;right:10px;width:auto} }
+@media print{ #manual{display:none!important} }
+.msec{padding:14px 0;border-bottom:1px solid var(--line)}
+.msec:last-child{border-bottom:none}
+.msec h3{margin:0 0 6px;font-size:14px;color:#2a1f6b;display:flex;align-items:center;gap:8px}
+.msec h3 .idx{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;flex:none}
+.msec p{margin:0 0 7px;font-size:13.5px;line-height:1.55;border-radius:6px;padding:2px 5px;margin-left:-5px}
+.msec p.reading{background:#efe9ff;box-shadow:0 0 0 2px #d8ccff}
+.msec p{scroll-margin:60px}
+.msec h3.reading .lbl{background:#efe9ff;border-radius:6px;padding:1px 5px}
+.spk{border:1px solid var(--line);background:#fff;color:var(--accent);border-radius:999px;padding:2px 9px;font-size:11px;cursor:pointer;margin-left:auto;flex:none}
+.overlay .box button{border-color:var(--line);background:#fff;color:var(--ink)}
+.overlay .box button.spk{border-color:var(--line);background:#fff;color:var(--accent)}
+.overlay .box button.primary{background:var(--accent);border-color:var(--accent);color:#fff;padding:10px 18px;font-size:14px}
+.overlay ol{padding-left:20px}
+.overlay li{margin-bottom:8px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c1f2a;color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (max-width:560px){main{padding:12px}section{padding:12px}header h1{font-size:19px}}
+@media print{header .bar,header select,main button,.actions,footer,#guide,.toast{display:none!important}body{background:#fff}section{break-inside:avoid;border:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="row">
+      <div><h1 data-i="title">Fee &amp; Price Calculator</h1><p data-i="tagline"></p></div>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option>
+      </select>
+    </div>
+    <div class="bar">
+      <button id="btnGuide" data-i="bGuide"></button>
+      <button id="btnManual" data-i="bManual"></button>
+      <button id="btnExport" data-i="bExport"></button>
+      <button id="btnImport" data-i="bImport"></button>
+      <button id="btnCsv" data-i="bCsv"></button>
+      <button id="btnXlsx" data-i="bXlsx"></button>
+      <button id="btnPrint" data-i="bPrint"></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="shop">
+  <h2 data-i="s1"></h2>
+  <p class="hint" data-i="s1hint"></p>
+  <div class="grid">
+    <div><label data-i="lCountry"></label><select id="country"></select></div>
+    <div><label data-i="lCur"></label><input type="text" id="cur" maxlength="4"></div>
+    <div><label data-i="lDate"></label><input type="text" id="feeDate" placeholder="YYYY-MM-DD"></div>
+    <div><label data-i="lHourly"></label><input type="text" inputmode="decimal" id="hourly"></div>
+  </div>
+  <div class="tablewrap" style="margin-top:12px">
+  <table>
+    <thead><tr><th data-i="thFee"></th><th class="num">%</th><th class="num" data-i="thFixed"></th><th data-i="thApplies"></th></tr></thead>
+    <tbody>
+      <tr><td><span data-i="fListing"></span> <span class="tag" data-i="fListingTag"></span></td><td class="num">–</td><td class="num"><input type="text" inputmode="decimal" id="f_listing"></td><td data-i="fListingA"></td></tr>
+      <tr><td data-i="fTrans"></td><td class="num"><input type="text" inputmode="decimal" id="f_trans"></td><td class="num">–</td><td data-i="fTransA"></td></tr>
+      <tr><td data-i="fProc"></td><td class="num"><input type="text" inputmode="decimal" id="f_proc"></td><td class="num"><input type="text" inputmode="decimal" id="f_procfix"></td><td data-i="fProcA"></td></tr>
+      <tr><td><span data-i="fReg"></span> <span class="tag" id="regTag"></span></td><td class="num"><input type="text" inputmode="decimal" id="f_reg"></td><td class="num">–</td><td data-i="fRegA"></td></tr>
+      <tr><td data-i="fConv"></td><td class="num"><input type="text" inputmode="decimal" id="f_conv"></td><td class="num">–</td><td data-i="fConvA"></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="grid" style="margin-top:14px">
+    <div>
+      <label data-i="lOffsite"></label>
+      <select id="offsite">
+        <option value="none" data-i="oNone"></option>
+        <option value="15" data-i="o15"></option>
+        <option value="12" data-i="o12"></option>
+      </select>
+    </div>
+    <div><label data-i="lCap"></label><input type="text" inputmode="decimal" id="f_offcap"></div>
+    <div><label data-i="lEtsyAds"></label><input type="text" inputmode="decimal" id="f_etsyads"></div>
+    <div>
+      <label data-i="lVat"></label>
+      <div class="inline"><input type="checkbox" id="vatOn"><input type="text" inputmode="decimal" id="f_vat" style="max-width:90px"><span style="font-size:12px;color:var(--muted)">%</span></div>
+    </div>
+    <div class="inline" style="align-self:end"><input type="checkbox" id="convOn"><label style="margin:0" for="convOn" data-i="lConvOn"></label></div>
+  </div>
+  <p class="hint" style="margin-top:10px" data-i="s1note"></p>
+</section>
+
+<section id="products">
+  <h2 data-i="s2"></h2>
+  <p class="hint" data-i="s2hint"></p>
+  <div class="cards" id="cards"></div>
+  <div class="actions" style="margin-top:12px"><button class="primary" id="btnAdd" data-i="bAdd"></button></div>
+</section>
+
+<section id="reverse">
+  <h2 data-i="s3"></h2>
+  <p class="hint" data-i="s3hint"></p>
+  <div class="grid">
+    <div><label data-i="lProduct"></label><select id="rvProduct"></select></div>
+    <div><label data-i="lTarget"></label><select id="rvMode"><option value="amount" data-i="mAmount"></option><option value="margin" data-i="mMargin"></option></select></div>
+    <div><label data-i="lTargetV"></label><input type="text" inputmode="decimal" id="rvTarget" value="10"></div>
+    <div><label data-i="lGoal"></label><input type="text" inputmode="decimal" id="rvGoal" value="500"></div>
+  </div>
+  <div class="kpi" style="margin-top:14px">
+    <div><span data-i="kPrice"></span><b class="big" id="rvPrice">–</b></div>
+    <div><span data-i="kProfit"></span><b class="big" id="rvProfit">–</b></div>
+    <div><span data-i="kMargin"></span><b class="big" id="rvMargin">–</b></div>
+    <div><span data-i="kSales"></span><b class="big" id="rvSales">–</b></div>
+  </div>
+  <p class="hint" id="rvNote" style="margin-top:10px"></p>
+</section>
+
+</main>
+
+<footer data-i="footer"></footer>
+
+<div class="overlay" id="guide" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <h2 style="margin-top:0" id="guideTitle" data-i="gTitle"></h2>
+    <ol><li data-i="g1"></li><li data-i="g2"></li><li data-i="g3"></li></ol>
+    <p style="font-size:13px;color:var(--muted)" data-i="gNote"></p>
+    <div class="actions"><button class="primary" id="btnGuideClose" data-i="gStart"></button><button id="btnListen" data-i="bListen"></button></div>
+  </div>
+</div>
+<aside id="manual" hidden role="region" aria-labelledby="manTitle">
+  <div class="manhead">
+    <h2 id="manTitle" data-i="mTitle"></h2>
+    <div class="manactions">
+      <button class="primary" id="btnManListen" data-i="mListenShort"></button>
+      <button id="btnManPause" class="iconbtn" hidden aria-label="" title="">⏸</button>
+      <button id="btnManStop" class="iconbtn" hidden aria-label="" title="">⏹</button>
+      <button id="btnManMin" class="iconbtn" aria-label="" title="">–</button>
+      <button id="btnManClose" class="iconbtn" aria-label="" title="">✕</button>
+    </div>
+  </div>
+  <p class="mannow" id="manNow"></p>
+  <div class="manbody" id="manBody"></div>
+</aside>
+<div class="toast" id="toast"></div>
+<input type="file" id="fileImport" accept="application/json" hidden>
+
+<script>
+(function(){
+'use strict';
+const VERIFIED = '2026-09-06';
+const PROFILES = {
+  US: {cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:true},
+  ES: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.88, vat:21, verified:true},
+  FR: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:1.14, vat:20, verified:true},
+  IT: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.80, vat:22, verified:true},
+  DE: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:19, verified:true},
+  EU: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:21, verified:false},
+  UK: {cur:'£', listing:0.16, trans:6.5, proc:4, procfix:0.20, reg:0.48, vat:20, verified:false},
+  CA: {cur:'C$', listing:0.27, trans:6.5, proc:3, procfix:0.25, reg:0.50, vat:0, verified:false},
+  AU: {cur:'A$', listing:0.30, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
+  XX: {cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
+};
+const I18N = {
+en:{bXlsx:"Export Excel",tXlsx:"Excel file downloaded",xSheet:"Products",mPause:"Pause",mResume:"Continue",mListenShort:"Listen",mStopShort:"Stop",mMin:"Minimise",mMax:"Expand",mNow:"Reading: ",bManual:"User guide",mTitle:"User guide",mListenAll:"Listen to the whole guide",mClose:"Close",mSection:"Listen to this section",bListen:'Listen to the guide',bStop:'Stop reading',pDigital:'Digital product (no shipping, no packaging)',title:'Fee & Price Calculator',tagline:'For Etsy sellers · Works offline · Your data stays in this browser · One-time purchase, no subscription',bGuide:'Quick guide',bExport:'Export backup',bImport:'Import backup',bCsv:'Export CSV',bPrint:'Print / PDF',
+s1:'1 · Your shop',s1hint:'Pick your country. Every fee below is editable: check them in Shop Manager → Finances → Fees and update the date. Fees change; the app never guesses.',lCountry:'Seller country (fee profile)',lCur:'Shop currency symbol',lDate:'Fees last verified on',lHourly:'Hourly rate for your labor',
+thFee:'Fee',thFixed:'Fixed',thApplies:'Applies to',fListing:'Listing fee',fListingTag:'USD 0.20 per listing and per sale',fListingA:'Each order (multi-quantity listings renew on every sale)',fTrans:'Transaction fee',fTransA:'Price + shipping charged + gift wrap',fProc:'Payment processing',fProcA:'Order total, per order',fReg:'Regulatory operating fee',fRegA:'Price + shipping (not charged in the US or Germany)',fConv:'Currency conversion',fConvA:'Only if listing currency ≠ payout currency',
+tagVerified:'verified',tagCheck:'check in Shop Manager',lOffsite:'Offsite Ads',oNone:'Not attributed (organic sale)',o15:'Attributed · shop under USD 10k/yr · 15%',o12:'Attributed · shop over USD 10k/yr · 12%',lCap:'Offsite Ads cap per order',lEtsyAds:'Etsy Ads (your average cost per order)',lVat:'VAT charged on Etsy fees',lConvOn:'Apply currency conversion fee',
+s1note:'Offsite Ads are charged on the full order (price + shipping + gift wrap), which is why they cut margins more than the headline percentage. Etsy Ads are pay-per-click: enter what you actually spend per resulting order (Shop Manager → Marketing → Etsy Ads → cost ÷ orders). VAT on fees applies to EU/UK sellers without a VAT ID.',
+s2:'2 · Your products',s2hint:'Add every product you sell. Enter what you charge and what it costs you; the app shows fees, profit and margin per sale. Green ≥ 25% margin, amber 10–25%, red under 10% or a loss.',pName:'Product name',pPrice:'Price you charge',pShip:'Shipping you charge',pMat:'Materials / cost of goods',pHours:'Hours of work',pPack:'Packaging',pShipCost:'Shipping you actually pay',pPod:'Print-on-demand cost (Printify, Printful…)',pOver:'Overhead per unit (tools, fees, software)',
+rProfit:'Profit',rLoss:'Loss',rPerSale:'per sale',rFees:'Fees',rCosts:'Costs',rReceive:'You receive',rBreak:'Fee and cost breakdown',bDup:'Duplicate',bDel:'Delete',bAdd:'+ Add product',
+bRevenue:'Revenue (price + shipping charged)',bListing:'Listing fee',bTrans:'Transaction fee',bProc:'Payment processing',bReg:'Regulatory operating fee',bConv:'Currency conversion',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'VAT on fees',bMat:'Materials',bLabor:'Labor',bPack:'Packaging',bShipCost:'Shipping paid',bPod:'Print-on-demand',bOver:'Overhead',bProfit:'Profit',
+s3:'3 · Price finder',s3hint:'Start from the profit you want and get the price you need. Uses the fees above and the costs of the product you pick.',lProduct:'Product',lTarget:'Target',mAmount:'Profit per sale (amount)',mMargin:'Margin (% of price)',lTargetV:'Target value',lGoal:'Monthly profit goal',kPrice:'Price you need',kProfit:'Profit at that price',kMargin:'Margin at that price',kSales:'Sales needed per month',
+nCompare:'Compared with your current price of {price} (profit {profit}). Prices ending in 9 (e.g. {nine}) tend to convert better.',nUnreach:'A margin that high is not reachable once fees are taken into account.',
+footer:'Everything is saved in this browser only. Use "Export backup" before clearing browser data or switching devices. Fees are yours to verify in Shop Manager; the defaults were checked on the date shown.',
+gTitle:"Three steps and you're done",g1:'Pick your country in section 1 and glance at the fee table. If Etsy has changed a fee since the date shown, edit the number.',g2:'Add your products in section 2 with price, shipping and costs. Profit and margin update as you type.',g3:'Use the price finder in section 3 to work backwards from the profit you want.',gNote:'Your data is saved automatically in this browser. Click "Export backup" now and then to keep a copy. Nothing is sent anywhere: this file works with the internet switched off.',gStart:'Start',
+tFees:'Fees set for {c}',tBackup:'Backup downloaded',tRestored:'Backup restored',tBad:'That file is not a backup from this app',tKeep:'Keep at least one product',tCsv:'CSV downloaded',example:'Example product',productN:'Product {n}',copy:'(copy)',
+csv:['Product','Price','Shipping charged','Revenue','Etsy fees','Costs','Profit','Margin %'],
+c:{US:'United States',ES:'Spain',FR:'France',IT:'Italy',DE:'Germany',EU:'Other EU (euro)',UK:'United Kingdom',CA:'Canada',AU:'Australia',XX:'Other / custom'}},
+es:{bXlsx:"Exportar Excel",tXlsx:"Archivo de Excel descargado",xSheet:"Productos",mPause:"Pausa",mResume:"Continuar",mListenShort:"Escuchar",mStopShort:"Parar",mMin:"Minimizar",mMax:"Ampliar",mNow:"Leyendo: ",bManual:"Manual de uso",mTitle:"Manual de uso",mListenAll:"Escuchar el manual entero",mClose:"Cerrar",mSection:"Escuchar esta sección",bListen:'Escuchar la guía',bStop:'Dejar de leer',pDigital:'Producto digital (sin envío ni embalaje)',title:'Calculadora de comisiones y precios',tagline:'Para vendedores de Etsy · Funciona sin conexión · Tus datos se quedan en este navegador · Pago único, sin suscripción',bGuide:'Guía rápida',bExport:'Exportar copia',bImport:'Importar copia',bCsv:'Exportar CSV',bPrint:'Imprimir / PDF',
+s1:'1 · Tu tienda',s1hint:'Elige tu país. Todas las comisiones son editables: compruébalas en Administrador de tienda → Finanzas → Comisiones y actualiza la fecha. Las comisiones cambian; la app nunca las adivina.',lCountry:'País del vendedor (perfil de comisiones)',lCur:'Símbolo de moneda de la tienda',lDate:'Comisiones verificadas el',lHourly:'Tu tarifa por hora de trabajo',
+thFee:'Comisión',thFixed:'Fija',thApplies:'Se aplica a',fListing:'Publicación',fListingTag:'0,20 USD por anuncio y por venta',fListingA:'Cada pedido (los anuncios con varias unidades se renuevan en cada venta)',fTrans:'Transacción',fTransA:'Precio + envío cobrado + envoltorio',fProc:'Procesamiento del pago',fProcA:'Total del pedido, por pedido',fReg:'Tasa operativa regulatoria',fRegA:'Precio + envío (no se cobra en EE. UU. ni Alemania)',fConv:'Conversión de moneda',fConvA:'Solo si la moneda del anuncio ≠ moneda de cobro',
+tagVerified:'verificado',tagCheck:'comprobar en el Administrador',lOffsite:'Offsite Ads',oNone:'No atribuida (venta orgánica)',o15:'Atribuida · tienda por debajo de 10 000 USD/año · 15 %',o12:'Atribuida · tienda por encima de 10 000 USD/año · 12 %',lCap:'Tope de Offsite Ads por pedido',lEtsyAds:'Etsy Ads (tu coste medio por pedido)',lVat:'IVA sobre las comisiones de Etsy',lConvOn:'Aplicar comisión de conversión de moneda',
+s1note:'Offsite Ads se cobra sobre el pedido completo (precio + envío + envoltorio); por eso recorta el margen más de lo que parece. Etsy Ads es pago por clic: introduce lo que gastas de verdad por cada pedido conseguido (Administrador → Marketing → Etsy Ads → coste ÷ pedidos). El IVA sobre comisiones afecta a vendedores de la UE y Reino Unido sin NIF-IVA.',
+s2:'2 · Tus productos',s2hint:'Añade cada producto que vendes. Escribe lo que cobras y lo que te cuesta; la app muestra comisiones, beneficio y margen por venta. Verde ≥ 25 % de margen, ámbar 10–25 %, rojo por debajo del 10 % o pérdida.',pName:'Nombre del producto',pPrice:'Precio que cobras',pShip:'Envío que cobras',pMat:'Materiales / coste del producto',pHours:'Horas de trabajo',pPack:'Embalaje',pShipCost:'Envío que pagas de verdad',pPod:'Coste de impresión bajo demanda (Printify, Printful…)',pOver:'Gastos generales por unidad (herramientas, cuotas, software)',
+rProfit:'Beneficio',rLoss:'Pérdida',rPerSale:'por venta',rFees:'Comisiones',rCosts:'Costes',rReceive:'Recibes',rBreak:'Desglose de comisiones y costes',bDup:'Duplicar',bDel:'Eliminar',bAdd:'+ Añadir producto',
+bRevenue:'Ingresos (precio + envío cobrado)',bListing:'Publicación',bTrans:'Transacción',bProc:'Procesamiento del pago',bReg:'Tasa operativa regulatoria',bConv:'Conversión de moneda',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'IVA sobre comisiones',bMat:'Materiales',bLabor:'Mano de obra',bPack:'Embalaje',bShipCost:'Envío pagado',bPod:'Impresión bajo demanda',bOver:'Gastos generales',bProfit:'Beneficio',
+s3:'3 · Buscador de precio',s3hint:'Parte del beneficio que quieres y obtén el precio que necesitas. Usa las comisiones de arriba y los costes del producto que elijas.',lProduct:'Producto',lTarget:'Objetivo',mAmount:'Beneficio por venta (importe)',mMargin:'Margen (% del precio)',lTargetV:'Valor objetivo',lGoal:'Objetivo de beneficio mensual',kPrice:'Precio que necesitas',kProfit:'Beneficio a ese precio',kMargin:'Margen a ese precio',kSales:'Ventas necesarias al mes',
+nCompare:'Comparado con tu precio actual de {price} (beneficio {profit}). Los precios terminados en 9 (p. ej. {nine}) suelen convertir mejor.',nUnreach:'Un margen tan alto no es alcanzable una vez descontadas las comisiones.',
+footer:'Todo se guarda solo en este navegador. Usa "Exportar copia" antes de borrar datos del navegador o cambiar de equipo. Las comisiones debes verificarlas en el Administrador de tienda; las de serie se comprobaron en la fecha indicada.',
+gTitle:'Tres pasos y listo',g1:'Elige tu país en la sección 1 y echa un vistazo a la tabla de comisiones. Si Etsy ha cambiado alguna desde la fecha indicada, edita el número.',g2:'Añade tus productos en la sección 2 con precio, envío y costes. Beneficio y margen se actualizan mientras escribes.',g3:'Usa el buscador de precio de la sección 3 para partir del beneficio que quieres.',gNote:'Tus datos se guardan automáticamente en este navegador. Pulsa "Exportar copia" de vez en cuando para conservar una copia. No se envía nada a ningún sitio: este archivo funciona sin internet.',gStart:'Empezar',
+tFees:'Comisiones configuradas para {c}',tBackup:'Copia descargada',tRestored:'Copia restaurada',tBad:'Ese archivo no es una copia de esta app',tKeep:'Conserva al menos un producto',tCsv:'CSV descargado',example:'Producto de ejemplo',productN:'Producto {n}',copy:'(copia)',
+csv:['Producto','Precio','Envío cobrado','Ingresos','Comisiones Etsy','Costes','Beneficio','Margen %'],
+c:{US:'Estados Unidos',ES:'España',FR:'Francia',IT:'Italia',DE:'Alemania',EU:'Otro país de la UE (euro)',UK:'Reino Unido',CA:'Canadá',AU:'Australia',XX:'Otro / personalizado'}},
+fr:{bXlsx:"Exporter Excel",tXlsx:"Fichier Excel téléchargé",xSheet:"Produits",mPause:"Pause",mResume:"Continuer",mListenShort:"Écouter",mStopShort:"Arrêter",mMin:"Réduire",mMax:"Agrandir",mNow:"Lecture : ",bManual:"Guide d'utilisation",mTitle:"Guide d'utilisation",mListenAll:"Écouter tout le guide",mClose:"Fermer",mSection:"Écouter cette section",bListen:'Écouter le guide',bStop:'Arrêter la lecture',pDigital:'Produit numérique (sans livraison ni emballage)',title:'Calculateur de frais et de prix',tagline:'Pour les vendeurs Etsy · Fonctionne hors ligne · Vos données restent dans ce navigateur · Achat unique, sans abonnement',bGuide:'Guide rapide',bExport:'Exporter une sauvegarde',bImport:'Importer une sauvegarde',bCsv:'Exporter en CSV',bPrint:'Imprimer / PDF',
+s1:'1 · Votre boutique',s1hint:'Choisissez votre pays. Tous les frais ci-dessous sont modifiables : vérifiez-les dans Gestionnaire de boutique → Finances → Frais et mettez la date à jour. Les frais changent ; l’application ne devine jamais.',lCountry:'Pays du vendeur (profil de frais)',lCur:'Symbole de la devise de la boutique',lDate:'Frais vérifiés le',lHourly:'Votre taux horaire',
+thFee:'Frais',thFixed:'Fixe',thApplies:'S’applique à',fListing:'Frais de mise en vente',fListingTag:'0,20 USD par fiche et par vente',fListingA:'Chaque commande (les fiches multi-quantités se renouvellent à chaque vente)',fTrans:'Frais de transaction',fTransA:'Prix + livraison facturée + emballage cadeau',fProc:'Frais de traitement du paiement',fProcA:'Total de la commande, par commande',fReg:'Frais d’exploitation réglementaires',fRegA:'Prix + livraison (non facturés aux États-Unis ni en Allemagne)',fConv:'Conversion de devise',fConvA:'Seulement si la devise de la fiche ≠ devise de versement',
+tagVerified:'vérifié',tagCheck:'à vérifier dans le Gestionnaire',lOffsite:'Offsite Ads',oNone:'Non attribuée (vente organique)',o15:'Attribuée · boutique sous 10 000 USD/an · 15 %',o12:'Attribuée · boutique au-dessus de 10 000 USD/an · 12 %',lCap:'Plafond Offsite Ads par commande',lEtsyAds:'Etsy Ads (votre coût moyen par commande)',lVat:'TVA sur les frais Etsy',lConvOn:'Appliquer les frais de conversion de devise',
+s1note:'Les Offsite Ads sont facturées sur la commande entière (prix + livraison + emballage cadeau), d’où un impact sur la marge supérieur au pourcentage affiché. Etsy Ads fonctionne au clic : indiquez ce que vous dépensez réellement par commande obtenue (Gestionnaire → Marketing → Etsy Ads → coût ÷ commandes). La TVA sur les frais concerne les vendeurs de l’UE et du Royaume-Uni sans numéro de TVA.',
+s2:'2 · Vos produits',s2hint:'Ajoutez chaque produit que vous vendez. Saisissez ce que vous facturez et ce qu’il vous coûte ; l’application affiche frais, bénéfice et marge par vente. Vert ≥ 25 % de marge, orange 10–25 %, rouge sous 10 % ou perte.',pName:'Nom du produit',pPrice:'Prix facturé',pShip:'Livraison facturée',pMat:'Matériaux / coût du produit',pHours:'Heures de travail',pPack:'Emballage',pShipCost:'Livraison réellement payée',pPod:'Coût d’impression à la demande (Printify, Printful…)',pOver:'Frais généraux par unité (outils, abonnements, logiciels)',
+rProfit:'Bénéfice',rLoss:'Perte',rPerSale:'par vente',rFees:'Frais',rCosts:'Coûts',rReceive:'Vous recevez',rBreak:'Détail des frais et des coûts',bDup:'Dupliquer',bDel:'Supprimer',bAdd:'+ Ajouter un produit',
+bRevenue:'Chiffre d’affaires (prix + livraison facturée)',bListing:'Frais de mise en vente',bTrans:'Frais de transaction',bProc:'Traitement du paiement',bReg:'Frais d’exploitation réglementaires',bConv:'Conversion de devise',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'TVA sur les frais',bMat:'Matériaux',bLabor:'Main-d’œuvre',bPack:'Emballage',bShipCost:'Livraison payée',bPod:'Impression à la demande',bOver:'Frais généraux',bProfit:'Bénéfice',
+s3:'3 · Trouveur de prix',s3hint:'Partez du bénéfice souhaité et obtenez le prix nécessaire. Utilise les frais ci-dessus et les coûts du produit choisi.',lProduct:'Produit',lTarget:'Objectif',mAmount:'Bénéfice par vente (montant)',mMargin:'Marge (% du prix)',lTargetV:'Valeur cible',lGoal:'Objectif de bénéfice mensuel',kPrice:'Prix nécessaire',kProfit:'Bénéfice à ce prix',kMargin:'Marge à ce prix',kSales:'Ventes nécessaires par mois',
+nCompare:'Par rapport à votre prix actuel de {price} (bénéfice {profit}). Les prix finissant par 9 (p. ex. {nine}) convertissent généralement mieux.',nUnreach:'Une marge aussi élevée n’est pas atteignable une fois les frais déduits.',
+footer:'Tout est enregistré uniquement dans ce navigateur. Utilisez « Exporter une sauvegarde » avant d’effacer les données du navigateur ou de changer d’appareil. Les frais sont à vérifier dans le Gestionnaire de boutique ; les valeurs par défaut ont été contrôlées à la date indiquée.',
+gTitle:'Trois étapes et c’est prêt',g1:'Choisissez votre pays dans la section 1 et jetez un œil au tableau des frais. Si Etsy a modifié un frais depuis la date indiquée, corrigez le chiffre.',g2:'Ajoutez vos produits dans la section 2 avec prix, livraison et coûts. Bénéfice et marge se mettent à jour pendant la saisie.',g3:'Utilisez le trouveur de prix de la section 3 pour partir du bénéfice souhaité.',gNote:'Vos données sont enregistrées automatiquement dans ce navigateur. Cliquez sur « Exporter une sauvegarde » de temps en temps pour garder une copie. Rien n’est envoyé nulle part : ce fichier fonctionne sans internet.',gStart:'Commencer',
+tFees:'Frais configurés pour {c}',tBackup:'Sauvegarde téléchargée',tRestored:'Sauvegarde restaurée',tBad:'Ce fichier n’est pas une sauvegarde de cette application',tKeep:'Conservez au moins un produit',tCsv:'CSV téléchargé',example:'Produit d’exemple',productN:'Produit {n}',copy:'(copie)',
+csv:['Produit','Prix','Livraison facturée','Chiffre d’affaires','Frais Etsy','Coûts','Bénéfice','Marge %'],
+c:{US:'États-Unis',ES:'Espagne',FR:'France',IT:'Italie',DE:'Allemagne',EU:'Autre pays de l’UE (euro)',UK:'Royaume-Uni',CA:'Canada',AU:'Australie',XX:'Autre / personnalisé'}},
+de:{bXlsx:"Excel exportieren",tXlsx:"Excel-Datei heruntergeladen",xSheet:"Produkte",mPause:"Pause",mResume:"Fortsetzen",mListenShort:"Anhören",mStopShort:"Stopp",mMin:"Verkleinern",mMax:"Vergrößern",mNow:"Liest: ",bManual:"Handbuch",mTitle:"Handbuch",mListenAll:"Ganzes Handbuch anhören",mClose:"Schließen",mSection:"Diesen Abschnitt anhören",bListen:'Anleitung anhören',bStop:'Vorlesen beenden',pDigital:'Digitales Produkt (kein Versand, keine Verpackung)',title:'Gebühren- und Preisrechner',tagline:'Für Etsy-Verkäufer · Funktioniert offline · Deine Daten bleiben in diesem Browser · Einmaliger Kauf, kein Abo',bGuide:'Kurzanleitung',bExport:'Sicherung exportieren',bImport:'Sicherung importieren',bCsv:'CSV exportieren',bPrint:'Drucken / PDF',
+s1:'1 · Dein Shop',s1hint:'Wähle dein Land. Jede Gebühr unten ist editierbar: Prüfe sie unter Shop-Manager → Finanzen → Gebühren und aktualisiere das Datum. Gebühren ändern sich; die App rät nie.',lCountry:'Land des Verkäufers (Gebührenprofil)',lCur:'Währungssymbol des Shops',lDate:'Gebühren zuletzt geprüft am',lHourly:'Dein Stundensatz',
+thFee:'Gebühr',thFixed:'Fix',thApplies:'Gilt für',fListing:'Einstellgebühr',fListingTag:'0,20 USD pro Angebot und pro Verkauf',fListingA:'Jede Bestellung (Angebote mit mehreren Stück verlängern sich bei jedem Verkauf)',fTrans:'Transaktionsgebühr',fTransA:'Preis + berechneter Versand + Geschenkverpackung',fProc:'Zahlungsabwicklung',fProcA:'Bestellsumme, pro Bestellung',fReg:'Regulatorische Betriebsgebühr',fRegA:'Preis + Versand (nicht in den USA und Deutschland)',fConv:'Währungsumrechnung',fConvA:'Nur wenn Angebotswährung ≠ Auszahlungswährung',
+tagVerified:'geprüft',tagCheck:'im Shop-Manager prüfen',lOffsite:'Offsite Ads',oNone:'Nicht zugeordnet (organischer Verkauf)',o15:'Zugeordnet · Shop unter 10.000 USD/Jahr · 15 %',o12:'Zugeordnet · Shop über 10.000 USD/Jahr · 12 %',lCap:'Offsite-Ads-Obergrenze pro Bestellung',lEtsyAds:'Etsy Ads (deine durchschnittlichen Kosten pro Bestellung)',lVat:'Umsatzsteuer auf Etsy-Gebühren',lConvOn:'Währungsumrechnungsgebühr anwenden',
+s1note:'Offsite Ads werden auf die gesamte Bestellung berechnet (Preis + Versand + Geschenkverpackung), deshalb drücken sie die Marge stärker als der Prozentsatz vermuten lässt. Etsy Ads sind Pay-per-Click: Trage ein, was du tatsächlich pro erzielter Bestellung ausgibst (Shop-Manager → Marketing → Etsy Ads → Kosten ÷ Bestellungen). Umsatzsteuer auf Gebühren betrifft Verkäufer in der EU und im Vereinigten Königreich ohne USt-IdNr.',
+s2:'2 · Deine Produkte',s2hint:'Füge jedes Produkt hinzu, das du verkaufst. Gib ein, was du berechnest und was es dich kostet; die App zeigt Gebühren, Gewinn und Marge pro Verkauf. Grün ≥ 25 % Marge, Gelb 10–25 %, Rot unter 10 % oder Verlust.',pName:'Produktname',pPrice:'Dein Verkaufspreis',pShip:'Berechneter Versand',pMat:'Material / Wareneinsatz',pHours:'Arbeitsstunden',pPack:'Verpackung',pShipCost:'Tatsächlich gezahlter Versand',pPod:'Print-on-Demand-Kosten (Printify, Printful…)',pOver:'Gemeinkosten pro Stück (Werkzeuge, Gebühren, Software)',
+rProfit:'Gewinn',rLoss:'Verlust',rPerSale:'pro Verkauf',rFees:'Gebühren',rCosts:'Kosten',rReceive:'Du erhältst',rBreak:'Aufschlüsselung von Gebühren und Kosten',bDup:'Duplizieren',bDel:'Löschen',bAdd:'+ Produkt hinzufügen',
+bRevenue:'Umsatz (Preis + berechneter Versand)',bListing:'Einstellgebühr',bTrans:'Transaktionsgebühr',bProc:'Zahlungsabwicklung',bReg:'Regulatorische Betriebsgebühr',bConv:'Währungsumrechnung',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'USt auf Gebühren',bMat:'Material',bLabor:'Arbeit',bPack:'Verpackung',bShipCost:'Gezahlter Versand',bPod:'Print-on-Demand',bOver:'Gemeinkosten',bProfit:'Gewinn',
+s3:'3 · Preisfinder',s3hint:'Gehe vom gewünschten Gewinn aus und erhalte den nötigen Preis. Nutzt die Gebühren oben und die Kosten des gewählten Produkts.',lProduct:'Produkt',lTarget:'Ziel',mAmount:'Gewinn pro Verkauf (Betrag)',mMargin:'Marge (% des Preises)',lTargetV:'Zielwert',lGoal:'Monatliches Gewinnziel',kPrice:'Nötiger Preis',kProfit:'Gewinn bei diesem Preis',kMargin:'Marge bei diesem Preis',kSales:'Nötige Verkäufe pro Monat',
+nCompare:'Im Vergleich zu deinem aktuellen Preis von {price} (Gewinn {profit}). Preise, die auf 9 enden (z. B. {nine}), verkaufen sich meist besser.',nUnreach:'Eine so hohe Marge ist nach Abzug der Gebühren nicht erreichbar.',
+footer:'Alles wird nur in diesem Browser gespeichert. Nutze „Sicherung exportieren“, bevor du Browserdaten löschst oder das Gerät wechselst. Die Gebühren prüfst du im Shop-Manager; die Vorgaben wurden am angezeigten Datum kontrolliert.',
+gTitle:'Drei Schritte und fertig',g1:'Wähle dein Land in Abschnitt 1 und wirf einen Blick auf die Gebührentabelle. Hat Etsy seit dem angezeigten Datum eine Gebühr geändert, korrigiere die Zahl.',g2:'Füge in Abschnitt 2 deine Produkte mit Preis, Versand und Kosten hinzu. Gewinn und Marge aktualisieren sich beim Tippen.',g3:'Nutze den Preisfinder in Abschnitt 3, um vom gewünschten Gewinn rückwärts zu rechnen.',gNote:'Deine Daten werden automatisch in diesem Browser gespeichert. Klicke ab und zu auf „Sicherung exportieren“, um eine Kopie zu behalten. Nichts wird irgendwohin gesendet: Diese Datei funktioniert ohne Internet.',gStart:'Los geht’s',
+tFees:'Gebühren eingestellt für {c}',tBackup:'Sicherung heruntergeladen',tRestored:'Sicherung wiederhergestellt',tBad:'Diese Datei ist keine Sicherung dieser App',tKeep:'Behalte mindestens ein Produkt',tCsv:'CSV heruntergeladen',example:'Beispielprodukt',productN:'Produkt {n}',copy:'(Kopie)',
+csv:['Produkt','Preis','Berechneter Versand','Umsatz','Etsy-Gebühren','Kosten','Gewinn','Marge %'],
+c:{US:'Vereinigte Staaten',ES:'Spanien',FR:'Frankreich',IT:'Italien',DE:'Deutschland',EU:'Anderes EU-Land (Euro)',UK:'Vereinigtes Königreich',CA:'Kanada',AU:'Australien',XX:'Anderes / eigene Werte'}},
+it:{bXlsx:"Esporta Excel",tXlsx:"File Excel scaricato",xSheet:"Prodotti",mPause:"Pausa",mResume:"Continua",mListenShort:"Ascolta",mStopShort:"Ferma",mMin:"Riduci",mMax:"Ingrandisci",mNow:"Sta leggendo: ",bManual:"Manuale d'uso",mTitle:"Manuale d'uso",mListenAll:"Ascolta tutto il manuale",mClose:"Chiudi",mSection:"Ascolta questa sezione",bListen:'Ascolta la guida',bStop:'Interrompi la lettura',pDigital:'Prodotto digitale (senza spedizione né imballaggio)',title:'Calcolatore di commissioni e prezzi',tagline:'Per venditori Etsy · Funziona offline · I tuoi dati restano in questo browser · Acquisto unico, senza abbonamento',bGuide:'Guida rapida',bExport:'Esporta backup',bImport:'Importa backup',bCsv:'Esporta CSV',bPrint:'Stampa / PDF',
+s1:'1 · Il tuo negozio',s1hint:'Scegli il tuo paese. Ogni commissione qui sotto è modificabile: verificale in Gestore negozio → Finanze → Commissioni e aggiorna la data. Le commissioni cambiano; l’app non tira mai a indovinare.',lCountry:'Paese del venditore (profilo commissioni)',lCur:'Simbolo della valuta del negozio',lDate:'Commissioni verificate il',lHourly:'La tua tariffa oraria',
+thFee:'Commissione',thFixed:'Fissa',thApplies:'Si applica a',fListing:'Commissione di inserzione',fListingTag:'0,20 USD per inserzione e per vendita',fListingA:'Ogni ordine (le inserzioni multi-quantità si rinnovano a ogni vendita)',fTrans:'Commissione di transazione',fTransA:'Prezzo + spedizione addebitata + confezione regalo',fProc:'Elaborazione del pagamento',fProcA:'Totale dell’ordine, per ordine',fReg:'Commissione operativa regolatoria',fRegA:'Prezzo + spedizione (non addebitata negli USA e in Germania)',fConv:'Conversione di valuta',fConvA:'Solo se la valuta dell’inserzione ≠ valuta di pagamento',
+tagVerified:'verificato',tagCheck:'verifica nel Gestore negozio',lOffsite:'Offsite Ads',oNone:'Non attribuita (vendita organica)',o15:'Attribuita · negozio sotto 10.000 USD/anno · 15 %',o12:'Attribuita · negozio sopra 10.000 USD/anno · 12 %',lCap:'Tetto Offsite Ads per ordine',lEtsyAds:'Etsy Ads (il tuo costo medio per ordine)',lVat:'IVA sulle commissioni Etsy',lConvOn:'Applica la commissione di conversione valuta',
+s1note:'Le Offsite Ads si calcolano sull’intero ordine (prezzo + spedizione + confezione regalo): per questo riducono il margine più della percentuale dichiarata. Etsy Ads è pay-per-click: inserisci quanto spendi davvero per ogni ordine ottenuto (Gestore → Marketing → Etsy Ads → costo ÷ ordini). L’IVA sulle commissioni riguarda i venditori UE e UK senza partita IVA.',
+s2:'2 · I tuoi prodotti',s2hint:'Aggiungi ogni prodotto che vendi. Inserisci quanto fai pagare e quanto ti costa; l’app mostra commissioni, profitto e margine per vendita. Verde ≥ 25 % di margine, ambra 10–25 %, rosso sotto il 10 % o perdita.',pName:'Nome del prodotto',pPrice:'Prezzo che fai pagare',pShip:'Spedizione che fai pagare',pMat:'Materiali / costo del prodotto',pHours:'Ore di lavoro',pPack:'Imballaggio',pShipCost:'Spedizione che paghi davvero',pPod:'Costo print-on-demand (Printify, Printful…)',pOver:'Spese generali per unità (strumenti, canoni, software)',
+rProfit:'Profitto',rLoss:'Perdita',rPerSale:'per vendita',rFees:'Commissioni',rCosts:'Costi',rReceive:'Ricevi',rBreak:'Dettaglio di commissioni e costi',bDup:'Duplica',bDel:'Elimina',bAdd:'+ Aggiungi prodotto',
+bRevenue:'Ricavi (prezzo + spedizione addebitata)',bListing:'Inserzione',bTrans:'Transazione',bProc:'Elaborazione del pagamento',bReg:'Commissione operativa regolatoria',bConv:'Conversione di valuta',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'IVA sulle commissioni',bMat:'Materiali',bLabor:'Manodopera',bPack:'Imballaggio',bShipCost:'Spedizione pagata',bPod:'Print-on-demand',bOver:'Spese generali',bProfit:'Profitto',
+s3:'3 · Trova prezzo',s3hint:'Parti dal profitto che vuoi e ottieni il prezzo necessario. Usa le commissioni sopra e i costi del prodotto scelto.',lProduct:'Prodotto',lTarget:'Obiettivo',mAmount:'Profitto per vendita (importo)',mMargin:'Margine (% del prezzo)',lTargetV:'Valore obiettivo',lGoal:'Obiettivo di profitto mensile',kPrice:'Prezzo necessario',kProfit:'Profitto a quel prezzo',kMargin:'Margine a quel prezzo',kSales:'Vendite necessarie al mese',
+nCompare:'Rispetto al tuo prezzo attuale di {price} (profitto {profit}). I prezzi che finiscono in 9 (es. {nine}) di solito convertono meglio.',nUnreach:'Un margine così alto non è raggiungibile una volta sottratte le commissioni.',
+footer:'Tutto viene salvato solo in questo browser. Usa "Esporta backup" prima di cancellare i dati del browser o cambiare dispositivo. Le commissioni vanno verificate nel Gestore negozio; quelle predefinite sono state controllate alla data indicata.',
+gTitle:'Tre passi ed è fatta',g1:'Scegli il tuo paese nella sezione 1 e dai un’occhiata alla tabella delle commissioni. Se Etsy ne ha cambiata una dopo la data indicata, correggi il numero.',g2:'Aggiungi i tuoi prodotti nella sezione 2 con prezzo, spedizione e costi. Profitto e margine si aggiornano mentre scrivi.',g3:'Usa il trova prezzo della sezione 3 per partire dal profitto che vuoi.',gNote:'I tuoi dati vengono salvati automaticamente in questo browser. Premi "Esporta backup" ogni tanto per conservarne una copia. Nulla viene inviato da nessuna parte: questo file funziona senza internet.',gStart:'Inizia',
+tFees:'Commissioni impostate per {c}',tBackup:'Backup scaricato',tRestored:'Backup ripristinato',tBad:'Quel file non è un backup di questa app',tKeep:'Mantieni almeno un prodotto',tCsv:'CSV scaricato',example:'Prodotto di esempio',productN:'Prodotto {n}',copy:'(copia)',
+csv:['Prodotto','Prezzo','Spedizione addebitata','Ricavi','Commissioni Etsy','Costi','Profitto','Margine %'],
+c:{US:'Stati Uniti',ES:'Spagna',FR:'Francia',IT:'Italia',DE:'Germania',EU:'Altro paese UE (euro)',UK:'Regno Unito',CA:'Canada',AU:'Australia',XX:'Altro / personalizzato'}}
+};
+const MANUAL={"en": [["What this app does", ["It calculates what Etsy really takes from every sale, what you are left with, and what you should charge to earn what you want. It is one file that runs in your browser, with no account, no subscription and no internet connection.", "It is not connected to your Etsy shop. You type your prices and costs; the app does the arithmetic with the fee rates you confirm. That is deliberate: nothing you enter ever leaves your computer.", "Everything is saved automatically in this browser. If you clear your browser data or move to another computer, use Export backup and Import backup."]], ["Setting up your shop", ["Open section 1 and choose your seller country. That loads a fee profile: currency symbol, listing fee, transaction percentage, payment processing and, where it applies, the regulatory operating fee.", "Next to the regulatory fee you will see a small label. Verified with a date means those numbers were checked against Etsy's own help pages on that date. Check in Shop Manager means the profile is a reasonable starting point but you should confirm it yourself.", "Every fee is an editable box. If Etsy changes a rate, or your account differs, type the new number and update the date field. The app never overrides what you type.", "Set your hourly rate to whatever your time is worth. It is used to turn the hours you enter on each product into a real cost. If you would rather ignore labour, leave it at zero."]], ["Understanding each fee", ["Listing fee. A fixed amount Etsy charges when you publish a listing, when it renews after four months, and again each time a multi-quantity listing sells. The app counts one per order.", "Transaction fee. A percentage of the price plus the shipping you charge plus gift wrapping. It is the largest single fee for most sellers.", "Payment processing. A percentage of the order total plus a fixed amount per order. Both parts change by country, which is why the profile matters.", "Regulatory operating fee. A percentage some countries pay on price plus shipping. It is not charged to sellers in the United States or Germany. It changed in June 2026 for several countries, so verify yours.", "Currency conversion. Two and a half percent, charged only when the currency of your listing is different from the currency of your payment account. Tick the box only if that is your case.", "Offsite Ads. When Etsy advertises your product outside Etsy and that advert produces the sale, Etsy charges a percentage of the whole order, shipping included. Fifteen percent if your shop made less than ten thousand dollars in the last year, twelve percent above that, where it also becomes compulsory. There is a cap per order. Because it applies to the whole order and not just the price, it cuts your margin more than the headline number suggests.", "Etsy Ads. These are the adverts inside Etsy and they are pay per click, so there is no single percentage. Divide what you spent in a month by the orders it produced and enter that average.", "VAT on fees. If you sell from the European Union or the United Kingdom and have not given Etsy a VAT number, Etsy adds VAT on top of its own fees. Tick the box and set your rate. This is not the VAT your buyer pays.", "Where to check all of them: Shop Manager, then Finances, then Fees. Etsy also emails sellers before a change takes effect."]], ["Adding your products", ["Section 2 holds one card per product. Add as many as you like; the app has been tested with a hundred and fifty without slowing down.", "Price you charge and Shipping you charge are what the buyer pays. Discount is not a field here: enter the price you actually sell at.", "Then come your costs. Materials or cost of goods. Hours of work, multiplied by your hourly rate. Packaging. The shipping you actually pay, which is often different from what you charge. Print on demand cost, for Printify, Printful or similar. And overhead per unit for tools, subscriptions and anything else you want spread across your sales.", "Tick Digital product and the shipping, packaging and print on demand fields disappear and count as zero. Use it for downloads, templates and files.", "The coloured band at the bottom of each card is the summary. Green means a margin of twenty five percent or more. Amber means between ten and twenty five. Red means below ten percent, or a loss. Open Fee and cost breakdown to see every line that produced the number.", "Your margin is profit divided by price. It is not the same as your mark-up, and it is what tells you whether a product is worth making."]], ["The price finder", ["Section 3 works backwards. Instead of asking what you earn at a price, it asks what price gives you the earnings you want.", "Choose a product, then a target. Profit per sale asks for an amount of money. Margin asks for a percentage of the price. Type the target and the app gives you the price you need, the profit at that price and the resulting margin.", "Monthly profit goal turns that into a plan: how many sales of this product you need each month to reach it.", "If the target cannot be reached, everything shows a dash and a message explains why. That usually means the costs of the product make it impossible at any sensible price.", "The note underneath compares the result with your current price and suggests the nearest price ending in nine, because that is what converts best in the United States market."]], ["Backups, exports and printing", ["Export backup saves everything, shop settings and products, into a small file. Keep it somewhere safe. Import backup restores it, on this computer or another one.", "Do it before clearing browser data, changing computer, changing browser, or reinstalling anything. The app stores its data inside the browser, and browsers do forget.", "Export CSV writes your product list to a spreadsheet file with price, revenue, fees, costs, profit and margin. The separator and decimal mark follow the language you have selected, so it opens correctly in Excel in your country.", "Print or PDF produces a clean printable page without buttons, useful for your accountant or for your own records."]], ["A worked example", ["Say you sell a handmade candle from Spain for twenty five euros with four euros of shipping charged, and the sale is organic rather than from Offsite Ads.", "Etsy takes: the listing fee of eighteen cents; the transaction fee of six point five percent on twenty nine euros, which is one euro eighty nine; payment processing of four percent plus thirty cents, which is one euro forty six; and the regulatory fee of nought point eight eight percent, twenty six cents. Fees total three euros seventy nine.", "Your costs are, say, six euros of wax and glass, half an hour of work at fifteen euros an hour which is seven euros fifty, one euro of packaging and three euros fifty of postage you actually pay. Costs total eighteen euros.", "You receive twenty nine minus three seventy nine, which is twenty five euros twenty one. Take away eighteen euros of costs and your profit is seven euros twenty one, a margin of twenty eight point eight percent. The card shows green.", "Now set Offsite Ads to fifteen percent. Etsy takes four euros thirty five more and your profit falls to two euros eighty six, a margin of eleven percent. The card turns amber. That is the difference a single setting makes, and why it is worth modelling."]], ["Questions and problems", ["The numbers do not match my Etsy statement. Check three things. First, that the fee rates in section 1 match your Shop Manager today. Second, that Offsite Ads is set the way that sale actually happened. Third, that VAT on fees matches whether you have given Etsy a VAT number.", "I typed a comma and it did something odd. The app accepts both a comma and a full stop as the decimal mark, and both European and English thousands separators. If a box turns red it means what you typed is not a number and it is being counted as zero.", "My data disappeared. The app stores data inside the browser. Private browsing, clearing site data, a different browser or a different computer all mean a fresh start. This is why Export backup exists.", "It looks wrong on my phone. The app works on a phone, but the fee table scrolls sideways inside its own frame. Turn the phone to landscape for that part.", "My browser offers to translate the page. Say no. The app already has its own five languages and an automatic translation would overwrite them.", "Something is broken. Message me through Etsy before leaving a review. Support and free minor updates are included for thirty days, and I answer within a day."]], ["Once a year, check these", ["Whether Etsy has changed any fee, and update the numbers and the date in section 1.", "Whether your shop has crossed ten thousand dollars in the last twelve months, because Offsite Ads then becomes compulsory at twelve percent.", "Whether your hourly rate still reflects what your time is worth.", "Whether your material costs have risen, because a product that was green a year ago may be amber today.", "And export a fresh backup while you are at it."]]], "es": [["Qué hace esta aplicación", ["Calcula lo que Etsy se lleva de verdad en cada venta, lo que te queda a ti, y qué precio deberías poner para ganar lo que quieres. Es un solo archivo que funciona en tu navegador, sin cuenta, sin suscripción y sin conexión a internet.", "No está conectada a tu tienda de Etsy. Tú escribes tus precios y tus costes; la aplicación hace las cuentas con las comisiones que tú confirmas. Es a propósito: nada de lo que escribes sale nunca de tu ordenador.", "Todo se guarda automáticamente en este navegador. Si borras los datos del navegador o cambias de ordenador, usa Exportar copia e Importar copia."]], ["Configurar tu tienda", ["Abre la sección 1 y elige tu país de vendedor. Eso carga un perfil de comisiones: símbolo de moneda, comisión de publicación, porcentaje de transacción, procesamiento del pago y, donde corresponda, la tasa operativa regulatoria.", "Junto a la tasa regulatoria verás una etiqueta pequeña. Verificado con una fecha significa que esos números se comprobaron en las páginas de ayuda de Etsy ese día. Comprobar en el Administrador significa que el perfil es un punto de partida razonable pero deberías confirmarlo tú.", "Todas las comisiones son casillas editables. Si Etsy cambia un porcentaje, o tu cuenta es distinta, escribe el número nuevo y actualiza la fecha. La aplicación nunca sobrescribe lo que tú escribes.", "Pon tu tarifa por hora en lo que valga tu tiempo. Sirve para convertir las horas que indiques en cada producto en un coste real. Si prefieres no contar la mano de obra, déjala en cero."]], ["Entender cada comisión", ["Comisión de publicación. Un importe fijo que Etsy cobra al publicar un anuncio, al renovarlo cada cuatro meses, y otra vez cada vez que se vende un anuncio con varias unidades. La aplicación cuenta una por pedido.", "Comisión de transacción. Un porcentaje sobre el precio más el envío que cobras más el envoltorio de regalo. Para la mayoría de vendedores es la comisión más grande.", "Procesamiento del pago. Un porcentaje del total del pedido más una cantidad fija por pedido. Las dos partes cambian según el país, y por eso importa el perfil.", "Tasa operativa regulatoria. Un porcentaje que pagan algunos países sobre precio más envío. No se cobra a vendedores de Estados Unidos ni de Alemania. Cambió en junio de 2026 para varios países, así que verifica el tuyo.", "Conversión de moneda. Un dos y medio por ciento, que se cobra solo cuando la moneda de tu anuncio es distinta de la de tu cuenta de cobro. Marca la casilla solo si es tu caso.", "Offsite Ads. Cuando Etsy anuncia tu producto fuera de Etsy y ese anuncio produce la venta, Etsy cobra un porcentaje del pedido entero, envío incluido. Un quince por ciento si tu tienda facturó menos de diez mil dólares el último año, y un doce por ciento por encima de esa cifra, donde además pasa a ser obligatorio. Hay un tope por pedido. Como se aplica al pedido entero y no solo al precio, recorta el margen más de lo que sugiere el porcentaje.", "Etsy Ads. Son los anuncios dentro de Etsy y funcionan por clic, así que no hay un porcentaje único. Divide lo que gastaste en un mes entre los pedidos que consiguió e introduce esa media.", "IVA sobre las comisiones. Si vendes desde la Unión Europea o el Reino Unido y no le has dado a Etsy un número de IVA, Etsy añade IVA sobre sus propias comisiones. Marca la casilla y pon tu tipo. Esto no es el IVA que paga tu comprador.", "Dónde comprobarlas todas: Administrador de tienda, luego Finanzas, luego Comisiones. Etsy también avisa por correo a los vendedores antes de que un cambio entre en vigor."]], ["Añadir tus productos", ["La sección 2 tiene una tarjeta por producto. Añade los que quieras; se ha probado con ciento cincuenta sin que se ralentice.", "Precio que cobras y Envío que cobras es lo que paga el comprador. Aquí no hay campo de descuento: pon el precio al que vendes de verdad.", "Después vienen tus costes. Materiales o coste del producto. Horas de trabajo, que se multiplican por tu tarifa por hora. Embalaje. El envío que pagas de verdad, que suele ser distinto del que cobras. Coste de impresión bajo demanda, para Printify, Printful o similares. Y gastos generales por unidad para herramientas, cuotas y todo lo que quieras repartir entre tus ventas.", "Marca Producto digital y los campos de envío, embalaje e impresión bajo demanda desaparecen y cuentan como cero. Úsalo para descargas, plantillas y archivos.", "La banda de color al pie de cada tarjeta es el resumen. Verde significa un margen del veinticinco por ciento o más. Ámbar, entre diez y veinticinco. Rojo, por debajo del diez por ciento o pérdida. Abre Desglose de comisiones y costes para ver cada línea que ha producido ese número.", "Tu margen es el beneficio dividido entre el precio. No es lo mismo que el margen sobre coste, y es lo que te dice si un producto merece la pena."]], ["El buscador de precio", ["La sección 3 funciona al revés. En vez de preguntar cuánto ganas a un precio, pregunta qué precio te da lo que quieres ganar.", "Elige un producto y un objetivo. Beneficio por venta pide una cantidad de dinero. Margen pide un porcentaje del precio. Escribe el objetivo y la aplicación te da el precio que necesitas, el beneficio a ese precio y el margen resultante.", "El objetivo de beneficio mensual lo convierte en un plan: cuántas ventas de ese producto necesitas al mes para alcanzarlo.", "Si el objetivo no se puede alcanzar, todo muestra un guion y un mensaje explica por qué. Suele significar que los costes del producto lo hacen imposible a cualquier precio razonable.", "La nota de debajo compara el resultado con tu precio actual y sugiere el precio más cercano terminado en nueve, porque es el que mejor convierte en el mercado estadounidense."]], ["Copias, exportaciones e impresión", ["Exportar copia guarda todo, los ajustes de la tienda y los productos, en un archivo pequeño. Guárdalo en sitio seguro. Importar copia lo restaura, en este ordenador o en otro.", "Hazlo antes de borrar datos del navegador, cambiar de ordenador, cambiar de navegador o reinstalar cualquier cosa. La aplicación guarda sus datos dentro del navegador, y los navegadores olvidan.", "Exportar CSV escribe tu lista de productos en un archivo de hoja de cálculo con precio, ingresos, comisiones, costes, beneficio y margen. El separador y el decimal siguen el idioma que tengas puesto, así que se abre bien en Excel en tu país.", "Imprimir o PDF genera una página limpia sin botones, útil para tu gestor o para tu propio archivo."]], ["Un ejemplo resuelto", ["Supón que vendes una vela artesanal desde España a veinticinco euros con cuatro euros de envío cobrado, y que la venta es orgánica y no viene de Offsite Ads.", "Etsy se lleva: la comisión de publicación de dieciocho céntimos; la de transacción, un seis coma cinco por ciento sobre veintinueve euros, que son un euro ochenta y nueve; el procesamiento del pago, un cuatro por ciento más treinta céntimos, que son un euro cuarenta y seis; y la tasa regulatoria del cero coma ochenta y ocho por ciento, veintiséis céntimos. En total, tres euros setenta y nueve de comisiones.", "Tus costes son, digamos, seis euros de cera y cristal, media hora de trabajo a quince euros la hora que son siete euros cincuenta, un euro de embalaje y tres euros cincuenta de franqueo que pagas de verdad. En total, dieciocho euros de costes.", "Recibes veintinueve menos tres setenta y nueve, es decir veinticinco euros veintiuno. Le quitas dieciocho euros de costes y tu beneficio es de siete euros veintiuno, un margen del veintiocho coma ocho por ciento. La tarjeta se muestra en verde.", "Ahora pon Offsite Ads al quince por ciento. Etsy se lleva cuatro euros treinta y cinco más y tu beneficio baja a dos euros ochenta y seis, un margen del once por ciento. La tarjeta se pone ámbar. Esa es la diferencia que provoca un solo ajuste, y por eso merece la pena simularlo."]], ["Preguntas y problemas", ["Los números no cuadran con mi extracto de Etsy. Comprueba tres cosas. Primera, que las comisiones de la sección 1 coincidan con tu Administrador de tienda hoy. Segunda, que Offsite Ads esté puesto como ocurrió esa venta en realidad. Tercera, que el IVA sobre comisiones se corresponda con si le has dado o no un número de IVA a Etsy.", "He escrito una coma y ha hecho algo raro. La aplicación acepta coma y punto como decimal, y separadores de miles europeos e ingleses. Si una casilla se pone roja significa que lo que has escrito no es un número y se está contando como cero.", "Han desaparecido mis datos. La aplicación guarda los datos dentro del navegador. La navegación privada, borrar los datos del sitio, otro navegador u otro ordenador significan empezar de cero. Para eso existe Exportar copia.", "Se ve mal en el móvil. La aplicación funciona en el móvil, pero la tabla de comisiones se desplaza en horizontal dentro de su propio marco. Gira el teléfono para esa parte.", "Mi navegador me ofrece traducir la página. Dile que no. La aplicación ya tiene sus cinco idiomas y una traducción automática los pisaría.", "Algo no funciona. Escríbeme por Etsy antes de dejar una reseña. El soporte y las actualizaciones menores están incluidos treinta días, y respondo en menos de un día."]], ["Una vez al año, revisa esto", ["Si Etsy ha cambiado alguna comisión, y actualiza los números y la fecha en la sección 1.", "Si tu tienda ha superado los diez mil dólares en los últimos doce meses, porque entonces Offsite Ads pasa a ser obligatorio al doce por ciento.", "Si tu tarifa por hora sigue reflejando lo que vale tu tiempo.", "Si han subido tus costes de materiales, porque un producto que hace un año estaba verde hoy puede estar en ámbar.", "Y aprovecha para exportar una copia de seguridad nueva."]]], "fr": [["Ce que fait cette application", ["Elle calcule ce qu'Etsy prélève réellement sur chaque vente, ce qu'il vous reste, et le prix à demander pour gagner ce que vous voulez. C'est un seul fichier qui fonctionne dans votre navigateur, sans compte, sans abonnement et sans connexion internet.", "Elle n'est pas connectée à votre boutique Etsy. Vous saisissez vos prix et vos coûts ; l'application fait les calculs avec les frais que vous confirmez. C'est volontaire : rien de ce que vous saisissez ne quitte votre ordinateur.", "Tout est enregistré automatiquement dans ce navigateur. Si vous effacez les données du navigateur ou changez d'ordinateur, utilisez Exporter une sauvegarde et Importer une sauvegarde."]], ["Configurer votre boutique", ["Ouvrez la section 1 et choisissez votre pays de vendeur. Cela charge un profil de frais : symbole de devise, frais de mise en vente, pourcentage de transaction, traitement du paiement et, le cas échéant, les frais d'exploitation réglementaires.", "À côté des frais réglementaires figure une petite étiquette. Vérifié avec une date signifie que ces chiffres ont été contrôlés sur les pages d'aide d'Etsy ce jour-là. À vérifier dans le Gestionnaire signifie que le profil est un point de départ raisonnable mais que vous devez le confirmer vous-même.", "Tous les frais sont des champs modifiables. Si Etsy change un taux, ou si votre compte diffère, saisissez le nouveau chiffre et mettez la date à jour. L'application n'écrase jamais ce que vous saisissez.", "Indiquez votre taux horaire selon la valeur de votre temps. Il sert à transformer les heures saisies sur chaque produit en coût réel. Si vous préférez ne pas compter la main-d'œuvre, laissez zéro."]], ["Comprendre chaque frais", ["Frais de mise en vente. Un montant fixe qu'Etsy facture à la publication d'une fiche, à son renouvellement tous les quatre mois, et de nouveau à chaque vente d'une fiche multi-quantités. L'application en compte un par commande.", "Frais de transaction. Un pourcentage du prix plus la livraison que vous facturez plus l'emballage cadeau. C'est le frais le plus important pour la plupart des vendeurs.", "Traitement du paiement. Un pourcentage du total de la commande plus un montant fixe par commande. Les deux parties changent selon le pays, d'où l'importance du profil.", "Frais d'exploitation réglementaires. Un pourcentage payé par certains pays sur le prix plus la livraison. Ils ne sont pas facturés aux vendeurs des États-Unis ni d'Allemagne. Ils ont changé en juin 2026 pour plusieurs pays, vérifiez donc le vôtre.", "Conversion de devise. Deux et demi pour cent, facturés uniquement lorsque la devise de votre fiche diffère de celle de votre compte de versement. Cochez la case seulement si c'est votre cas.", "Offsite Ads. Quand Etsy fait la publicité de votre produit en dehors d'Etsy et que cette publicité génère la vente, Etsy prélève un pourcentage de la commande entière, livraison comprise. Quinze pour cent si votre boutique a réalisé moins de dix mille dollars l'an dernier, douze pour cent au-dessus, seuil à partir duquel cela devient obligatoire. Il existe un plafond par commande. Comme cela s'applique à la commande entière et non au seul prix, la marge est plus entamée que le pourcentage ne le laisse croire.", "Etsy Ads. Ce sont les publicités à l'intérieur d'Etsy, facturées au clic, il n'y a donc pas de pourcentage unique. Divisez ce que vous avez dépensé dans le mois par les commandes obtenues et saisissez cette moyenne.", "TVA sur les frais. Si vous vendez depuis l'Union européenne ou le Royaume-Uni et n'avez pas communiqué de numéro de TVA à Etsy, Etsy ajoute la TVA sur ses propres frais. Cochez la case et indiquez votre taux. Ce n'est pas la TVA payée par votre acheteur.", "Où tout vérifier : Gestionnaire de boutique, puis Finances, puis Frais. Etsy prévient aussi les vendeurs par courriel avant l'entrée en vigueur d'un changement."]], ["Ajouter vos produits", ["La section 2 contient une fiche par produit. Ajoutez-en autant que vous voulez ; l'application a été testée avec cent cinquante sans ralentissement.", "Prix facturé et Livraison facturée correspondent à ce que paie l'acheteur. Il n'y a pas de champ remise ici : indiquez le prix auquel vous vendez réellement.", "Viennent ensuite vos coûts. Matériaux ou coût du produit. Heures de travail, multipliées par votre taux horaire. Emballage. La livraison que vous payez réellement, souvent différente de celle que vous facturez. Coût d'impression à la demande, pour Printify, Printful ou équivalent. Et frais généraux par unité pour les outils, abonnements et tout ce que vous voulez répartir sur vos ventes.", "Cochez Produit numérique et les champs de livraison, d'emballage et d'impression à la demande disparaissent et comptent pour zéro. À utiliser pour les téléchargements, modèles et fichiers.", "La bande colorée au bas de chaque fiche est le résumé. Vert signifie une marge de vingt-cinq pour cent ou plus. Orange, entre dix et vingt-cinq. Rouge, en dessous de dix pour cent, ou une perte. Ouvrez Détail des frais et des coûts pour voir chaque ligne à l'origine du chiffre.", "Votre marge, c'est le bénéfice divisé par le prix. Ce n'est pas la même chose que la marge sur coût, et c'est elle qui vous dit si un produit vaut la peine."]], ["Le trouveur de prix", ["La section 3 fonctionne à l'envers. Au lieu de demander combien vous gagnez à un prix donné, elle demande quel prix vous donne le gain souhaité.", "Choisissez un produit, puis un objectif. Bénéfice par vente demande un montant. Marge demande un pourcentage du prix. Saisissez l'objectif et l'application vous donne le prix nécessaire, le bénéfice à ce prix et la marge obtenue.", "L'objectif de bénéfice mensuel en fait un plan : combien de ventes de ce produit il vous faut chaque mois pour l'atteindre.", "Si l'objectif est inatteignable, tout affiche un tiret et un message explique pourquoi. Cela signifie en général que les coûts du produit le rendent impossible à tout prix raisonnable.", "La note en dessous compare le résultat à votre prix actuel et suggère le prix le plus proche finissant par neuf, car c'est celui qui convertit le mieux sur le marché américain."]], ["Sauvegardes, exports et impression", ["Exporter une sauvegarde enregistre tout, réglages de la boutique et produits, dans un petit fichier. Conservez-le en lieu sûr. Importer une sauvegarde le restaure, sur cet ordinateur ou un autre.", "Faites-le avant d'effacer les données du navigateur, de changer d'ordinateur, de navigateur ou de réinstaller quoi que ce soit. L'application stocke ses données dans le navigateur, et les navigateurs oublient.", "Exporter en CSV écrit votre liste de produits dans un fichier tableur avec prix, chiffre d'affaires, frais, coûts, bénéfice et marge. Le séparateur et la virgule décimale suivent la langue sélectionnée, le fichier s'ouvre donc correctement dans Excel dans votre pays.", "Imprimer ou PDF produit une page propre sans boutons, utile pour votre comptable ou pour vos archives."]], ["Un exemple chiffré", ["Supposons que vous vendiez une bougie artisanale depuis l'Espagne à vingt-cinq euros avec quatre euros de livraison facturée, et que la vente soit organique et non issue d'Offsite Ads.", "Etsy prélève : les frais de mise en vente de dix-huit centimes ; les frais de transaction de six virgule cinq pour cent sur vingt-neuf euros, soit un euro quatre-vingt-neuf ; le traitement du paiement de quatre pour cent plus trente centimes, soit un euro quarante-six ; et les frais réglementaires de zéro virgule quatre-vingt-huit pour cent, vingt-six centimes. Total des frais : trois euros soixante-dix-neuf.", "Vos coûts sont, disons, six euros de cire et de verre, une demi-heure de travail à quinze euros de l'heure soit sept euros cinquante, un euro d'emballage et trois euros cinquante d'affranchissement réellement payé. Total des coûts : dix-huit euros.", "Vous recevez vingt-neuf moins trois soixante-dix-neuf, soit vingt-cinq euros vingt et un. Retirez dix-huit euros de coûts et votre bénéfice est de sept euros vingt et un, une marge de vingt-huit virgule huit pour cent. La fiche s'affiche en vert.", "Passez maintenant Offsite Ads à quinze pour cent. Etsy prélève quatre euros trente-cinq de plus et votre bénéfice tombe à deux euros quatre-vingt-six, une marge de onze pour cent. La fiche passe en orange. Voilà la différence que fait un seul réglage, et pourquoi il vaut la peine de le simuler."]], ["Questions et problèmes", ["Les chiffres ne correspondent pas à mon relevé Etsy. Vérifiez trois choses. D'abord, que les taux de la section 1 correspondent à votre Gestionnaire de boutique aujourd'hui. Ensuite, qu'Offsite Ads est réglé comme la vente s'est réellement produite. Enfin, que la TVA sur les frais correspond au fait d'avoir ou non communiqué un numéro de TVA à Etsy.", "J'ai saisi une virgule et le résultat est étrange. L'application accepte la virgule comme le point en séparateur décimal, ainsi que les séparateurs de milliers européens et anglais. Si un champ devient rouge, cela signifie que ce que vous avez saisi n'est pas un nombre et qu'il compte pour zéro.", "Mes données ont disparu. L'application stocke les données dans le navigateur. Navigation privée, effacement des données du site, autre navigateur ou autre ordinateur signifient repartir de zéro. C'est à cela que sert Exporter une sauvegarde.", "L'affichage est mauvais sur mon téléphone. L'application fonctionne sur téléphone, mais le tableau des frais défile horizontalement dans son propre cadre. Tournez le téléphone pour cette partie.", "Mon navigateur propose de traduire la page. Refusez. L'application a déjà ses cinq langues et une traduction automatique les écraserait.", "Quelque chose ne fonctionne pas. Écrivez-moi via Etsy avant de laisser un avis. Le support et les mises à jour mineures sont inclus pendant trente jours, et je réponds en moins d'une journée."]], ["Une fois par an, vérifiez ceci", ["Si Etsy a modifié un frais, et mettez à jour les chiffres et la date dans la section 1.", "Si votre boutique a dépassé dix mille dollars sur les douze derniers mois, car Offsite Ads devient alors obligatoire à douze pour cent.", "Si votre taux horaire reflète toujours la valeur de votre temps.", "Si vos coûts de matériaux ont augmenté, car un produit vert il y a un an peut être orange aujourd'hui.", "Et profitez-en pour exporter une nouvelle sauvegarde."]]], "de": [["Was diese Anwendung macht", ["Sie berechnet, was Etsy bei jedem Verkauf wirklich einbehält, was dir bleibt, und welchen Preis du verlangen solltest, um das zu verdienen, was du willst. Es ist eine einzige Datei, die im Browser läuft, ohne Konto, ohne Abo und ohne Internetverbindung.", "Sie ist nicht mit deinem Etsy-Shop verbunden. Du gibst Preise und Kosten ein; die Anwendung rechnet mit den Gebühren, die du bestätigst. Das ist Absicht: nichts, was du eingibst, verlässt jemals deinen Computer.", "Alles wird automatisch in diesem Browser gespeichert. Wenn du Browserdaten löschst oder den Computer wechselst, nutze Sicherung exportieren und Sicherung importieren."]], ["Deinen Shop einrichten", ["Öffne Abschnitt 1 und wähle dein Verkäuferland. Damit wird ein Gebührenprofil geladen: Währungssymbol, Einstellgebühr, Transaktionsprozentsatz, Zahlungsabwicklung und, wo zutreffend, die regulatorische Betriebsgebühr.", "Neben der regulatorischen Gebühr steht ein kleines Etikett. Geprüft mit einem Datum bedeutet, dass diese Zahlen an jenem Tag anhand der Hilfeseiten von Etsy kontrolliert wurden. Im Shop-Manager prüfen bedeutet, dass das Profil ein sinnvoller Ausgangspunkt ist, du es aber selbst bestätigen solltest.", "Jede Gebühr ist ein editierbares Feld. Ändert Etsy einen Satz oder weicht dein Konto ab, trage die neue Zahl ein und aktualisiere das Datum. Die Anwendung überschreibt niemals, was du eingibst.", "Setze deinen Stundensatz auf den Wert deiner Zeit. Er wandelt die Arbeitsstunden, die du je Produkt einträgst, in echte Kosten um. Wenn du Arbeitszeit nicht rechnen willst, lass ihn auf null."]], ["Jede Gebühr verstehen", ["Einstellgebühr. Ein fester Betrag, den Etsy beim Einstellen eines Angebots berechnet, bei der Verlängerung nach vier Monaten, und erneut bei jedem Verkauf eines Angebots mit mehreren Stück. Die Anwendung rechnet eine pro Bestellung.", "Transaktionsgebühr. Ein Prozentsatz auf den Preis plus den von dir berechneten Versand plus Geschenkverpackung. Für die meisten Verkäufer ist das die größte Einzelgebühr.", "Zahlungsabwicklung. Ein Prozentsatz der Bestellsumme plus ein fester Betrag pro Bestellung. Beide Teile ändern sich je nach Land, deshalb ist das Profil wichtig.", "Regulatorische Betriebsgebühr. Ein Prozentsatz, den einige Länder auf Preis plus Versand zahlen. Verkäufern in den Vereinigten Staaten und in Deutschland wird sie nicht berechnet. Sie hat sich im Juni 2026 für mehrere Länder geändert, prüfe also deine.", "Währungsumrechnung. Zweieinhalb Prozent, nur berechnet, wenn die Währung deines Angebots von der deines Auszahlungskontos abweicht. Setze das Häkchen nur, wenn das auf dich zutrifft.", "Offsite Ads. Wenn Etsy dein Produkt außerhalb von Etsy bewirbt und diese Anzeige den Verkauf auslöst, berechnet Etsy einen Prozentsatz der gesamten Bestellung, Versand inbegriffen. Fünfzehn Prozent, wenn dein Shop im letzten Jahr weniger als zehntausend Dollar umgesetzt hat, zwölf Prozent darüber, wo es zugleich verpflichtend wird. Es gibt eine Obergrenze pro Bestellung. Da es für die ganze Bestellung gilt und nicht nur für den Preis, drückt es die Marge stärker, als der genannte Prozentsatz vermuten lässt.", "Etsy Ads. Das sind die Anzeigen innerhalb von Etsy, abgerechnet pro Klick, es gibt also keinen einheitlichen Prozentsatz. Teile deine Ausgaben eines Monats durch die dadurch erzielten Bestellungen und trage diesen Durchschnitt ein.", "Umsatzsteuer auf Gebühren. Wenn du aus der Europäischen Union oder dem Vereinigten Königreich verkaufst und Etsy keine Umsatzsteuer-Identifikationsnummer gegeben hast, schlägt Etsy Umsatzsteuer auf seine eigenen Gebühren auf. Setze das Häkchen und trage deinen Satz ein. Das ist nicht die Umsatzsteuer, die dein Käufer zahlt.", "Wo du alles prüfst: Shop-Manager, dann Finanzen, dann Gebühren. Etsy informiert Verkäufer außerdem per E-Mail, bevor eine Änderung in Kraft tritt."]], ["Deine Produkte anlegen", ["Abschnitt 2 enthält eine Karte pro Produkt. Lege so viele an, wie du möchtest; die Anwendung wurde mit hundertfünfzig ohne Verlangsamung getestet.", "Dein Verkaufspreis und Berechneter Versand sind das, was der Käufer zahlt. Ein Rabattfeld gibt es hier nicht: trage den Preis ein, zu dem du tatsächlich verkaufst.", "Dann kommen deine Kosten. Material oder Wareneinsatz. Arbeitsstunden, multipliziert mit deinem Stundensatz. Verpackung. Der Versand, den du tatsächlich zahlst und der oft von dem abweicht, den du berechnest. Print-on-Demand-Kosten für Printify, Printful oder ähnliche. Und Gemeinkosten pro Stück für Werkzeuge, Abos und alles, was du auf deine Verkäufe umlegen willst.", "Setze das Häkchen bei Digitales Produkt und die Felder für Versand, Verpackung und Print-on-Demand verschwinden und zählen als null. Nutze es für Downloads, Vorlagen und Dateien.", "Der farbige Streifen am Fuß jeder Karte ist die Zusammenfassung. Grün bedeutet eine Marge von fünfundzwanzig Prozent oder mehr. Gelb zwischen zehn und fünfundzwanzig. Rot unter zehn Prozent oder Verlust. Öffne Aufschlüsselung von Gebühren und Kosten, um jede Zeile zu sehen, die zu der Zahl geführt hat.", "Deine Marge ist Gewinn geteilt durch Preis. Das ist nicht dasselbe wie der Aufschlag auf die Kosten, und sie sagt dir, ob ein Produkt sich lohnt."]], ["Der Preisfinder", ["Abschnitt 3 rechnet rückwärts. Statt zu fragen, was du bei einem Preis verdienst, fragt er, welcher Preis dir den gewünschten Verdienst bringt.", "Wähle ein Produkt und ein Ziel. Gewinn pro Verkauf verlangt einen Geldbetrag. Marge verlangt einen Prozentsatz des Preises. Trage das Ziel ein und die Anwendung nennt dir den nötigen Preis, den Gewinn bei diesem Preis und die sich ergebende Marge.", "Das monatliche Gewinnziel macht daraus einen Plan: wie viele Verkäufe dieses Produkts du pro Monat brauchst, um es zu erreichen.", "Ist das Ziel nicht erreichbar, zeigt alles einen Strich und eine Meldung erklärt warum. Das bedeutet meist, dass die Kosten des Produkts es zu keinem vernünftigen Preis möglich machen.", "Der Hinweis darunter vergleicht das Ergebnis mit deinem aktuellen Preis und schlägt den nächstgelegenen Preis vor, der auf neun endet, weil dieser auf dem US-Markt am besten verkauft."]], ["Sicherungen, Exporte und Drucken", ["Sicherung exportieren speichert alles, Shop-Einstellungen und Produkte, in einer kleinen Datei. Bewahre sie sicher auf. Sicherung importieren stellt sie wieder her, auf diesem oder einem anderen Computer.", "Mach das, bevor du Browserdaten löschst, den Computer wechselst, den Browser wechselst oder irgendetwas neu installierst. Die Anwendung speichert ihre Daten im Browser, und Browser vergessen.", "CSV exportieren schreibt deine Produktliste in eine Tabellendatei mit Preis, Umsatz, Gebühren, Kosten, Gewinn und Marge. Trennzeichen und Dezimalzeichen richten sich nach der gewählten Sprache, damit die Datei in Excel in deinem Land korrekt öffnet.", "Drucken oder PDF erzeugt eine saubere Seite ohne Schaltflächen, nützlich für deine Steuerberatung oder für deine Unterlagen."]], ["Ein durchgerechnetes Beispiel", ["Angenommen, du verkaufst eine handgemachte Kerze aus Spanien für fünfundzwanzig Euro mit vier Euro berechnetem Versand, und der Verkauf ist organisch und stammt nicht aus Offsite Ads.", "Etsy nimmt: die Einstellgebühr von achtzehn Cent; die Transaktionsgebühr von sechs Komma fünf Prozent auf neunundzwanzig Euro, also ein Euro neunundachtzig; die Zahlungsabwicklung von vier Prozent plus dreißig Cent, also ein Euro sechsundvierzig; und die regulatorische Gebühr von null Komma achtundachtzig Prozent, sechsundzwanzig Cent. Gebühren insgesamt: drei Euro neunundsiebzig.", "Deine Kosten sind, sagen wir, sechs Euro für Wachs und Glas, eine halbe Stunde Arbeit zu fünfzehn Euro die Stunde, also sieben Euro fünfzig, ein Euro Verpackung und drei Euro fünfzig tatsächlich gezahltes Porto. Kosten insgesamt: achtzehn Euro.", "Du erhältst neunundzwanzig minus drei neunundsiebzig, also fünfundzwanzig Euro einundzwanzig. Ziehe achtzehn Euro Kosten ab und dein Gewinn beträgt sieben Euro einundzwanzig, eine Marge von achtundzwanzig Komma acht Prozent. Die Karte zeigt grün.", "Stelle nun Offsite Ads auf fünfzehn Prozent. Etsy nimmt vier Euro fünfunddreißig mehr und dein Gewinn fällt auf zwei Euro sechsundachtzig, eine Marge von elf Prozent. Die Karte wird gelb. Das ist der Unterschied, den eine einzige Einstellung macht, und deshalb lohnt es sich, das durchzuspielen."]], ["Fragen und Probleme", ["Die Zahlen stimmen nicht mit meiner Etsy-Abrechnung überein. Prüfe drei Dinge. Erstens, ob die Sätze in Abschnitt 1 heute mit deinem Shop-Manager übereinstimmen. Zweitens, ob Offsite Ads so eingestellt ist, wie der Verkauf tatsächlich zustande kam. Drittens, ob die Umsatzsteuer auf Gebühren dazu passt, ob du Etsy eine Umsatzsteuer-Identifikationsnummer gegeben hast.", "Ich habe ein Komma eingegeben und etwas Seltsames passierte. Die Anwendung akzeptiert Komma und Punkt als Dezimalzeichen sowie europäische und englische Tausendertrennzeichen. Wird ein Feld rot, ist die Eingabe keine Zahl und wird als null gewertet.", "Meine Daten sind verschwunden. Die Anwendung speichert Daten im Browser. Privates Surfen, gelöschte Websitedaten, ein anderer Browser oder ein anderer Computer bedeuten einen Neuanfang. Genau dafür gibt es Sicherung exportieren.", "Auf dem Handy sieht es falsch aus. Die Anwendung funktioniert auf dem Handy, aber die Gebührentabelle scrollt seitlich in ihrem eigenen Rahmen. Drehe das Handy für diesen Teil.", "Mein Browser bietet an, die Seite zu übersetzen. Lehne ab. Die Anwendung hat bereits ihre fünf Sprachen und eine automatische Übersetzung würde sie überschreiben.", "Etwas funktioniert nicht. Schreib mir über Etsy, bevor du eine Bewertung hinterlässt. Support und kleinere Updates sind dreißig Tage inbegriffen, und ich antworte innerhalb eines Tages."]], ["Einmal im Jahr prüfen", ["Ob Etsy eine Gebühr geändert hat, und aktualisiere Zahlen und Datum in Abschnitt 1.", "Ob dein Shop in den letzten zwölf Monaten zehntausend Dollar überschritten hat, denn dann wird Offsite Ads bei zwölf Prozent verpflichtend.", "Ob dein Stundensatz noch dem Wert deiner Zeit entspricht.", "Ob deine Materialkosten gestiegen sind, denn ein Produkt, das vor einem Jahr grün war, kann heute gelb sein.", "Und exportiere bei der Gelegenheit gleich eine neue Sicherung."]]], "it": [["Che cosa fa questa applicazione", ["Calcola quanto Etsy trattiene davvero su ogni vendita, quanto resta a te, e che prezzo dovresti chiedere per guadagnare quello che vuoi. È un unico file che funziona nel browser, senza account, senza abbonamento e senza connessione a internet.", "Non è collegata al tuo negozio Etsy. Tu inserisci prezzi e costi; l'applicazione fa i conti con le commissioni che confermi tu. È voluto: nulla di ciò che scrivi lascia mai il tuo computer.", "Tutto viene salvato automaticamente in questo browser. Se cancelli i dati del browser o cambi computer, usa Esporta backup e Importa backup."]], ["Configurare il tuo negozio", ["Apri la sezione 1 e scegli il tuo paese di venditore. Questo carica un profilo di commissioni: simbolo della valuta, commissione di inserzione, percentuale di transazione, elaborazione del pagamento e, dove si applica, la commissione operativa regolatoria.", "Accanto alla commissione regolatoria trovi una piccola etichetta. Verificato con una data significa che quei numeri sono stati controllati sulle pagine di aiuto di Etsy quel giorno. Verifica nel Gestore significa che il profilo è un punto di partenza ragionevole ma dovresti confermarlo tu.", "Ogni commissione è una casella modificabile. Se Etsy cambia una percentuale, o il tuo account è diverso, scrivi il nuovo numero e aggiorna la data. L'applicazione non sovrascrive mai quello che scrivi tu.", "Imposta la tua tariffa oraria in base a quanto vale il tuo tempo. Serve a trasformare le ore che indichi su ogni prodotto in un costo reale. Se preferisci non contare la manodopera, lasciala a zero."]], ["Capire ogni commissione", ["Commissione di inserzione. Un importo fisso che Etsy addebita quando pubblichi un'inserzione, quando si rinnova dopo quattro mesi, e di nuovo ogni volta che si vende un'inserzione con più quantità. L'applicazione ne conta una per ordine.", "Commissione di transazione. Una percentuale sul prezzo più la spedizione che addebiti più la confezione regalo. Per la maggior parte dei venditori è la commissione più alta.", "Elaborazione del pagamento. Una percentuale del totale dell'ordine più un importo fisso per ordine. Entrambe le parti cambiano in base al paese, ed è per questo che il profilo conta.", "Commissione operativa regolatoria. Una percentuale che pagano alcuni paesi su prezzo più spedizione. Non viene addebitata ai venditori degli Stati Uniti né della Germania. È cambiata a giugno 2026 per diversi paesi, quindi verifica la tua.", "Conversione di valuta. Due e mezzo per cento, addebitato solo quando la valuta della tua inserzione è diversa da quella del tuo conto di pagamento. Spunta la casella solo se è il tuo caso.", "Offsite Ads. Quando Etsy pubblicizza il tuo prodotto fuori da Etsy e quella pubblicità genera la vendita, Etsy trattiene una percentuale dell'intero ordine, spedizione inclusa. Quindici per cento se il tuo negozio ha fatturato meno di diecimila dollari nell'ultimo anno, dodici per cento sopra tale soglia, dove diventa anche obbligatorio. Esiste un tetto per ordine. Poiché si applica all'intero ordine e non solo al prezzo, riduce il margine più di quanto suggerisca la percentuale.", "Etsy Ads. Sono le pubblicità dentro Etsy e si pagano a clic, quindi non c'è una percentuale unica. Dividi quanto hai speso in un mese per gli ordini ottenuti e inserisci quella media.", "IVA sulle commissioni. Se vendi dall'Unione Europea o dal Regno Unito e non hai dato a Etsy una partita IVA, Etsy aggiunge l'IVA sulle proprie commissioni. Spunta la casella e imposta la tua aliquota. Non è l'IVA che paga il tuo acquirente.", "Dove verificarle tutte: Gestore negozio, poi Finanze, poi Commissioni. Etsy avvisa anche i venditori via email prima che una modifica entri in vigore."]], ["Aggiungere i tuoi prodotti", ["La sezione 2 contiene una scheda per prodotto. Aggiungine quanti vuoi; l'applicazione è stata testata con centocinquanta senza rallentamenti.", "Prezzo che fai pagare e Spedizione che fai pagare sono quello che paga l'acquirente. Qui non c'è un campo sconto: inserisci il prezzo a cui vendi davvero.", "Poi vengono i tuoi costi. Materiali o costo del prodotto. Ore di lavoro, moltiplicate per la tua tariffa oraria. Imballaggio. La spedizione che paghi davvero, spesso diversa da quella che addebiti. Costo print-on-demand, per Printify, Printful o simili. E spese generali per unità, per strumenti, abbonamenti e tutto ciò che vuoi ripartire sulle vendite.", "Spunta Prodotto digitale e i campi di spedizione, imballaggio e print-on-demand spariscono e contano come zero. Usalo per download, modelli e file.", "La banda colorata in fondo a ogni scheda è il riepilogo. Verde significa un margine del venticinque per cento o più. Ambra, tra dieci e venticinque. Rosso, sotto il dieci per cento oppure una perdita. Apri Dettaglio di commissioni e costi per vedere ogni riga che ha prodotto quel numero.", "Il tuo margine è il profitto diviso per il prezzo. Non è la stessa cosa del ricarico sul costo, ed è ciò che ti dice se un prodotto vale la pena."]], ["Il trova prezzo", ["La sezione 3 funziona al contrario. Invece di chiedere quanto guadagni a un certo prezzo, chiede quale prezzo ti dà il guadagno che vuoi.", "Scegli un prodotto e un obiettivo. Profitto per vendita chiede una somma di denaro. Margine chiede una percentuale del prezzo. Scrivi l'obiettivo e l'applicazione ti dà il prezzo necessario, il profitto a quel prezzo e il margine che ne risulta.", "L'obiettivo di profitto mensile lo trasforma in un piano: quante vendite di quel prodotto ti servono ogni mese per raggiungerlo.", "Se l'obiettivo non è raggiungibile, tutto mostra un trattino e un messaggio spiega perché. Di solito significa che i costi del prodotto lo rendono impossibile a qualsiasi prezzo ragionevole.", "La nota sotto confronta il risultato con il tuo prezzo attuale e suggerisce il prezzo più vicino che finisce per nove, perché è quello che converte meglio sul mercato statunitense."]], ["Backup, esportazioni e stampa", ["Esporta backup salva tutto, impostazioni del negozio e prodotti, in un piccolo file. Conservalo al sicuro. Importa backup lo ripristina, su questo computer o su un altro.", "Fallo prima di cancellare i dati del browser, cambiare computer, cambiare browser o reinstallare qualsiasi cosa. L'applicazione salva i dati dentro il browser, e i browser dimenticano.", "Esporta CSV scrive la tua lista di prodotti in un file di foglio di calcolo con prezzo, ricavi, commissioni, costi, profitto e margine. Il separatore e la virgola decimale seguono la lingua selezionata, così si apre correttamente in Excel nel tuo paese.", "Stampa o PDF produce una pagina pulita senza pulsanti, utile per il commercialista o per il tuo archivio."]], ["Un esempio svolto", ["Supponiamo che tu venda una candela artigianale dalla Spagna a venticinque euro con quattro euro di spedizione addebitata, e che la vendita sia organica e non provenga da Offsite Ads.", "Etsy trattiene: la commissione di inserzione di diciotto centesimi; quella di transazione, sei virgola cinque per cento su ventinove euro, cioè un euro e ottantanove; l'elaborazione del pagamento, quattro per cento più trenta centesimi, cioè un euro e quarantasei; e la commissione regolatoria dello zero virgola ottantotto per cento, ventisei centesimi. Totale commissioni: tre euro e settantanove.", "I tuoi costi sono, diciamo, sei euro di cera e vetro, mezz'ora di lavoro a quindici euro l'ora cioè sette euro e cinquanta, un euro di imballaggio e tre euro e cinquanta di affrancatura che paghi davvero. Totale costi: diciotto euro.", "Ricevi ventinove meno tre e settantanove, cioè venticinque euro e ventuno. Togli diciotto euro di costi e il tuo profitto è di sette euro e ventuno, un margine del ventotto virgola otto per cento. La scheda si mostra verde.", "Ora imposta Offsite Ads al quindici per cento. Etsy trattiene quattro euro e trentacinque in più e il tuo profitto scende a due euro e ottantasei, un margine dell'undici per cento. La scheda diventa ambra. È la differenza che fa una singola impostazione, ed è per questo che vale la pena simularla."]], ["Domande e problemi", ["I numeri non corrispondono al mio estratto conto Etsy. Controlla tre cose. Primo, che le commissioni della sezione 1 corrispondano al tuo Gestore negozio oggi. Secondo, che Offsite Ads sia impostato come è realmente avvenuta quella vendita. Terzo, che l'IVA sulle commissioni corrisponda al fatto di aver dato o meno una partita IVA a Etsy.", "Ho scritto una virgola e ha fatto qualcosa di strano. L'applicazione accetta la virgola e il punto come separatore decimale, e i separatori delle migliaia europei e inglesi. Se una casella diventa rossa significa che quello che hai scritto non è un numero e viene contato come zero.", "I miei dati sono spariti. L'applicazione salva i dati dentro il browser. Navigazione privata, cancellazione dei dati del sito, un altro browser o un altro computer significano ricominciare da capo. È per questo che esiste Esporta backup.", "Si vede male sul telefono. L'applicazione funziona sul telefono, ma la tabella delle commissioni scorre in orizzontale dentro la propria cornice. Gira il telefono per quella parte.", "Il browser mi propone di tradurre la pagina. Rifiuta. L'applicazione ha già le sue cinque lingue e una traduzione automatica le sovrascriverebbe.", "Qualcosa non funziona. Scrivimi tramite Etsy prima di lasciare una recensione. Il supporto e gli aggiornamenti minori sono inclusi per trenta giorni, e rispondo entro un giorno."]], ["Una volta all'anno, controlla questo", ["Se Etsy ha cambiato qualche commissione, e aggiorna i numeri e la data nella sezione 1.", "Se il tuo negozio ha superato i diecimila dollari negli ultimi dodici mesi, perché allora Offsite Ads diventa obbligatorio al dodici per cento.", "Se la tua tariffa oraria riflette ancora quanto vale il tuo tempo.", "Se sono aumentati i costi dei materiali, perché un prodotto che un anno fa era verde oggi può essere ambra.", "E approfittane per esportare un backup nuovo."]]]};
+const KEY = 'etsyFeeCalc.v1';
+const $ = id => document.getElementById(id);
+const n = v => { if(typeof v==='number') return isFinite(v)?v:0; let s=String(v==null?'':v).trim().replace(/\s/g,'').replace(/[^\d.,\-]/g,''); if(!s) return 0;
+  if(s.includes(',')&&s.includes('.')){ if(s.lastIndexOf(',')>s.lastIndexOf('.')) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(/,/g,''); }
+  else if(s.includes(',')){ s=s.replace(/,/g,'.'); }
+  if((s.match(/\./g)||[]).length>1){ const i=s.lastIndexOf('.'); s=s.slice(0,i).replace(/\./g,'')+s.slice(i); }
+  const x=parseFloat(s); return isFinite(x)?x:0; };
+const looksNumeric = v => v==null || String(v).trim()==='' || /^[\s\d.,\-+€$£¥%]*$/.test(String(v));
+function readNum(el, allowNeg){ const raw=el.value; const ok=looksNumeric(raw); el.classList.toggle('bad', !ok); let x=n(raw); if(!allowNeg&&x<0) x=0; return x; }
+let L = I18N.en;
+const t = (k, vars) => { let s = (L[k] !== undefined ? L[k] : I18N.en[k]); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
+
+const defaultProduct = () => ({id: Date.now() + Math.random(), name:'', price:25, ship:0, mat:5, hours:0.5, pack:0.5, shipcost:0, pod:0, over:0, digital:false});
+let S = {
+  lang:'', country:'US', cur:'$', feeDate:VERIFIED, hourly:15,
+  listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, conv:2.5, convOn:false,
+  offsite:'none', offcap:100, etsyads:0, vatOn:false, vat:0, manMin:false,
+  products:[], seen:false
+};
+
+function detectLang(){ const b=(navigator.language||'en').slice(0,2).toLowerCase(); return I18N[b] ? b : 'en'; }
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); if(Array.isArray(o.products)) o.products=o.products.map(x=>Object.assign(defaultProduct(),x)); S=Object.assign(S,o); } }catch(e){} if(!S.lang) S.lang=detectLang(); L=I18N[S.lang]||I18N.en; if(!S.products.length){ const p=defaultProduct(); p.name=t('example'); S.products.push(p);} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._h); el._h=setTimeout(()=>el.classList.remove('show'),1800); }
+const LOC={en:'en-US',es:'es-ES',fr:'fr-FR',de:'de-DE',it:'it-IT'};
+const fmt=(v,d)=>{ try{ return new Intl.NumberFormat(LOC[S.lang]||'en-US',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v); }catch(e){ return v.toFixed(d); } };
+const money = v => { const neg=v<-0.004; const s=fmt(Math.abs(Math.round(v*100)/100),2); return (neg?'−':'')+(S.lang==='en'?S.cur+s:s+'\u00a0'+S.cur); };
+const pct = v => fmt(Math.round(v*10)/10,1)+(S.lang==='en'?'%':'\u00a0%');
+
+// ---- core calculation ----
+function fees(price, ship){
+  const total = price + ship; const f = {};
+  f.listing = S.listing; f.trans = total * S.trans/100; f.proc = total * S.proc/100 + S.procfix; f.reg = total * S.reg/100;
+  f.conv = S.convOn ? total * S.conv/100 : 0;
+  f.offsite = S.offsite==='none' ? 0 : Math.min(total * n(S.offsite)/100, S.offcap);
+  f.etsyads = S.etsyads;
+  const sub = f.listing+f.trans+f.proc+f.reg+f.conv+f.offsite+f.etsyads;
+  f.vat = S.vatOn ? sub * S.vat/100 : 0; f.total = sub + f.vat; return f;
+}
+function costs(p){ const d=!!p.digital; const c = {mat:p.mat, labor:p.hours*S.hourly, pack:d?0:p.pack, shipcost:d?0:p.shipcost, pod:d?0:p.pod, over:p.over}; c.total = c.mat+c.labor+c.pack+c.shipcost+c.pod+c.over; return c; }
+function calc(p, priceOverride){
+  const price = priceOverride!==undefined ? priceOverride : p.price;
+  const ship = p.digital?0:p.ship; const f = fees(price, ship), c = costs(p); const revenue = price + ship;
+  const profit = revenue - f.total - c.total; const margin = price>0 ? profit/price*100 : 0;
+  return {price, revenue, f, c, profit, margin};
+}
+function priceFor(p, mode, target){
+  let lo=0, hi=10000;
+  for(let i=0;i<60;i++){ const mid=(lo+hi)/2, r=calc(p, mid); const ok = mode==='amount' ? r.profit>=target : r.margin>=target; if(ok) hi=mid; else lo=mid; }
+  return Math.ceil(hi*100)/100;
+}
+function badge(m, profit){ if(profit<0||m<10) return 'bad'; if(m<25) return 'warn'; return 'ok'; }
+
+// ---- i18n render ----
+function applyLang(){
+  L = I18N[S.lang]||I18N.en; document.documentElement.lang=S.lang; document.title=t('title');
+  document.querySelectorAll('[data-i]').forEach(el=>{ el.textContent=t(el.dataset.i); });
+  $('lang').value=S.lang;
+  const cs=$('country'); const cur=cs.value||S.country; cs.innerHTML=''; for(const k in PROFILES){ const o=document.createElement('option'); o.value=k; o.textContent=t('c')[k]; cs.appendChild(o);} cs.value=cur;
+  renderShopTag();
+}
+function applyProfile(k){ const p=PROFILES[k]; S.country=k; S.cur=p.cur; S.listing=p.listing; S.trans=p.trans; S.proc=p.proc; S.procfix=p.procfix; S.reg=p.reg; S.vat=p.vat; S.vatOn=false; S.feeDate = p.verified? VERIFIED : ''; }
+function renderShopTag(){ const v = PROFILES[S.country] && PROFILES[S.country].verified; const el=$('regTag'); el.textContent = v ? t('tagVerified')+' '+VERIFIED : t('tagCheck'); el.className = 'tag'+(v?'':' warn'); }
+function renderShop(){
+  $('country').value=S.country; $('cur').value=S.cur; $('feeDate').value=S.feeDate; $('hourly').value=S.hourly;
+  $('f_listing').value=S.listing; $('f_trans').value=S.trans; $('f_proc').value=S.proc; $('f_procfix').value=S.procfix; $('f_reg').value=S.reg; $('f_conv').value=S.conv;
+  $('offsite').value=S.offsite; $('f_offcap').value=S.offcap; $('f_etsyads').value=S.etsyads; $('vatOn').checked=S.vatOn; $('f_vat').value=S.vat; $('convOn').checked=S.convOn;
+  renderShopTag();
+}
+function esc(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function productCard(p){
+  const el=document.createElement('div'); el.className='product'; el.dataset.id=p.id;
+  const phys={ship:1,pack:1,shipcost:1,pod:1};
+  const f=(k,key)=>`<div${phys[k]?' data-phys':''}><label>${t(key)}</label><input type="text" inputmode="decimal" data-k="${k}" aria-label="${esc(t(key))}" value="${p[k]}"></div>`;
+  if(p.digital) el.classList.add('digital');
+  el.innerHTML = `
+    <div class="top"><input type="text" data-k="name" placeholder="${esc(t('pName'))}" value="${esc(p.name)}"></div>
+    <label class="digi"><input type="checkbox" data-k="digital" ${p.digital?'checked':''}>${t('pDigital')}</label>
+    <div class="fields">${f('price','pPrice')}${f('ship','pShip')}${f('mat','pMat')}${f('hours','pHours')}${f('pack','pPack')}${f('shipcost','pShipCost')}${f('pod','pPod')}${f('over','pOver')}</div>
+    <div class="result" data-r="box"><div><span data-r="profit"></span><small data-r="sub"></small></div><div data-r="margin"></div></div>
+    <details><summary>${t('rBreak')}</summary><div class="breakdown" data-r="bd"></div></details>
+    <div class="actions"><button data-a="dup">${t('bDup')}</button><button data-a="del" class="danger">${t('bDel')}</button></div>`;
+  return el;
+}
+function renderProducts(){ const c=$('cards'); c.innerHTML=''; S.products.forEach(p=>c.appendChild(productCard(p))); updateAll(); }
+function updateCard(el, p){
+  const r=calc(p), b=badge(r.margin, r.profit);
+  el.querySelector('[data-r=box]').className='result '+b;
+  el.querySelector('[data-r=profit]').textContent = (r.profit<0?t('rLoss'):t('rProfit'))+' '+money(Math.abs(r.profit))+' '+t('rPerSale');
+  el.querySelector('[data-r=sub]').textContent = t('rFees')+' '+money(r.f.total)+' · '+t('rCosts')+' '+money(r.c.total)+' · '+t('rReceive')+' '+money(r.revenue-r.f.total);
+  el.querySelector('[data-r=margin]').textContent = pct(r.margin);
+  const f=r.f, c=r.c, rows=[[t('bRevenue'), r.revenue],[t('bListing'), -f.listing],[t('bTrans')+' '+pct(S.trans), -f.trans],[t('bProc'), -f.proc]];
+  if(f.reg) rows.push([t('bReg'), -f.reg]); if(f.conv) rows.push([t('bConv'), -f.conv]); if(f.offsite) rows.push([t('bOffsite'), -f.offsite]); if(f.etsyads) rows.push([t('bEtsyAds'), -f.etsyads]); if(f.vat) rows.push([t('bVat'), -f.vat]);
+  rows.push([t('bMat'), -c.mat]); if(c.labor) rows.push([t('bLabor')+' ('+p.hours+' h × '+money(S.hourly)+')', -c.labor]);
+  if(c.pack) rows.push([t('bPack'), -c.pack]); if(c.shipcost) rows.push([t('bShipCost'), -c.shipcost]); if(c.pod) rows.push([t('bPod'), -c.pod]); if(c.over) rows.push([t('bOver'), -c.over]);
+  el.querySelector('[data-r=bd]').innerHTML = rows.map(x=>`<div><span>${esc(x[0])}</span><span>${x[1]<0?'−':''}${money(Math.abs(x[1]))}</span></div>`).join('') + `<div class="total"><span>${t('bProfit')}</span><span>${money(r.profit)}</span></div>`;
+}
+function updateAll(){ document.querySelectorAll('.product').forEach(el=>{ const p=S.products.find(x=>String(x.id)===el.dataset.id); if(p) updateCard(el,p); }); renderReverseOptions(); updateReverse(); save(); }
+function renderReverseOptions(){ const s=$('rvProduct'); const cur=s.value; s.innerHTML=''; S.products.forEach((p,i)=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name||t('productN',{n:i+1}); s.appendChild(o); }); if([...s.options].some(o=>o.value===cur)) s.value=cur; }
+function updateReverse(){
+  const p=S.products.find(x=>String(x.id)===$('rvProduct').value); if(!p) return;
+  const mode=$('rvMode').value, target=readNum($('rvTarget'),true), goal=readNum($('rvGoal'));
+  const unreachable=()=>{ ['rvPrice','rvProfit','rvMargin','rvSales'].forEach(id=>$(id).textContent='–'); $('rvNote').textContent=t('nUnreach'); };
+  if(mode==='margin' && target>=95){ unreachable(); return; }
+  const price=priceFor(p, mode, target), r=calc(p, price);
+  if(price>=9999 || (mode==='amount' ? r.profit<target-0.01 : r.margin<target-0.05)){ unreachable(); return; }
+  $('rvPrice').textContent=money(price); $('rvProfit').textContent=money(r.profit); $('rvMargin').textContent=pct(r.margin);
+  $('rvSales').textContent = r.profit>0 ? Math.ceil(goal/r.profit) : '–';
+  $('rvNote').textContent = t('nCompare',{price:money(p.price), profit:money(calc(p).profit), nine:money(Math.max(price, Math.ceil(price)-0.01))});
+}
+
+// ---- events ----
+function bindShop(){
+  $('lang').addEventListener('change', e=>{ stopSpeaking(); S.lang=e.target.value; applyLang(); renderProducts(); if(!$('manual').hidden){ renderManual(); setMin(S.manMin); updatePlayUI(); } });
+  $('country').addEventListener('change', e=>{ applyProfile(e.target.value); renderShop(); updateAll(); toast(t('tFees',{c:t('c')[S.country]})); });
+  const map={cur:'cur',feeDate:'feeDate',hourly:'hourly',f_listing:'listing',f_trans:'trans',f_proc:'proc',f_procfix:'procfix',f_reg:'reg',f_conv:'conv',f_offcap:'offcap',f_etsyads:'etsyads',f_vat:'vat'};
+  for(const id in map){ $(id).addEventListener('input', e=>{ const k=map[id]; S[k] = (id==='cur'||id==='feeDate') ? e.target.value.trim() : readNum(e.target); updateAll(); }); }
+  $('offsite').addEventListener('change', e=>{ S.offsite=e.target.value; updateAll(); });
+  $('vatOn').addEventListener('change', e=>{ S.vatOn=e.target.checked; updateAll(); });
+  $('convOn').addEventListener('change', e=>{ S.convOn=e.target.checked; updateAll(); });
+  ['rvProduct','rvMode','rvTarget','rvGoal'].forEach(id=>$(id).addEventListener('input', updateReverse));
+}
+$('cards').addEventListener('input', e=>{
+  const el=e.target.closest('.product'); if(!el) return; const p=S.products.find(x=>String(x.id)===el.dataset.id); if(!p) return;
+  const k=e.target.dataset.k; if(!k) return;
+  if(k==='digital'){ p.digital=e.target.checked; el.classList.toggle('digital', p.digital); } else p[k] = k==='name' ? e.target.value : readNum(e.target);
+  updateCard(el,p); renderReverseOptions(); updateReverse(); save();
+});
+$('cards').addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return; const el=b.closest('.product'); const i=S.products.findIndex(x=>String(x.id)===el.dataset.id); if(i<0) return;
+  if(b.dataset.a==='del'){ if(S.products.length===1){ toast(t('tKeep')); return; } S.products.splice(i,1); renderProducts(); }
+  if(b.dataset.a==='dup'){ const c=Object.assign({}, S.products[i], {id:Date.now()+Math.random(), name:(S.products[i].name||t('productN',{n:i+1}))+' '+t('copy')}); S.products.splice(i+1,0,c); renderProducts(); }
+});
+$('btnAdd').addEventListener('click', ()=>{ S.products.push(defaultProduct()); renderProducts(); $('cards').lastElementChild.querySelector('input[type=text]').focus(); });
+const LANGTAG={en:'en-US',es:'es-ES',fr:'fr-FR',de:'de-DE',it:'it-IT'};
+function stopSpeaking(){ if('speechSynthesis' in window){ try{ window.speechSynthesis.cancel(); }catch(e){} } const b=$('btnListen'); if(b) b.textContent=t('bListen'); }
+function pickVoice(tag){ const vs=window.speechSynthesis.getVoices()||[]; const low=tag.toLowerCase();
+  return vs.find(v=>v.lang&&v.lang.toLowerCase().replace('_','-')===low) || vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith(S.lang)) || null; }
+// Cola de lectura: una frase por vez. Chrome corta las locuciones largas, por eso se encadenan.
+let QUEUE=null;
+function clearReading(){ document.querySelectorAll('.reading').forEach(e=>e.classList.remove('reading')); }
+let PAUSED=false;
+function updatePlayUI(){
+  const playing=!!QUEUE; const speech=('speechSynthesis' in window);
+  $('btnManListen').hidden = playing || !speech;
+  $('btnManPause').hidden = !playing;
+  $('btnManStop').hidden = !playing;
+  const p=$('btnManPause'); p.textContent = PAUSED ? '\u25b6' : '\u23f8';
+  const lbl = t(PAUSED ? 'mResume' : 'mPause'); p.setAttribute('aria-label', lbl); p.title = lbl;
+  const st=$('btnManStop'); st.setAttribute('aria-label', t('mStopShort')); st.title = t('mStopShort');
+}
+function stopSpeaking(){ QUEUE=null; PAUSED=false;
+  if('speechSynthesis' in window){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+  clearReading(); const b=$('btnListen'); if(b) b.textContent=t('bListen');
+  const n=$('manNow'); if(n){ n.textContent=''; n.classList.remove('on'); }
+  updatePlayUI(); }
+function pauseSpeaking(){
+  if(!QUEUE) return;
+  if(PAUSED){ // continuar
+    const q=QUEUE, idx=Math.max(0,q.i-1); PAUSED=false; updatePlayUI();
+    try{ window.speechSynthesis.resume(); }catch(e){}
+    // Respaldo: si el navegador no reanuda, se relee desde la frase actual.
+    // Los navegadores mantienen speaking=true mientras está en pausa, por eso se mira paused.
+    setTimeout(()=>{ const ss=window.speechSynthesis;
+      if(!PAUSED && QUEUE===q && (ss.paused || !ss.speaking)){
+        const items=q.items.slice(idx), done=q.onDone; QUEUE=null; try{ ss.cancel(); }catch(e){} speakList(items, done); } }, 400);
+  } else {
+    PAUSED=true; try{ window.speechSynthesis.pause(); }catch(e){} updatePlayUI();
+  }
+}
+function speakList(items, onDone){
+  if(!('speechSynthesis' in window)) return; const ss=window.speechSynthesis; ss.cancel();
+  const q={i:0, items, onDone}; QUEUE=q; const tag=LANGTAG[S.lang]||'en-US'; const voice=pickVoice(tag);
+  (function next(){
+    if(QUEUE!==q || q.i>=q.items.length){ if(QUEUE===q){ QUEUE=null; clearReading(); if(onDone) onDone(); } return; }
+    const it=q.items[q.i++]; clearReading();
+    if(it.sec!==undefined){ const n=$('manNow'); if(n){ n.textContent=t('mNow')+it.sec; n.classList.add('on'); } }
+    if(it.el){ it.el.classList.add('reading'); if(!S.manMin){ try{ it.el.scrollIntoView({block:'center', behavior:'smooth'}); }catch(e){} } }
+    const u=new SpeechSynthesisUtterance(it.text); u.lang=tag; u.rate=0.95; if(voice) u.voice=voice;
+    u.onend=next; u.onerror=next; ss.speak(u);
+  })();
+}
+function speakGuide(){
+  if(!('speechSynthesis' in window)) return;
+  if(QUEUE){ stopSpeaking(); return; }
+  const items=[t('gTitle'),t('g1'),t('g2'),t('g3'),t('gNote')].map(x=>({text:x}));
+  $('btnListen').textContent=t('bStop');
+  speakList(items, ()=>{ const b=$('btnListen'); if(b) b.textContent=t('bListen'); });
+}
+// ---- manual ----
+function renderManual(){
+  const secs=MANUAL[S.lang]||MANUAL.en; const body=$('manBody'); body.innerHTML='';
+  secs.forEach((sec,i)=>{
+    const d=document.createElement('section'); d.className='msec';
+    d.innerHTML='<h3><span class="idx">'+(i+1)+'</span><span class="lbl">'+esc(sec[0])+'</span>'
+      + (('speechSynthesis' in window)?'<button class="spk" data-sec="'+i+'">'+esc(t('mSection'))+'</button>':'')
+      + '</h3>' + sec[1].map(x=>'<p>'+esc(x)+'</p>').join('');
+    body.appendChild(d);
+  });
+  body.querySelectorAll('button[data-sec]').forEach(b=>b.addEventListener('click',()=>speakManual(+b.dataset.sec)));
+}
+function manualItems(from){
+  const secs=MANUAL[S.lang]||MANUAL.en; const nodes=[...$('manBody').querySelectorAll('.msec')]; const out=[];
+  secs.forEach((sec,i)=>{ if(i<from) return; const n=nodes[i]; if(!n) return;
+    out.push({text:sec[0], el:n.querySelector('h3'), sec:sec[0]});
+    sec[1].forEach((x,j)=>out.push({text:x, el:n.querySelectorAll('p')[j], sec:sec[0]}));
+  });
+  return out;
+}
+function speakManual(from){
+  if(!('speechSynthesis' in window)) return;
+  if(QUEUE){ stopSpeaking(); if(from===undefined) return; }
+  PAUSED=false;
+  speakList(manualItems(from||0), ()=>{ updatePlayUI(); const n=$('manNow'); if(n){ n.textContent=''; n.classList.remove('on'); } });
+  updatePlayUI();
+}
+function setMin(on){ S.manMin=!!on; $('manual').classList.toggle('min', S.manMin);
+  const b=$('btnManMin'); b.textContent = S.manMin ? '▢' : '–';
+  const lbl = t(S.manMin ? 'mMax' : 'mMin'); b.setAttribute('aria-label', lbl); b.title = lbl;
+  const c=$('btnManClose'); c.setAttribute('aria-label', t('mClose')); c.title = t('mClose'); save(); }
+function openManual(){ renderManual(); $('manual').hidden=false; updatePlayUI(); setMin(S.manMin); if(!S.manMin) $('manBody').scrollTop=0; $('btnManListen').focus(); }
+function closeManual(){ stopSpeaking(); $('manual').hidden=true; $('btnManual').focus(); }
+function openGuide(){ $('guide').hidden=false; $('btnGuideClose').focus(); }
+function closeGuide(){ stopSpeaking(); $('guide').hidden=true; S.seen=true; save(); $('btnGuide').focus(); }
+$('btnListen').addEventListener('click', speakGuide);
+$('btnManual').addEventListener('click', openManual);
+$('btnManClose').addEventListener('click', closeManual);
+$('btnManMin').addEventListener('click', ()=>setMin(!S.manMin));
+$('btnManPause').addEventListener('click', pauseSpeaking);
+$('btnManListen').addEventListener('click', ()=>speakManual(0));
+$('btnManStop').addEventListener('click', stopSpeaking);
+if(!('speechSynthesis' in window)){ $('btnListen').hidden=true; $('btnManListen').hidden=true; }
+updatePlayUI();
+if('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged!==undefined) window.speechSynthesis.onvoiceschanged=()=>{};
+$('btnGuide').addEventListener('click', openGuide);
+$('btnGuideClose').addEventListener('click', closeGuide);
+document.addEventListener('keydown', e=>{ if(e.key!=='Escape') return; if(!$('manual').hidden) closeManual(); else if(!$('guide').hidden) closeGuide(); });
+window.addEventListener('beforeunload', ()=>{ try{ window.speechSynthesis.cancel(); }catch(e){} });
+$('btnPrint').addEventListener('click', ()=>window.print());
+$('btnExport').addEventListener('click', ()=>{ download('etsy-fee-calculator-backup.json', JSON.stringify(S,null,2), 'application/json'); toast(t('tBackup')); });
+$('btnImport').addEventListener('click', ()=>$('fileImport').click());
+$('fileImport').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.products)||!o.products.length) throw 0; o.products=o.products.map(x=>Object.assign(defaultProduct(),x)); if(!I18N[o.lang]) delete o.lang; S=Object.assign(S,o); applyLang(); renderShop(); renderProducts(); toast(t('tRestored')); }catch(err){ toast(t('tBad')); } }; r.readAsText(f); e.target.value=''; });
+$('btnXlsx').addEventListener('click', ()=>{
+  const cur=S.cur, C=t('csv'), r2=v=>Math.round(v*100)/100;
+  const headers=[C[0], C[1]+' ('+cur+')', C[2]+' ('+cur+')', C[3]+' ('+cur+')', C[4]+' ('+cur+')', C[5]+' ('+cur+')', C[6]+' ('+cur+')', C[7]];
+  const rows=S.products.map(p=>{ const r=calc(p);
+    return [{v:p.name||''},{v:r2(r.price),s:2},{v:r2(p.digital?0:p.ship),s:2},{v:r2(r.revenue),s:2},
+            {v:r2(r.f.total),s:2},{v:r2(r.c.total),s:2},{v:r2(r.profit),s:2},{v:r2(r.margin),s:3}]; });
+  // Ancho por columna: el texto más largo de la cabecera o de los datos, con margen para la flecha del filtro.
+  const widths = headers.map((h,i)=>{
+    let n = String(h).length + 4;                       // + espacio para el botón de filtro
+    rows.forEach(r=>{ const v=r[i].v;
+      const len = typeof v==='number' ? (Math.round(v*100)/100).toFixed(2).length + 1 : String(v||'').length;
+      if(len+2 > n) n = len+2; });
+    return Math.min(46, Math.max(10, n));
+  });
+  download('etsy-products.xlsx', buildXlsx(headers, rows, widths, t('xSheet')), '');
+  toast(t('tXlsx'));
+});
+$('btnCsv').addEventListener('click', ()=>{
+  const sep = S.lang==='en' ? ',' : ';'; const num = v => { const x=(Math.round(v*100)/100).toFixed(2); return S.lang==='en' ? x : x.replace('.',','); };
+  const q = v => '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows=S.products.map(p=>{ const r=calc(p); return [q(p.name), num(r.price), num(p.digital?0:p.ship), num(r.revenue), num(r.f.total), num(r.c.total), num(r.profit), num(r.margin)]; });
+  download('etsy-products.csv', '\ufeff'+[t('csv').map(q).join(sep), ...rows.map(r=>r.join(sep))].join('\r\n'), 'text/csv;charset=utf-8'); toast(t('tCsv'));
+});
+// ---- XLSX propio: un .xlsx es un ZIP con XML dentro. Sin librerías externas. ----
+const CRCT=(()=>{ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c = c&1 ? 0xEDB88320^(c>>>1) : c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(u8){ let c=0xFFFFFFFF; for(let i=0;i<u8.length;i++) c=CRCT[(c^u8[i])&0xFF]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+function zipStore(files){
+  const enc=new TextEncoder(), parts=[], central=[]; let off=0;
+  files.forEach(f=>{
+    const name=enc.encode(f.name), data=typeof f.data==='string'?enc.encode(f.data):f.data, crc=crc32(data);
+    const lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint32(14,crc,true);
+    lh.setUint32(18,data.length,true); lh.setUint32(22,data.length,true); lh.setUint16(26,name.length,true);
+    parts.push(new Uint8Array(lh.buffer), name, data);
+    const cd=new DataView(new ArrayBuffer(46));
+    cd.setUint32(0,0x02014b50,true); cd.setUint16(4,20,true); cd.setUint16(6,20,true); cd.setUint32(16,crc,true);
+    cd.setUint32(20,data.length,true); cd.setUint32(24,data.length,true); cd.setUint16(28,name.length,true);
+    cd.setUint32(42,off,true);
+    central.push(new Uint8Array(cd.buffer), name);
+    off += 30+name.length+data.length;
+  });
+  let cdSize=0; central.forEach(c=>cdSize+=c.length);
+  const eo=new DataView(new ArrayBuffer(22));
+  eo.setUint32(0,0x06054b50,true); eo.setUint16(8,files.length,true); eo.setUint16(10,files.length,true);
+  eo.setUint32(12,cdSize,true); eo.setUint32(16,off,true);
+  return new Blob([...parts,...central,new Uint8Array(eo.buffer)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+const xmlEsc = v => String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const colName = i => { let n='', x=i; do { n=String.fromCharCode(65+(x%26))+n; x=Math.floor(x/26)-1; } while(x>=0); return n; };
+function buildXlsx(headers, rows, widths, sheetName){
+  const cell=(c,r,v,style)=>{
+    const ref=colName(c)+r;
+    if(typeof v==='number' && isFinite(v)) return '<c r="'+ref+'"'+(style?' s="'+style+'"':'')+'><v>'+v+'</v></c>';
+    return '<c r="'+ref+'"'+(style?' s="'+style+'"':'')+' t="inlineStr"><is><t xml:space="preserve">'+xmlEsc(v)+'</t></is></c>';
+  };
+  let sd='<row r="1">'+headers.map((h,i)=>cell(i,1,h,1)).join('')+'</row>';
+  rows.forEach((row,ri)=>{ sd+='<row r="'+(ri+2)+'">'+row.map((v,i)=>cell(i,ri+2,v.v,v.s)).join('')+'</row>'; });
+  const last=colName(headers.length-1)+(rows.length+1);
+  const sheet='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+   +'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+   +'<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'
+   +'<cols>'+widths.map((w,i)=>'<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>').join('')+'</cols>'
+   +'<sheetData>'+sd+'</sheetData><autoFilter ref="A1:'+last+'"/></worksheet>';
+  const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+  return zipStore([
+   {name:'[Content_Types].xml', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'},
+   {name:'_rels/.rels', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
+   {name:'xl/workbook.xml', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="'+R+'"><sheets><sheet name="'+xmlEsc(sheetName).slice(0,31)+'" sheetId="1" r:id="rId1"/></sheets></workbook>'},
+   {name:'xl/_rels/workbook.xml.rels', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="'+R+'/styles" Target="styles.xml"/></Relationships>'},
+   {name:'xl/styles.xml', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="#,##0.00"/><numFmt numFmtId="165" formatCode="0.0&quot;%&quot;"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF5B3DF5"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'},
+   {name:'xl/worksheets/sheet1.xml', data:sheet},
+  ]);
+}
+async function download(name, text, type){
+  const bin = text instanceof Blob;
+  const T=window.__TAURI__;
+  if(T && T.dialog && T.fs){ try{ const path=await T.dialog.save({defaultPath:name});
+      if(path){ if(bin) await T.fs.writeFile(path, new Uint8Array(await text.arrayBuffer())); else await T.fs.writeTextFile(path, text); }
+      return; }catch(e){ /* si falla, usa el navegador */ } }
+  const blob = bin ? text : new Blob([text],{type});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
+
+// ---- boot ----
+load(); applyLang(); renderShop(); bindShop(); renderProducts();
+if(!S.seen) openGuide();
+window.__calc = {calc, fees, priceFor, state:()=>S, t};
+})();
+</script>
+</body>
+</html>

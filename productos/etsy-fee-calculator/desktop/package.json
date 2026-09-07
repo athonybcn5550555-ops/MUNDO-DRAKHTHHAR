@@ -1,0 +1,12 @@
+{
+  "name": "fee-price-calculator-desktop",
+  "private": true,
+  "version": "1.4.0",
+  "scripts": {
+    "prep": "node prep.js",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  }
+}

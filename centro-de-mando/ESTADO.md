@@ -17,10 +17,11 @@
 - Hay 1 decisión señalada en el parte de hoy del Centro de Mando local sin
   detalle accesible desde aquí. Pendiente de que Antonio la traslade o de
   que el propio Centro de Mando local la exponga con más detalle.
-- **Nueva hoy:** ¿se fusiona la rama `claude/tienda-etsy-v49wjl` (tienda
-  Etsy "DrakhtharSoftware") a la rama de trabajo diario del Administrador,
-  o se sigue trabajando aparte? Detalle completo en
-  `centro-de-mando/pendientes/2026-09-07-informe-etsy-fee-calculator-listo-para-publicar.md`.
+- **Resuelta hoy:** Antonio confirmó fusionar `claude/tienda-etsy-v49wjl`
+  (tienda Etsy "DrakhtharSoftware") a esta rama — hecho, ver commit de
+  fusión. El catálogo de la tienda (`etsy/`, `productos/`, `marca/`) ya
+  vive junto al resto del Centro de Mando; el Administrador puede seguir
+  construyendo el catálogo desde aquí.
 
 ## Frentes abiertos
 - 54 frentes abiertos acumulados (KDP, Drakhthar, Etsy, webs), según el
@@ -136,13 +137,12 @@ Investigado a fondo el 2026-09-07 (fuera del barrido diario, a petición de
 Antonio): 153 commits revisados, ninguno menciona Amazon/KDP/Etsy/ISBN;
 sin archivo de metadata de negocio en el repo.
 
-**Hallazgo importante:** la marca que aparece DENTRO de los propios PDFs es
-**"Puzzle Games Press"**, no "Drakhthar" — "Drakhthar" parece ser solo el
-nombre interno del repo/proyecto. Búsquedas en Amazon y Etsy de "Puzzle
-Games Press" y de "Drakhthar" no encontraron ningún listado real vinculado
-a esa marca. No hay prueba de que estén publicados, pero tampoco se puede
-descartar que se subieran bajo otro pseudónimo no identificado en los
-archivos.
+**Marca confirmada por Antonio (2026-09-07):** "Puzzle Games Press" es su
+editorial real de libros de puzzles para KDP — no es un dato encontrado
+por sospecha, lo ha confirmado él directamente. Búsquedas en Amazon y Etsy
+de "Puzzle Games Press" no encontraron listados vinculados a esa marca, así
+que sigue sin confirmarse si estos 63 PDFs concretos ya están publicados
+bajo ese sello o están terminados y parados.
 
 **Aviso de calidad, pendiente de que Antonio decida:** varias portadas
 tienen errores de plantilla sin depurar — ej. "Coloring Book - Ocean
@@ -150,7 +150,7 @@ World" dice "Dinosaurios (Niños) · Serie 04" en la portada, y una de
 "Word Search: Ancient Egypt" dice literalmente "Test · Serie 01". Parece
 un pipeline de generación automática sin control de calidad final.
 
-Pendiente de que Antonio confirme: (1) si "Puzzle Games Press" es una
-marca suya ya en uso o hay que decidir bajo qué nombre publicar esto, y
-(2) si hace falta revisar los 63 PDFs antes de publicar cualquiera, por
-los errores de portada encontrados.
+Pendiente de que Antonio confirme: (1) si estos 63 PDFs ya están
+publicados bajo "Puzzle Games Press" en KDP/Etsy o siguen sin publicar, y
+(2) si hace falta revisar los 63 antes de publicar cualquiera, por los
+errores de portada encontrados.

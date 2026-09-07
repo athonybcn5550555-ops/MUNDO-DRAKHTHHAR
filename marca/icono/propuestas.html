@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#f4f5f8;font:14px -apple-system,Segoe UI,Roboto,sans-serif;color:#1c1f2a;padding:28px}
+h1{font-size:18px;margin:0 0 18px}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.card{background:#fff;border:1px solid #dfe2ea;border-radius:14px;padding:18px}
+.card h2{font-size:14px;margin:0 0 10px}
+.big{display:flex;justify-content:center;background:#fff;padding:10px}
+.small{display:flex;gap:18px;align-items:end;margin-top:12px;padding:12px;border-radius:10px;background:#e9ebf1}
+.small div{text-align:center;font-size:10px;color:#5d6272}
+.dark{background:#1e1b2e}
+.dark div{color:#c9c6d8}
+svg{display:block}
+p{font-size:12px;color:#5d6272;margin:10px 0 0;line-height:1.4}
+</style></head><body>
+<h1>DrakhtharSoftware · propuestas de icono</h1>
+<div class="row" id="row"></div>
+<script>
+function gear(cx,cy,rOut,rIn,teeth,hole){ let d=''; const step=Math.PI*2/teeth; for(let i=0;i<teeth;i++){ const a=i*step; const pts=[[a-step*0.22,rIn],[a-step*0.14,rOut],[a+step*0.14,rOut],[a+step*0.22,rIn]]; pts.forEach((p,j)=>{ const x=cx+Math.cos(p[0])*p[1], y=cy+Math.sin(p[0])*p[1]; d+=(i===0&&j===0?'M':'L')+x.toFixed(2)+','+y.toFixed(2)+' '; }); } d+='Z '; d+=`M${cx+hole},${cy} a${hole},${hole} 0 1 0 ${-2*hole},0 a${hole},${hole} 0 1 0 ${2*hole},0 Z`; return d; }
+const defs=`<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6a3df5"/><stop offset="1" stop-color="#12b5a5"/></linearGradient><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1a5e"/><stop offset="1" stop-color="#140f2e"/></linearGradient></defs>`;
+// A: escudo + engranaje + prompt (heredero del banner)
+const A=(s)=>`<svg width="${s}" height="${s}" viewBox="0 0 128 128">${defs}<path d="M64 8 L112 24 V62 C112 90 92 110 64 122 C36 110 16 90 16 62 V24 Z" fill="url(#g)"/><path d="M64 16 L104 30 V62 C104 85 87 102 64 113 C41 102 24 85 24 62 V30 Z" fill="url(#g2)"/><path d="${gear(64,62,30,23,10,15)}" fill="#fff" fill-rule="evenodd"/><path d="M55 56 L63 62 L55 68" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="66" y="66" width="10" height="4" rx="2" fill="#fff"/></svg>`;
+// B: baldosa redondeada con anillo de engranaje y prompt grande (legible a 16 px)
+const B=(s)=>`<svg width="${s}" height="${s}" viewBox="0 0 128 128">${defs}<rect x="8" y="8" width="112" height="112" rx="28" fill="url(#g)"/><path d="${gear(64,64,46,37,12,26)}" fill="#fff" fill-opacity=".22" fill-rule="evenodd"/><path d="M48 50 L64 64 L48 78" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><rect x="66" y="72" width="18" height="8" rx="4" fill="#fff"/></svg>`;
+// C: monograma D con muesca de engranaje, fondo oscuro, acento degradado
+const C=(s)=>`<svg width="${s}" height="${s}" viewBox="0 0 128 128">${defs}<rect x="8" y="8" width="112" height="112" rx="28" fill="url(#g2)"/><path d="M38 30 H66 C90 30 104 44 104 64 C104 84 90 98 66 98 H38 Z M54 44 V84 H66 C80 84 88 76 88 64 C88 52 80 44 66 44 Z" fill="url(#g)" fill-rule="evenodd"/><circle cx="96" cy="96" r="14" fill="#12b5a5"/><path d="M90 96 L95 101 L103 91" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const names={A:'A · Escudo con engranaje (heredero del banner)',B:'B · Baldosa con prompt (máxima legibilidad)',C:'C · Monograma D con verificación'};
+const notes={A:'Continuidad con la portada actual de Etsy. A 16 px el engranaje se convierte en textura; el escudo sigue reconociéndose.',B:'Pensado para el escritorio: forma de app moderna, el símbolo de línea de comandos se lee incluso a 16 px. El engranaje queda como anillo sutil.',C:'Marca por letra. Diferente a todo lo que hay en Etsy. Pierde la referencia al banner y el "check" puede confundirse con una app de tareas.'};
+const row=document.getElementById('row');
+for(const k of ['A','B','C']){ const f={A,B,C}[k]; const card=document.createElement('div'); card.className='card'; card.innerHTML=`<h2>${names[k]}</h2><div class="big">${f(220)}</div><div class="small">${[64,48,32,24,16].map(s=>`<div>${f(s)}${s}px</div>`).join('')}</div><div class="small dark">${[48,32,16].map(s=>`<div>${f(s)}${s}px</div>`).join('')}</div><p>${notes[k]}</p>`; row.appendChild(card); }
+window.__svg={A:A(512),B:B(512),C:C(512)};
+</script></body></html>
