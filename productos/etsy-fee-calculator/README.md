@@ -1,4 +1,6 @@
-# Etsy Fee & Price Calculator · producto 1
+# Fee & Price Calculator (for Etsy sellers) · producto 1
+
+Nombre del programa: "Fee & Price Calculator". "Etsy" solo aparece como descripción ("for Etsy sellers") y en el listing, nunca en el nombre del ejecutable ni bajo el icono, para no infringir las normas de marca de Etsy (verificar en su política de marca).
 
 Aplicación de un solo archivo HTML. Funciona sin conexión en cualquier
 navegador (Windows, Mac, Linux, iPhone, Android). Los datos se guardan en el
@@ -10,7 +12,7 @@ Versión 1.2, 6 de septiembre de 2026. Interruptor "producto digital" por tarjet
 sin errores de consola, cifras iguales a `etsy/calculadora_precio.py`,
 persistencia tras recargar, sin desbordamiento horizontal en móvil (390 px).
 
-SHA-256 de `index.html`: `096ad2637546bba33008b32ca423410862e58b4611d0b6adeb6854868cd2cfb9`
+SHA-256 de `index.html`: `087fedc3f780e6fb2821a6fa029ad8384337a9626b03ac983e77a0ca9e0276ed`
 
 ## Qué hace (mapeado a las quejas de la competencia, ver etsy/09)
 
