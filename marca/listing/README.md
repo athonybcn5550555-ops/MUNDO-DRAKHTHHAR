@@ -17,6 +17,19 @@ aplicación, no de maquetas.
 | 9 | `09-how.png` | Cómo se usa, en tres pasos. |
 | 10 | `10-included.png` | Qué incluye la descarga y la licencia. |
 
+## Vídeo
+
+`video-listing.mp4` · 1080 × 1080 · 10,6 segundos · H.264 · sin audio · 863 KB.
+Dentro del límite de 5 a 15 segundos de Etsy. Muestra, en este orden: se
+escribe el precio y la tarjeta pasa de pérdida a beneficio; se activa Offsite
+Ads y el margen se desploma; se desactiva y se recupera; y el buscador de
+precio calcula el precio necesario para ganar 12 dólares. Sin voz ni texto
+superpuesto, porque Etsy reproduce los vídeos en silencio.
+
+Grabado con Playwright sobre la aplicación real y convertido a H.264. El
+ffmpeg que trae Playwright solo genera WebM, así que la conversión usa el
+binario completo de `imageio-ffmpeg`.
+
 `contacto.png` es una hoja de contacto con las diez juntas, solo para
 revisarlas de un vistazo. No se sube a Etsy.
 
