@@ -30,3 +30,11 @@ coste real solo lo sabe Antonio, por factura).
 - Sin acceso a un conector de contabilidad/facturación real, este archivo
   es un registro manual mantenido por la Routine diaria — no sustituye una
   herramienta contable de verdad si el volumen crece.
+- **2026-09-07:** intento de verificar por WHOIS/RDAP público la fecha de
+  caducidad de `laiayjudit.com` fallido — esta sesión tiene bloqueado por
+  el proxy de red el acceso a `whois.com`, `rdap.verisign.com` y al propio
+  dominio (`EGRESS_BLOCKED`). Solo `WebSearch` funciona, y no devuelve el
+  registro WHOIS en sí, solo páginas genéricas sobre qué es un WHOIS. La
+  fecha de renovación de `laiayjudit.com` sigue siendo la del recordatorio
+  que programó Antonio, sin verificación pública adicional hoy. Ninguna
+  fecha se ha modificado sin esa verificación.
