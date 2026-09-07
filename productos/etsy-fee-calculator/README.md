@@ -12,7 +12,7 @@ Versión 1.2, 6 de septiembre de 2026. Interruptor "producto digital" por tarjet
 sin errores de consola, cifras iguales a `etsy/calculadora_precio.py`,
 persistencia tras recargar, sin desbordamiento horizontal en móvil (390 px).
 
-SHA-256 de `index.html`: `8d07651b0875cf54e92472a7b548aa758364a1d3e743cb2b5c944845583d58b0`
+SHA-256 de `index.html`: `1b817ead3b85d7dd37e7a07cade54eeb7c400b3beb095c01b89f61a235fde15f`
 
 ## Qué hace (mapeado a las quejas de la competencia, ver etsy/09)
 
