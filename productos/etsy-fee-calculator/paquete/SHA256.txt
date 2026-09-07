@@ -1,5 +1,5 @@
-Fee-Price-Calculator-v1.5.zip
-SHA-256: 7cbf9d9dda16a1e24158e479715c4915cf13e26b27c8b5ff88afb3816e93b889
+Fee-Price-Calculator-v1.6.zip
+SHA-256: e2776c2a0cf908f41714c793eecff82d536df96e0ec8941adbedd4d2e5bee607
 
-Verify on Windows:  certutil -hashfile "Fee-Price-Calculator-v1.5.zip" SHA256
-Verify on macOS:    shasum -a 256 "Fee-Price-Calculator-v1.5.zip"
+Verify on Windows:  certutil -hashfile "Fee-Price-Calculator-v1.6.zip" SHA256
+Verify on macOS:    shasum -a 256 "Fee-Price-Calculator-v1.6.zip"

@@ -12,7 +12,7 @@ Versión 1.2, 6 de septiembre de 2026. Interruptor "producto digital" por tarjet
 sin errores de consola, cifras iguales a `etsy/calculadora_precio.py`,
 persistencia tras recargar, sin desbordamiento horizontal en móvil (390 px).
 
-SHA-256 de `index.html`: `04d252dad0afe87cb65ede1d23ec34a65b0131c16dcb99cc94b0cdf3e3264e56`
+SHA-256 de `index.html`: `7c49d19d8893f6c23e9cd6ef74dba2c12656bf681f16726913e7ac581d4989ca`
 
 ## Qué hace (mapeado a las quejas de la competencia, ver etsy/09)
 
@@ -50,8 +50,13 @@ configurar la tienda, cada comisión explicada una por una, añadir productos,
 el buscador de precio, copias y exportaciones, un ejemplo resuelto con
 cifras, preguntas y problemas, y una revisión anual. Botón para escuchar el
 manual entero o una sección suelta, con la voz del sistema en el idioma
-seleccionado, resaltando la frase que se está leyendo. Se detiene al cerrar,
-al cambiar de idioma o al pulsar Escape.
+seleccionado, resaltando la frase que se está leyendo. Se detiene al cerrar, al cambiar de idioma o al pulsar Escape.
+
+El manual es un **panel acoplado a la derecha, no una ventana modal**: la
+calculadora sigue usándose con el manual abierto. Se puede **minimizar** a
+una barra pequeña que sigue leyendo en voz alta e indica la sección en curso,
+y el estado minimizado se recuerda. Botones de **pausa y continuar**, con un
+respaldo que relee desde la frase actual si el navegador no reanuda.
 
 Las locuciones se encadenan frase a frase porque algunos navegadores cortan
 las lecturas largas.
@@ -64,8 +69,12 @@ resaltado, parada, cambio de idioma durante la lectura y cierre con Escape.
 
 `tests/test_contrast.js` recorre cada botón, selector y campo de todas las
 pantallas y calcula el contraste real del texto sobre su fondo, componiendo
-las capas semitransparentes. Detecta controles invisibles: encontró y evitó
-que se publicaran tres botones con texto blanco sobre fondo blanco.
+las capas semitransparentes. Detecta controles invisibles: encontró y evitó que se publicaran siete botones con texto blanco sobre
+fondo blanco, en dos ocasiones distintas.
+
+`tests/test_panel.js` comprueba el panel: que no bloquea la app, que se
+minimiza y se recuerda, que sigue leyendo minimizado, pausa, continuar,
+parar, el respaldo de reanudación y el comportamiento en móvil.
 
 `tests/test_full.js` ejecuta 39 comprobaciones de casos límite, todas en verde:
 entrada con coma o punto decimal y formatos europeo y anglosajón; texto no

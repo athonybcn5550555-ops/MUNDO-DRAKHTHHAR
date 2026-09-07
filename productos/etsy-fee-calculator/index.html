@@ -8,6 +8,7 @@
 <style>
 :root{--bg:#f4f5f8;--card:#fff;--ink:#1c1f2a;--muted:#5d6272;--line:#dfe2ea;--accent:#5b3df5;--accent2:#12b5a5;--ok:#1a9e5c;--warn:#d98a00;--bad:#d7263d;--okbg:#e6f7ee;--warnbg:#fff4e0;--badbg:#fde8ec;--r:12px}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 header{background:linear-gradient(120deg,#1b1340,#3a1f7a 55%,#0f6f78);color:#fff;padding:18px 20px}
 .wrap{max-width:1100px;margin:0 auto}
@@ -69,17 +70,35 @@ details summary{cursor:pointer;font-size:13px;color:var(--accent)}
 .overlay[hidden]{display:none}
 .overlay{position:fixed;inset:0;background:rgba(15,12,40,.72);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}
 .overlay .box{background:#fff;color:var(--ink);border-radius:16px;max-width:560px;width:100%;padding:20px 22px;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;margin:auto}
-.manualbox{max-width:760px;display:flex;flex-direction:column;padding:0}
-.manhead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.manhead h2{margin:0;font-size:17px}
-.manactions{display:flex;gap:6px;flex-wrap:wrap}
-.manbody{overflow:auto;padding:4px 20px 20px}
+/* El manual es un panel acoplado: no tapa la aplicación y se puede minimizar. */
+#manual[hidden]{display:none}
+#manual{position:fixed;top:14px;right:14px;bottom:14px;width:min(430px,42vw);z-index:40;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 12px 40px rgba(20,15,60,.22);display:flex;flex-direction:column;overflow:hidden}
+#manual.min{top:auto;height:auto;bottom:14px;width:min(430px,90vw)}
+#manual.min .manbody{display:none}
+#manual.min .manhead{border-bottom:none}
+#manual button{border-color:var(--line);background:#fff;color:var(--ink)}
+#manual button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+#manual button:hover{filter:brightness(.96)}
+.manhead{display:flex;align-items:center;gap:8px;padding:11px 12px 11px 15px;border-bottom:1px solid var(--line);flex:none}
+.manhead h2{margin:0;font-size:14px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.manactions{display:flex;gap:5px;flex:none}
+.manactions button{padding:5px 9px;font-size:12px}
+.iconbtn{width:28px;height:28px;padding:0!important;font-size:15px!important;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+.manbody{overflow:auto;padding:2px 15px 16px;flex:1}
+.mannow{font-size:11.5px;color:var(--muted);padding:0 15px 10px;display:none}
+#manual.min .mannow.on{display:block}
+@media (max-width:760px){ #manual{left:10px;right:10px;top:10px;bottom:10px;width:auto}
+  #manual.min{top:auto;left:10px;right:10px;width:auto} }
+@media print{ #manual{display:none!important} }
 .msec{padding:14px 0;border-bottom:1px solid var(--line)}
 .msec:last-child{border-bottom:none}
 .msec h3{margin:0 0 6px;font-size:14px;color:#2a1f6b;display:flex;align-items:center;gap:8px}
 .msec h3 .idx{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;flex:none}
 .msec p{margin:0 0 7px;font-size:13.5px;line-height:1.55;border-radius:6px;padding:2px 5px;margin-left:-5px}
 .msec p.reading{background:#efe9ff;box-shadow:0 0 0 2px #d8ccff}
+.msec p{scroll-margin:60px}
 .msec h3.reading .lbl{background:#efe9ff;border-radius:6px;padding:1px 5px}
 .spk{border:1px solid var(--line);background:#fff;color:var(--accent);border-radius:999px;padding:2px 9px;font-size:11px;cursor:pointer;margin-left:auto;flex:none}
 .overlay .box button{border-color:var(--line);background:#fff;color:var(--ink)}
@@ -194,19 +213,20 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
     <div class="actions"><button class="primary" id="btnGuideClose" data-i="gStart"></button><button id="btnListen" data-i="bListen"></button></div>
   </div>
 </div>
-<div class="overlay" id="manual" hidden>
-  <div class="box manualbox" role="dialog" aria-modal="true" aria-labelledby="manTitle">
-    <div class="manhead">
-      <h2 id="manTitle" data-i="mTitle"></h2>
-      <div class="manactions">
-        <button class="primary" id="btnManListen" data-i="mListenAll"></button>
-        <button id="btnManStop" data-i="bStop" hidden></button>
-        <button id="btnManClose" data-i="mClose"></button>
-      </div>
+<aside id="manual" hidden role="region" aria-labelledby="manTitle">
+  <div class="manhead">
+    <h2 id="manTitle" data-i="mTitle"></h2>
+    <div class="manactions">
+      <button class="primary" id="btnManListen" data-i="mListenShort"></button>
+      <button id="btnManPause" class="iconbtn" hidden aria-label="" title="">⏸</button>
+      <button id="btnManStop" class="iconbtn" hidden aria-label="" title="">⏹</button>
+      <button id="btnManMin" class="iconbtn" aria-label="" title="">–</button>
+      <button id="btnManClose" class="iconbtn" aria-label="" title="">✕</button>
     </div>
-    <div class="manbody" id="manBody"></div>
   </div>
-</div>
+  <p class="mannow" id="manNow"></p>
+  <div class="manbody" id="manBody"></div>
+</aside>
 <div class="toast" id="toast"></div>
 <input type="file" id="fileImport" accept="application/json" hidden>
 
@@ -227,7 +247,7 @@ const PROFILES = {
   XX: {cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
 };
 const I18N = {
-en:{bManual:"User guide",mTitle:"User guide",mListenAll:"Listen to the whole guide",mClose:"Close",mSection:"Listen to this section",bListen:'Listen to the guide',bStop:'Stop reading',pDigital:'Digital product (no shipping, no packaging)',title:'Fee & Price Calculator',tagline:'For Etsy sellers · Works offline · Your data stays in this browser · One-time purchase, no subscription',bGuide:'Quick guide',bExport:'Export backup',bImport:'Import backup',bCsv:'Export CSV',bPrint:'Print / PDF',
+en:{mPause:"Pause",mResume:"Continue",mListenShort:"Listen",mStopShort:"Stop",mMin:"Minimise",mMax:"Expand",mNow:"Reading: ",bManual:"User guide",mTitle:"User guide",mListenAll:"Listen to the whole guide",mClose:"Close",mSection:"Listen to this section",bListen:'Listen to the guide',bStop:'Stop reading',pDigital:'Digital product (no shipping, no packaging)',title:'Fee & Price Calculator',tagline:'For Etsy sellers · Works offline · Your data stays in this browser · One-time purchase, no subscription',bGuide:'Quick guide',bExport:'Export backup',bImport:'Import backup',bCsv:'Export CSV',bPrint:'Print / PDF',
 s1:'1 · Your shop',s1hint:'Pick your country. Every fee below is editable: check them in Shop Manager → Finances → Fees and update the date. Fees change; the app never guesses.',lCountry:'Seller country (fee profile)',lCur:'Shop currency symbol',lDate:'Fees last verified on',lHourly:'Hourly rate for your labor',
 thFee:'Fee',thFixed:'Fixed',thApplies:'Applies to',fListing:'Listing fee',fListingTag:'USD 0.20 per listing and per sale',fListingA:'Each order (multi-quantity listings renew on every sale)',fTrans:'Transaction fee',fTransA:'Price + shipping charged + gift wrap',fProc:'Payment processing',fProcA:'Order total, per order',fReg:'Regulatory operating fee',fRegA:'Price + shipping (not charged in the US or Germany)',fConv:'Currency conversion',fConvA:'Only if listing currency ≠ payout currency',
 tagVerified:'verified',tagCheck:'check in Shop Manager',lOffsite:'Offsite Ads',oNone:'Not attributed (organic sale)',o15:'Attributed · shop under USD 10k/yr · 15%',o12:'Attributed · shop over USD 10k/yr · 12%',lCap:'Offsite Ads cap per order',lEtsyAds:'Etsy Ads (your average cost per order)',lVat:'VAT charged on Etsy fees',lConvOn:'Apply currency conversion fee',
@@ -242,7 +262,7 @@ gTitle:"Three steps and you're done",g1:'Pick your country in section 1 and glan
 tFees:'Fees set for {c}',tBackup:'Backup downloaded',tRestored:'Backup restored',tBad:'That file is not a backup from this app',tKeep:'Keep at least one product',tCsv:'CSV downloaded',example:'Example product',productN:'Product {n}',copy:'(copy)',
 csv:['Product','Price','Shipping charged','Revenue','Etsy fees','Costs','Profit','Margin %'],
 c:{US:'United States',ES:'Spain',FR:'France',IT:'Italy',DE:'Germany',EU:'Other EU (euro)',UK:'United Kingdom',CA:'Canada',AU:'Australia',XX:'Other / custom'}},
-es:{bManual:"Manual de uso",mTitle:"Manual de uso",mListenAll:"Escuchar el manual entero",mClose:"Cerrar",mSection:"Escuchar esta sección",bListen:'Escuchar la guía',bStop:'Dejar de leer',pDigital:'Producto digital (sin envío ni embalaje)',title:'Calculadora de comisiones y precios',tagline:'Para vendedores de Etsy · Funciona sin conexión · Tus datos se quedan en este navegador · Pago único, sin suscripción',bGuide:'Guía rápida',bExport:'Exportar copia',bImport:'Importar copia',bCsv:'Exportar CSV',bPrint:'Imprimir / PDF',
+es:{mPause:"Pausa",mResume:"Continuar",mListenShort:"Escuchar",mStopShort:"Parar",mMin:"Minimizar",mMax:"Ampliar",mNow:"Leyendo: ",bManual:"Manual de uso",mTitle:"Manual de uso",mListenAll:"Escuchar el manual entero",mClose:"Cerrar",mSection:"Escuchar esta sección",bListen:'Escuchar la guía',bStop:'Dejar de leer',pDigital:'Producto digital (sin envío ni embalaje)',title:'Calculadora de comisiones y precios',tagline:'Para vendedores de Etsy · Funciona sin conexión · Tus datos se quedan en este navegador · Pago único, sin suscripción',bGuide:'Guía rápida',bExport:'Exportar copia',bImport:'Importar copia',bCsv:'Exportar CSV',bPrint:'Imprimir / PDF',
 s1:'1 · Tu tienda',s1hint:'Elige tu país. Todas las comisiones son editables: compruébalas en Administrador de tienda → Finanzas → Comisiones y actualiza la fecha. Las comisiones cambian; la app nunca las adivina.',lCountry:'País del vendedor (perfil de comisiones)',lCur:'Símbolo de moneda de la tienda',lDate:'Comisiones verificadas el',lHourly:'Tu tarifa por hora de trabajo',
 thFee:'Comisión',thFixed:'Fija',thApplies:'Se aplica a',fListing:'Publicación',fListingTag:'0,20 USD por anuncio y por venta',fListingA:'Cada pedido (los anuncios con varias unidades se renuevan en cada venta)',fTrans:'Transacción',fTransA:'Precio + envío cobrado + envoltorio',fProc:'Procesamiento del pago',fProcA:'Total del pedido, por pedido',fReg:'Tasa operativa regulatoria',fRegA:'Precio + envío (no se cobra en EE. UU. ni Alemania)',fConv:'Conversión de moneda',fConvA:'Solo si la moneda del anuncio ≠ moneda de cobro',
 tagVerified:'verificado',tagCheck:'comprobar en el Administrador',lOffsite:'Offsite Ads',oNone:'No atribuida (venta orgánica)',o15:'Atribuida · tienda por debajo de 10 000 USD/año · 15 %',o12:'Atribuida · tienda por encima de 10 000 USD/año · 12 %',lCap:'Tope de Offsite Ads por pedido',lEtsyAds:'Etsy Ads (tu coste medio por pedido)',lVat:'IVA sobre las comisiones de Etsy',lConvOn:'Aplicar comisión de conversión de moneda',
@@ -257,7 +277,7 @@ gTitle:'Tres pasos y listo',g1:'Elige tu país en la sección 1 y echa un vistaz
 tFees:'Comisiones configuradas para {c}',tBackup:'Copia descargada',tRestored:'Copia restaurada',tBad:'Ese archivo no es una copia de esta app',tKeep:'Conserva al menos un producto',tCsv:'CSV descargado',example:'Producto de ejemplo',productN:'Producto {n}',copy:'(copia)',
 csv:['Producto','Precio','Envío cobrado','Ingresos','Comisiones Etsy','Costes','Beneficio','Margen %'],
 c:{US:'Estados Unidos',ES:'España',FR:'Francia',IT:'Italia',DE:'Alemania',EU:'Otro país de la UE (euro)',UK:'Reino Unido',CA:'Canadá',AU:'Australia',XX:'Otro / personalizado'}},
-fr:{bManual:"Guide d'utilisation",mTitle:"Guide d'utilisation",mListenAll:"Écouter tout le guide",mClose:"Fermer",mSection:"Écouter cette section",bListen:'Écouter le guide',bStop:'Arrêter la lecture',pDigital:'Produit numérique (sans livraison ni emballage)',title:'Calculateur de frais et de prix',tagline:'Pour les vendeurs Etsy · Fonctionne hors ligne · Vos données restent dans ce navigateur · Achat unique, sans abonnement',bGuide:'Guide rapide',bExport:'Exporter une sauvegarde',bImport:'Importer une sauvegarde',bCsv:'Exporter en CSV',bPrint:'Imprimer / PDF',
+fr:{mPause:"Pause",mResume:"Continuer",mListenShort:"Écouter",mStopShort:"Arrêter",mMin:"Réduire",mMax:"Agrandir",mNow:"Lecture : ",bManual:"Guide d'utilisation",mTitle:"Guide d'utilisation",mListenAll:"Écouter tout le guide",mClose:"Fermer",mSection:"Écouter cette section",bListen:'Écouter le guide',bStop:'Arrêter la lecture',pDigital:'Produit numérique (sans livraison ni emballage)',title:'Calculateur de frais et de prix',tagline:'Pour les vendeurs Etsy · Fonctionne hors ligne · Vos données restent dans ce navigateur · Achat unique, sans abonnement',bGuide:'Guide rapide',bExport:'Exporter une sauvegarde',bImport:'Importer une sauvegarde',bCsv:'Exporter en CSV',bPrint:'Imprimer / PDF',
 s1:'1 · Votre boutique',s1hint:'Choisissez votre pays. Tous les frais ci-dessous sont modifiables : vérifiez-les dans Gestionnaire de boutique → Finances → Frais et mettez la date à jour. Les frais changent ; l’application ne devine jamais.',lCountry:'Pays du vendeur (profil de frais)',lCur:'Symbole de la devise de la boutique',lDate:'Frais vérifiés le',lHourly:'Votre taux horaire',
 thFee:'Frais',thFixed:'Fixe',thApplies:'S’applique à',fListing:'Frais de mise en vente',fListingTag:'0,20 USD par fiche et par vente',fListingA:'Chaque commande (les fiches multi-quantités se renouvellent à chaque vente)',fTrans:'Frais de transaction',fTransA:'Prix + livraison facturée + emballage cadeau',fProc:'Frais de traitement du paiement',fProcA:'Total de la commande, par commande',fReg:'Frais d’exploitation réglementaires',fRegA:'Prix + livraison (non facturés aux États-Unis ni en Allemagne)',fConv:'Conversion de devise',fConvA:'Seulement si la devise de la fiche ≠ devise de versement',
 tagVerified:'vérifié',tagCheck:'à vérifier dans le Gestionnaire',lOffsite:'Offsite Ads',oNone:'Non attribuée (vente organique)',o15:'Attribuée · boutique sous 10 000 USD/an · 15 %',o12:'Attribuée · boutique au-dessus de 10 000 USD/an · 12 %',lCap:'Plafond Offsite Ads par commande',lEtsyAds:'Etsy Ads (votre coût moyen par commande)',lVat:'TVA sur les frais Etsy',lConvOn:'Appliquer les frais de conversion de devise',
@@ -272,7 +292,7 @@ gTitle:'Trois étapes et c’est prêt',g1:'Choisissez votre pays dans la sectio
 tFees:'Frais configurés pour {c}',tBackup:'Sauvegarde téléchargée',tRestored:'Sauvegarde restaurée',tBad:'Ce fichier n’est pas une sauvegarde de cette application',tKeep:'Conservez au moins un produit',tCsv:'CSV téléchargé',example:'Produit d’exemple',productN:'Produit {n}',copy:'(copie)',
 csv:['Produit','Prix','Livraison facturée','Chiffre d’affaires','Frais Etsy','Coûts','Bénéfice','Marge %'],
 c:{US:'États-Unis',ES:'Espagne',FR:'France',IT:'Italie',DE:'Allemagne',EU:'Autre pays de l’UE (euro)',UK:'Royaume-Uni',CA:'Canada',AU:'Australie',XX:'Autre / personnalisé'}},
-de:{bManual:"Handbuch",mTitle:"Handbuch",mListenAll:"Ganzes Handbuch anhören",mClose:"Schließen",mSection:"Diesen Abschnitt anhören",bListen:'Anleitung anhören',bStop:'Vorlesen beenden',pDigital:'Digitales Produkt (kein Versand, keine Verpackung)',title:'Gebühren- und Preisrechner',tagline:'Für Etsy-Verkäufer · Funktioniert offline · Deine Daten bleiben in diesem Browser · Einmaliger Kauf, kein Abo',bGuide:'Kurzanleitung',bExport:'Sicherung exportieren',bImport:'Sicherung importieren',bCsv:'CSV exportieren',bPrint:'Drucken / PDF',
+de:{mPause:"Pause",mResume:"Fortsetzen",mListenShort:"Anhören",mStopShort:"Stopp",mMin:"Verkleinern",mMax:"Vergrößern",mNow:"Liest: ",bManual:"Handbuch",mTitle:"Handbuch",mListenAll:"Ganzes Handbuch anhören",mClose:"Schließen",mSection:"Diesen Abschnitt anhören",bListen:'Anleitung anhören',bStop:'Vorlesen beenden',pDigital:'Digitales Produkt (kein Versand, keine Verpackung)',title:'Gebühren- und Preisrechner',tagline:'Für Etsy-Verkäufer · Funktioniert offline · Deine Daten bleiben in diesem Browser · Einmaliger Kauf, kein Abo',bGuide:'Kurzanleitung',bExport:'Sicherung exportieren',bImport:'Sicherung importieren',bCsv:'CSV exportieren',bPrint:'Drucken / PDF',
 s1:'1 · Dein Shop',s1hint:'Wähle dein Land. Jede Gebühr unten ist editierbar: Prüfe sie unter Shop-Manager → Finanzen → Gebühren und aktualisiere das Datum. Gebühren ändern sich; die App rät nie.',lCountry:'Land des Verkäufers (Gebührenprofil)',lCur:'Währungssymbol des Shops',lDate:'Gebühren zuletzt geprüft am',lHourly:'Dein Stundensatz',
 thFee:'Gebühr',thFixed:'Fix',thApplies:'Gilt für',fListing:'Einstellgebühr',fListingTag:'0,20 USD pro Angebot und pro Verkauf',fListingA:'Jede Bestellung (Angebote mit mehreren Stück verlängern sich bei jedem Verkauf)',fTrans:'Transaktionsgebühr',fTransA:'Preis + berechneter Versand + Geschenkverpackung',fProc:'Zahlungsabwicklung',fProcA:'Bestellsumme, pro Bestellung',fReg:'Regulatorische Betriebsgebühr',fRegA:'Preis + Versand (nicht in den USA und Deutschland)',fConv:'Währungsumrechnung',fConvA:'Nur wenn Angebotswährung ≠ Auszahlungswährung',
 tagVerified:'geprüft',tagCheck:'im Shop-Manager prüfen',lOffsite:'Offsite Ads',oNone:'Nicht zugeordnet (organischer Verkauf)',o15:'Zugeordnet · Shop unter 10.000 USD/Jahr · 15 %',o12:'Zugeordnet · Shop über 10.000 USD/Jahr · 12 %',lCap:'Offsite-Ads-Obergrenze pro Bestellung',lEtsyAds:'Etsy Ads (deine durchschnittlichen Kosten pro Bestellung)',lVat:'Umsatzsteuer auf Etsy-Gebühren',lConvOn:'Währungsumrechnungsgebühr anwenden',
@@ -287,7 +307,7 @@ gTitle:'Drei Schritte und fertig',g1:'Wähle dein Land in Abschnitt 1 und wirf e
 tFees:'Gebühren eingestellt für {c}',tBackup:'Sicherung heruntergeladen',tRestored:'Sicherung wiederhergestellt',tBad:'Diese Datei ist keine Sicherung dieser App',tKeep:'Behalte mindestens ein Produkt',tCsv:'CSV heruntergeladen',example:'Beispielprodukt',productN:'Produkt {n}',copy:'(Kopie)',
 csv:['Produkt','Preis','Berechneter Versand','Umsatz','Etsy-Gebühren','Kosten','Gewinn','Marge %'],
 c:{US:'Vereinigte Staaten',ES:'Spanien',FR:'Frankreich',IT:'Italien',DE:'Deutschland',EU:'Anderes EU-Land (Euro)',UK:'Vereinigtes Königreich',CA:'Kanada',AU:'Australien',XX:'Anderes / eigene Werte'}},
-it:{bManual:"Manuale d'uso",mTitle:"Manuale d'uso",mListenAll:"Ascolta tutto il manuale",mClose:"Chiudi",mSection:"Ascolta questa sezione",bListen:'Ascolta la guida',bStop:'Interrompi la lettura',pDigital:'Prodotto digitale (senza spedizione né imballaggio)',title:'Calcolatore di commissioni e prezzi',tagline:'Per venditori Etsy · Funziona offline · I tuoi dati restano in questo browser · Acquisto unico, senza abbonamento',bGuide:'Guida rapida',bExport:'Esporta backup',bImport:'Importa backup',bCsv:'Esporta CSV',bPrint:'Stampa / PDF',
+it:{mPause:"Pausa",mResume:"Continua",mListenShort:"Ascolta",mStopShort:"Ferma",mMin:"Riduci",mMax:"Ingrandisci",mNow:"Sta leggendo: ",bManual:"Manuale d'uso",mTitle:"Manuale d'uso",mListenAll:"Ascolta tutto il manuale",mClose:"Chiudi",mSection:"Ascolta questa sezione",bListen:'Ascolta la guida',bStop:'Interrompi la lettura',pDigital:'Prodotto digitale (senza spedizione né imballaggio)',title:'Calcolatore di commissioni e prezzi',tagline:'Per venditori Etsy · Funziona offline · I tuoi dati restano in questo browser · Acquisto unico, senza abbonamento',bGuide:'Guida rapida',bExport:'Esporta backup',bImport:'Importa backup',bCsv:'Esporta CSV',bPrint:'Stampa / PDF',
 s1:'1 · Il tuo negozio',s1hint:'Scegli il tuo paese. Ogni commissione qui sotto è modificabile: verificale in Gestore negozio → Finanze → Commissioni e aggiorna la data. Le commissioni cambiano; l’app non tira mai a indovinare.',lCountry:'Paese del venditore (profilo commissioni)',lCur:'Simbolo della valuta del negozio',lDate:'Commissioni verificate il',lHourly:'La tua tariffa oraria',
 thFee:'Commissione',thFixed:'Fissa',thApplies:'Si applica a',fListing:'Commissione di inserzione',fListingTag:'0,20 USD per inserzione e per vendita',fListingA:'Ogni ordine (le inserzioni multi-quantità si rinnovano a ogni vendita)',fTrans:'Commissione di transazione',fTransA:'Prezzo + spedizione addebitata + confezione regalo',fProc:'Elaborazione del pagamento',fProcA:'Totale dell’ordine, per ordine',fReg:'Commissione operativa regolatoria',fRegA:'Prezzo + spedizione (non addebitata negli USA e in Germania)',fConv:'Conversione di valuta',fConvA:'Solo se la valuta dell’inserzione ≠ valuta di pagamento',
 tagVerified:'verificato',tagCheck:'verifica nel Gestore negozio',lOffsite:'Offsite Ads',oNone:'Non attribuita (vendita organica)',o15:'Attribuita · negozio sotto 10.000 USD/anno · 15 %',o12:'Attribuita · negozio sopra 10.000 USD/anno · 12 %',lCap:'Tetto Offsite Ads per ordine',lEtsyAds:'Etsy Ads (il tuo costo medio per ordine)',lVat:'IVA sulle commissioni Etsy',lConvOn:'Applica la commissione di conversione valuta',
@@ -320,7 +340,7 @@ const defaultProduct = () => ({id: Date.now() + Math.random(), name:'', price:25
 let S = {
   lang:'', country:'US', cur:'$', feeDate:VERIFIED, hourly:15,
   listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, conv:2.5, convOn:false,
-  offsite:'none', offcap:100, etsyads:0, vatOn:false, vat:0,
+  offsite:'none', offcap:100, etsyads:0, vatOn:false, vat:0, manMin:false,
   products:[], seen:false
 };
 
@@ -417,7 +437,7 @@ function updateReverse(){
 
 // ---- events ----
 function bindShop(){
-  $('lang').addEventListener('change', e=>{ stopSpeaking(); S.lang=e.target.value; applyLang(); renderProducts(); if(!$('manual').hidden) renderManual(); });
+  $('lang').addEventListener('change', e=>{ stopSpeaking(); S.lang=e.target.value; applyLang(); renderProducts(); if(!$('manual').hidden){ renderManual(); setMin(S.manMin); updatePlayUI(); } });
   $('country').addEventListener('change', e=>{ applyProfile(e.target.value); renderShop(); updateAll(); toast(t('tFees',{c:t('c')[S.country]})); });
   const map={cur:'cur',feeDate:'feeDate',hourly:'hourly',f_listing:'listing',f_trans:'trans',f_proc:'proc',f_procfix:'procfix',f_reg:'reg',f_conv:'conv',f_offcap:'offcap',f_etsyads:'etsyads',f_vat:'vat'};
   for(const id in map){ $(id).addEventListener('input', e=>{ const k=map[id]; S[k] = (id==='cur'||id==='feeDate') ? e.target.value.trim() : readNum(e.target); updateAll(); }); }
@@ -445,16 +465,43 @@ function pickVoice(tag){ const vs=window.speechSynthesis.getVoices()||[]; const 
 // Cola de lectura: una frase por vez. Chrome corta las locuciones largas, por eso se encadenan.
 let QUEUE=null;
 function clearReading(){ document.querySelectorAll('.reading').forEach(e=>e.classList.remove('reading')); }
-function stopSpeaking(){ QUEUE=null; if('speechSynthesis' in window){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+let PAUSED=false;
+function updatePlayUI(){
+  const playing=!!QUEUE; const speech=('speechSynthesis' in window);
+  $('btnManListen').hidden = playing || !speech;
+  $('btnManPause').hidden = !playing;
+  $('btnManStop').hidden = !playing;
+  const p=$('btnManPause'); p.textContent = PAUSED ? '\u25b6' : '\u23f8';
+  const lbl = t(PAUSED ? 'mResume' : 'mPause'); p.setAttribute('aria-label', lbl); p.title = lbl;
+  const st=$('btnManStop'); st.setAttribute('aria-label', t('mStopShort')); st.title = t('mStopShort');
+}
+function stopSpeaking(){ QUEUE=null; PAUSED=false;
+  if('speechSynthesis' in window){ try{ window.speechSynthesis.cancel(); }catch(e){} }
   clearReading(); const b=$('btnListen'); if(b) b.textContent=t('bListen');
-  $('btnManStop').hidden=true; $('btnManListen').hidden=false; }
+  const n=$('manNow'); if(n){ n.textContent=''; n.classList.remove('on'); }
+  updatePlayUI(); }
+function pauseSpeaking(){
+  if(!QUEUE) return;
+  if(PAUSED){ // continuar
+    const q=QUEUE, idx=Math.max(0,q.i-1); PAUSED=false; updatePlayUI();
+    try{ window.speechSynthesis.resume(); }catch(e){}
+    // Respaldo: si el navegador no reanuda, se relee desde la frase actual.
+    // Los navegadores mantienen speaking=true mientras está en pausa, por eso se mira paused.
+    setTimeout(()=>{ const ss=window.speechSynthesis;
+      if(!PAUSED && QUEUE===q && (ss.paused || !ss.speaking)){
+        const items=q.items.slice(idx), done=q.onDone; QUEUE=null; try{ ss.cancel(); }catch(e){} speakList(items, done); } }, 400);
+  } else {
+    PAUSED=true; try{ window.speechSynthesis.pause(); }catch(e){} updatePlayUI();
+  }
+}
 function speakList(items, onDone){
   if(!('speechSynthesis' in window)) return; const ss=window.speechSynthesis; ss.cancel();
   const q={i:0, items, onDone}; QUEUE=q; const tag=LANGTAG[S.lang]||'en-US'; const voice=pickVoice(tag);
   (function next(){
     if(QUEUE!==q || q.i>=q.items.length){ if(QUEUE===q){ QUEUE=null; clearReading(); if(onDone) onDone(); } return; }
     const it=q.items[q.i++]; clearReading();
-    if(it.el){ it.el.classList.add('reading'); try{ it.el.scrollIntoView({block:'center', behavior:'smooth'}); }catch(e){} }
+    if(it.sec!==undefined){ const n=$('manNow'); if(n){ n.textContent=t('mNow')+it.sec; n.classList.add('on'); } }
+    if(it.el){ it.el.classList.add('reading'); if(!S.manMin){ try{ it.el.scrollIntoView({block:'center', behavior:'smooth'}); }catch(e){} } }
     const u=new SpeechSynthesisUtterance(it.text); u.lang=tag; u.rate=0.95; if(voice) u.voice=voice;
     u.onend=next; u.onerror=next; ss.speak(u);
   })();
@@ -481,27 +528,35 @@ function renderManual(){
 function manualItems(from){
   const secs=MANUAL[S.lang]||MANUAL.en; const nodes=[...$('manBody').querySelectorAll('.msec')]; const out=[];
   secs.forEach((sec,i)=>{ if(i<from) return; const n=nodes[i]; if(!n) return;
-    out.push({text:sec[0], el:n.querySelector('h3')});
-    sec[1].forEach((x,j)=>out.push({text:x, el:n.querySelectorAll('p')[j]}));
+    out.push({text:sec[0], el:n.querySelector('h3'), sec:sec[0]});
+    sec[1].forEach((x,j)=>out.push({text:x, el:n.querySelectorAll('p')[j], sec:sec[0]}));
   });
   return out;
 }
 function speakManual(from){
   if(!('speechSynthesis' in window)) return;
   if(QUEUE){ stopSpeaking(); if(from===undefined) return; }
-  $('btnManListen').hidden=true; $('btnManStop').hidden=false;
-  speakList(manualItems(from||0), ()=>{ $('btnManStop').hidden=true; $('btnManListen').hidden=false; });
+  PAUSED=false;
+  speakList(manualItems(from||0), ()=>{ updatePlayUI(); const n=$('manNow'); if(n){ n.textContent=''; n.classList.remove('on'); } });
+  updatePlayUI();
 }
-function openManual(){ renderManual(); $('manual').hidden=false; $('btnManClose').focus(); }
+function setMin(on){ S.manMin=!!on; $('manual').classList.toggle('min', S.manMin);
+  const b=$('btnManMin'); b.textContent = S.manMin ? '▢' : '–';
+  const lbl = t(S.manMin ? 'mMax' : 'mMin'); b.setAttribute('aria-label', lbl); b.title = lbl;
+  const c=$('btnManClose'); c.setAttribute('aria-label', t('mClose')); c.title = t('mClose'); save(); }
+function openManual(){ renderManual(); $('manual').hidden=false; updatePlayUI(); setMin(S.manMin); if(!S.manMin) $('manBody').scrollTop=0; $('btnManListen').focus(); }
 function closeManual(){ stopSpeaking(); $('manual').hidden=true; $('btnManual').focus(); }
 function openGuide(){ $('guide').hidden=false; $('btnGuideClose').focus(); }
 function closeGuide(){ stopSpeaking(); $('guide').hidden=true; S.seen=true; save(); $('btnGuide').focus(); }
 $('btnListen').addEventListener('click', speakGuide);
 $('btnManual').addEventListener('click', openManual);
 $('btnManClose').addEventListener('click', closeManual);
+$('btnManMin').addEventListener('click', ()=>setMin(!S.manMin));
+$('btnManPause').addEventListener('click', pauseSpeaking);
 $('btnManListen').addEventListener('click', ()=>speakManual(0));
 $('btnManStop').addEventListener('click', stopSpeaking);
 if(!('speechSynthesis' in window)){ $('btnListen').hidden=true; $('btnManListen').hidden=true; }
+updatePlayUI();
 if('speechSynthesis' in window && window.speechSynthesis.onvoiceschanged!==undefined) window.speechSynthesis.onvoiceschanged=()=>{};
 $('btnGuide').addEventListener('click', openGuide);
 $('btnGuideClose').addEventListener('click', closeGuide);
