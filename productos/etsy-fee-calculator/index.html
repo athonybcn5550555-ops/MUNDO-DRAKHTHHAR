@@ -10,8 +10,11 @@
 html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 header{background:linear-gradient(120deg,#1b1340,#3a1f7a 55%,#0f6f78);color:#fff;padding:18px 20px}
 .wrap{max-width:1100px;margin:0 auto}
+header .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 header h1{margin:0;font-size:22px;letter-spacing:.2px}
 header p{margin:4px 0 0;opacity:.85;font-size:13px}
+header select{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 10px;font:inherit;font-size:13px}
+header select option{color:#1c1f2a}
 .bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 button,.btn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer}
 main button{border-color:var(--line);background:#fff;color:var(--ink)}
@@ -34,8 +37,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
 td.num,th.num{text-align:right;white-space:nowrap}
 td input[type=number]{padding:5px 6px;width:84px;min-width:84px}
-.tablewrap table{min-width:640px}
 .tablewrap{overflow-x:auto}
+.tablewrap table{min-width:640px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .product{border:1px solid var(--line);border-radius:var(--r);padding:14px;background:#fbfbfd;display:flex;flex-direction:column;gap:10px}
 .product .top{display:flex;gap:8px;align-items:center}
@@ -59,26 +62,31 @@ details summary{cursor:pointer;font-size:13px;color:var(--accent)}
 .overlay[hidden]{display:none}
 .overlay{position:fixed;inset:0;background:rgba(15,12,40,.72);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
 .overlay .box{background:#fff;color:var(--ink);border-radius:16px;max-width:560px;width:100%;padding:24px}
+.overlay .box button.primary{background:var(--accent);border-color:var(--accent);color:#fff;padding:10px 18px;font-size:14px}
 .overlay ol{padding-left:20px}
 .overlay li{margin-bottom:8px}
 footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30px}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c1f2a;color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
-@media (max-width:560px){main{padding:12px}section{padding:12px}.product .fields{grid-template-columns:1fr 1fr}header h1{font-size:19px}}
-@media print{header .bar,main button,.actions,footer,#guide,.toast{display:none!important}body{background:#fff}section{break-inside:avoid;border:none}}
+@media (max-width:560px){main{padding:12px}section{padding:12px}header h1{font-size:19px}}
+@media print{header .bar,header select,main button,.actions,footer,#guide,.toast{display:none!important}body{background:#fff}section{break-inside:avoid;border:none}}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <h1>Etsy Fee &amp; Price Calculator</h1>
-    <p>Works offline · Your data stays in this browser · One-time purchase, no subscription</p>
+    <div class="row">
+      <div><h1 data-i="title">Etsy Fee &amp; Price Calculator</h1><p data-i="tagline"></p></div>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option>
+      </select>
+    </div>
     <div class="bar">
-      <button id="btnGuide">Quick guide</button>
-      <button id="btnExport">Export backup</button>
-      <button id="btnImport">Import backup</button>
-      <button id="btnCsv">Export CSV</button>
-      <button id="btnPrint">Print / PDF</button>
+      <button id="btnGuide" data-i="bGuide"></button>
+      <button id="btnExport" data-i="bExport"></button>
+      <button id="btnImport" data-i="bImport"></button>
+      <button id="btnCsv" data-i="bCsv"></button>
+      <button id="btnPrint" data-i="bPrint"></button>
     </div>
   </div>
 </header>
@@ -86,85 +94,81 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
 <main class="wrap">
 
 <section id="shop">
-  <h2>1 · Your shop</h2>
-  <p class="hint">Pick your country. Every fee below is editable: check them in Shop Manager → Finances → Fees and update the date. Fees change; the app never guesses.</p>
+  <h2 data-i="s1"></h2>
+  <p class="hint" data-i="s1hint"></p>
   <div class="grid">
-    <div><label>Seller country (fee profile)</label><select id="country"></select></div>
-    <div><label>Shop currency symbol</label><input type="text" id="cur" maxlength="4"></div>
-    <div><label>Fees last verified on</label><input type="text" id="feeDate" placeholder="YYYY-MM-DD"></div>
-    <div><label>Hourly rate for your labor</label><input type="number" id="hourly" step="0.5" min="0"></div>
+    <div><label data-i="lCountry"></label><select id="country"></select></div>
+    <div><label data-i="lCur"></label><input type="text" id="cur" maxlength="4"></div>
+    <div><label data-i="lDate"></label><input type="text" id="feeDate" placeholder="YYYY-MM-DD"></div>
+    <div><label data-i="lHourly"></label><input type="number" id="hourly" step="0.5" min="0"></div>
   </div>
   <div class="tablewrap" style="margin-top:12px">
   <table>
-    <thead><tr><th>Fee</th><th class="num">%</th><th class="num">Fixed</th><th>Applies to</th></tr></thead>
+    <thead><tr><th data-i="thFee"></th><th class="num">%</th><th class="num" data-i="thFixed"></th><th data-i="thApplies"></th></tr></thead>
     <tbody>
-      <tr><td>Listing fee <span class="tag">USD 0.20 per listing and per sale</span></td><td class="num">–</td><td class="num"><input type="number" id="f_listing" step="0.01" min="0"></td><td>Each order (multi-quantity listings renew on every sale)</td></tr>
-      <tr><td>Transaction fee</td><td class="num"><input type="number" id="f_trans" step="0.1" min="0"></td><td class="num">–</td><td>Price + shipping charged + gift wrap</td></tr>
-      <tr><td>Payment processing</td><td class="num"><input type="number" id="f_proc" step="0.1" min="0"></td><td class="num"><input type="number" id="f_procfix" step="0.01" min="0"></td><td>Order total, per order</td></tr>
-      <tr><td>Regulatory operating fee <span class="tag" id="regTag"></span></td><td class="num"><input type="number" id="f_reg" step="0.01" min="0"></td><td class="num">–</td><td>Price + shipping (not charged in the US or Germany)</td></tr>
-      <tr><td>Currency conversion</td><td class="num"><input type="number" id="f_conv" step="0.1" min="0"></td><td class="num">–</td><td>Only if listing currency ≠ payout currency</td></tr>
+      <tr><td><span data-i="fListing"></span> <span class="tag" data-i="fListingTag"></span></td><td class="num">–</td><td class="num"><input type="number" id="f_listing" step="0.01" min="0"></td><td data-i="fListingA"></td></tr>
+      <tr><td data-i="fTrans"></td><td class="num"><input type="number" id="f_trans" step="0.1" min="0"></td><td class="num">–</td><td data-i="fTransA"></td></tr>
+      <tr><td data-i="fProc"></td><td class="num"><input type="number" id="f_proc" step="0.1" min="0"></td><td class="num"><input type="number" id="f_procfix" step="0.01" min="0"></td><td data-i="fProcA"></td></tr>
+      <tr><td><span data-i="fReg"></span> <span class="tag" id="regTag"></span></td><td class="num"><input type="number" id="f_reg" step="0.01" min="0"></td><td class="num">–</td><td data-i="fRegA"></td></tr>
+      <tr><td data-i="fConv"></td><td class="num"><input type="number" id="f_conv" step="0.1" min="0"></td><td class="num">–</td><td data-i="fConvA"></td></tr>
     </tbody>
   </table>
   </div>
   <div class="grid" style="margin-top:14px">
     <div>
-      <label>Offsite Ads</label>
+      <label data-i="lOffsite"></label>
       <select id="offsite">
-        <option value="none">Not attributed (organic sale)</option>
-        <option value="15">Attributed · shop under USD 10k/yr · 15%</option>
-        <option value="12">Attributed · shop over USD 10k/yr · 12%</option>
+        <option value="none" data-i="oNone"></option>
+        <option value="15" data-i="o15"></option>
+        <option value="12" data-i="o12"></option>
       </select>
     </div>
-    <div><label>Offsite Ads cap per order</label><input type="number" id="f_offcap" step="1" min="0"></div>
-    <div><label>Etsy Ads (your average cost per order)</label><input type="number" id="f_etsyads" step="0.01" min="0"></div>
+    <div><label data-i="lCap"></label><input type="number" id="f_offcap" step="1" min="0"></div>
+    <div><label data-i="lEtsyAds"></label><input type="number" id="f_etsyads" step="0.01" min="0"></div>
     <div>
-      <label>VAT charged on Etsy fees</label>
+      <label data-i="lVat"></label>
       <div class="inline"><input type="checkbox" id="vatOn"><input type="number" id="f_vat" step="0.5" min="0" style="max-width:90px"><span style="font-size:12px;color:var(--muted)">%</span></div>
     </div>
-    <div class="inline" style="align-self:end"><input type="checkbox" id="convOn"><label style="margin:0">Apply currency conversion fee</label></div>
+    <div class="inline" style="align-self:end"><input type="checkbox" id="convOn"><label style="margin:0" for="convOn" data-i="lConvOn"></label></div>
   </div>
-  <p class="hint" style="margin-top:10px">Offsite Ads are charged on the full order (price + shipping + gift wrap), which is why they cut margins more than the headline percentage. Etsy Ads are pay-per-click: enter what you actually spend per resulting order (Shop Manager → Marketing → Etsy Ads → cost ÷ orders). VAT on fees applies to EU/UK sellers without a VAT ID.</p>
+  <p class="hint" style="margin-top:10px" data-i="s1note"></p>
 </section>
 
 <section id="products">
-  <h2>2 · Your products</h2>
-  <p class="hint">Add every product you sell. Enter what you charge and what it costs you; the app shows fees, profit and margin per sale. Green ≥ 25% margin, amber 10–25%, red under 10% or a loss.</p>
+  <h2 data-i="s2"></h2>
+  <p class="hint" data-i="s2hint"></p>
   <div class="cards" id="cards"></div>
-  <div class="actions" style="margin-top:12px"><button class="primary" id="btnAdd">+ Add product</button></div>
+  <div class="actions" style="margin-top:12px"><button class="primary" id="btnAdd" data-i="bAdd"></button></div>
 </section>
 
 <section id="reverse">
-  <h2>3 · Price finder</h2>
-  <p class="hint">Start from the profit you want and get the price you need. Uses the fees above and the costs of the product you pick.</p>
+  <h2 data-i="s3"></h2>
+  <p class="hint" data-i="s3hint"></p>
   <div class="grid">
-    <div><label>Product</label><select id="rvProduct"></select></div>
-    <div><label>Target</label><select id="rvMode"><option value="amount">Profit per sale (amount)</option><option value="margin">Margin (% of price)</option></select></div>
-    <div><label>Target value</label><input type="number" id="rvTarget" step="0.5" min="0" value="10"></div>
-    <div><label>Monthly profit goal</label><input type="number" id="rvGoal" step="10" min="0" value="500"></div>
+    <div><label data-i="lProduct"></label><select id="rvProduct"></select></div>
+    <div><label data-i="lTarget"></label><select id="rvMode"><option value="amount" data-i="mAmount"></option><option value="margin" data-i="mMargin"></option></select></div>
+    <div><label data-i="lTargetV"></label><input type="number" id="rvTarget" step="0.5" min="0" value="10"></div>
+    <div><label data-i="lGoal"></label><input type="number" id="rvGoal" step="10" min="0" value="500"></div>
   </div>
   <div class="kpi" style="margin-top:14px">
-    <div><span>Price you need</span><b class="big" id="rvPrice">–</b></div>
-    <div><span>Profit at that price</span><b class="big" id="rvProfit">–</b></div>
-    <div><span>Margin at that price</span><b class="big" id="rvMargin">–</b></div>
-    <div><span>Sales needed per month</span><b class="big" id="rvSales">–</b></div>
+    <div><span data-i="kPrice"></span><b class="big" id="rvPrice">–</b></div>
+    <div><span data-i="kProfit"></span><b class="big" id="rvProfit">–</b></div>
+    <div><span data-i="kMargin"></span><b class="big" id="rvMargin">–</b></div>
+    <div><span data-i="kSales"></span><b class="big" id="rvSales">–</b></div>
   </div>
   <p class="hint" id="rvNote" style="margin-top:10px"></p>
 </section>
 
 </main>
 
-<footer>Everything is saved in this browser only. Use "Export backup" before clearing browser data or switching devices. Fees are yours to verify in Shop Manager; the defaults were checked on the date shown.</footer>
+<footer data-i="footer"></footer>
 
 <div class="overlay" id="guide" hidden>
   <div class="box">
-    <h2 style="margin-top:0">Three steps and you're done</h2>
-    <ol>
-      <li><b>Pick your country</b> in section 1 and glance at the fee table. If Etsy has changed a fee since the date shown, edit the number.</li>
-      <li><b>Add your products</b> in section 2 with price, shipping and costs. Profit and margin update as you type.</li>
-      <li><b>Use the price finder</b> in section 3 to work backwards from the profit you want.</li>
-    </ol>
-    <p style="font-size:13px;color:var(--muted)">Your data is saved automatically in this browser. Click "Export backup" now and then to keep a copy. Nothing is sent anywhere: this file works with the internet switched off.</p>
-    <div class="actions"><button class="primary" id="btnGuideClose">Start</button></div>
+    <h2 style="margin-top:0" data-i="gTitle"></h2>
+    <ol><li data-i="g1"></li><li data-i="g2"></li><li data-i="g3"></li></ol>
+    <p style="font-size:13px;color:var(--muted)" data-i="gNote"></p>
+    <div class="actions"><button class="primary" id="btnGuideClose" data-i="gStart"></button></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -174,144 +178,197 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
 (function(){
 'use strict';
 const VERIFIED = '2026-09-06';
-// Fee profiles. verified=true: checked on Etsy Help Center on VERIFIED date. verified=false: fill from your Shop Manager.
 const PROFILES = {
-  US: {name:'United States', cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:true},
-  ES: {name:'Spain', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.88, vat:21, verified:true},
-  FR: {name:'France', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:1.14, vat:20, verified:true},
-  IT: {name:'Italy', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.80, vat:22, verified:true},
-  DE: {name:'Germany', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:19, verified:true},
-  EU: {name:'Other EU (euro)', cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:21, verified:false},
-  UK: {name:'United Kingdom', cur:'£', listing:0.16, trans:6.5, proc:4, procfix:0.20, reg:0.48, vat:20, verified:false},
-  CA: {name:'Canada', cur:'C$', listing:0.27, trans:6.5, proc:3, procfix:0.25, reg:0.50, vat:0, verified:false},
-  AU: {name:'Australia', cur:'A$', listing:0.30, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
-  XX: {name:'Other / custom', cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
+  US: {cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:true},
+  ES: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.88, vat:21, verified:true},
+  FR: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:1.14, vat:20, verified:true},
+  IT: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0.80, vat:22, verified:true},
+  DE: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:19, verified:true},
+  EU: {cur:'€', listing:0.18, trans:6.5, proc:4, procfix:0.30, reg:0, vat:21, verified:false},
+  UK: {cur:'£', listing:0.16, trans:6.5, proc:4, procfix:0.20, reg:0.48, vat:20, verified:false},
+  CA: {cur:'C$', listing:0.27, trans:6.5, proc:3, procfix:0.25, reg:0.50, vat:0, verified:false},
+  AU: {cur:'A$', listing:0.30, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
+  XX: {cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
+};
+const I18N = {
+en:{title:'Etsy Fee & Price Calculator',tagline:'Works offline · Your data stays in this browser · One-time purchase, no subscription',bGuide:'Quick guide',bExport:'Export backup',bImport:'Import backup',bCsv:'Export CSV',bPrint:'Print / PDF',
+s1:'1 · Your shop',s1hint:'Pick your country. Every fee below is editable: check them in Shop Manager → Finances → Fees and update the date. Fees change; the app never guesses.',lCountry:'Seller country (fee profile)',lCur:'Shop currency symbol',lDate:'Fees last verified on',lHourly:'Hourly rate for your labor',
+thFee:'Fee',thFixed:'Fixed',thApplies:'Applies to',fListing:'Listing fee',fListingTag:'USD 0.20 per listing and per sale',fListingA:'Each order (multi-quantity listings renew on every sale)',fTrans:'Transaction fee',fTransA:'Price + shipping charged + gift wrap',fProc:'Payment processing',fProcA:'Order total, per order',fReg:'Regulatory operating fee',fRegA:'Price + shipping (not charged in the US or Germany)',fConv:'Currency conversion',fConvA:'Only if listing currency ≠ payout currency',
+tagVerified:'verified',tagCheck:'check in Shop Manager',lOffsite:'Offsite Ads',oNone:'Not attributed (organic sale)',o15:'Attributed · shop under USD 10k/yr · 15%',o12:'Attributed · shop over USD 10k/yr · 12%',lCap:'Offsite Ads cap per order',lEtsyAds:'Etsy Ads (your average cost per order)',lVat:'VAT charged on Etsy fees',lConvOn:'Apply currency conversion fee',
+s1note:'Offsite Ads are charged on the full order (price + shipping + gift wrap), which is why they cut margins more than the headline percentage. Etsy Ads are pay-per-click: enter what you actually spend per resulting order (Shop Manager → Marketing → Etsy Ads → cost ÷ orders). VAT on fees applies to EU/UK sellers without a VAT ID.',
+s2:'2 · Your products',s2hint:'Add every product you sell. Enter what you charge and what it costs you; the app shows fees, profit and margin per sale. Green ≥ 25% margin, amber 10–25%, red under 10% or a loss.',pName:'Product name',pPrice:'Price you charge',pShip:'Shipping you charge',pMat:'Materials / cost of goods',pHours:'Hours of work',pPack:'Packaging',pShipCost:'Shipping you actually pay',pPod:'Print-on-demand cost (Printify, Printful…)',pOver:'Overhead per unit (tools, fees, software)',
+rProfit:'Profit',rLoss:'Loss',rPerSale:'per sale',rFees:'Fees',rCosts:'Costs',rReceive:'You receive',rBreak:'Fee and cost breakdown',bDup:'Duplicate',bDel:'Delete',bAdd:'+ Add product',
+bRevenue:'Revenue (price + shipping charged)',bListing:'Listing fee',bTrans:'Transaction fee',bProc:'Payment processing',bReg:'Regulatory operating fee',bConv:'Currency conversion',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'VAT on fees',bMat:'Materials',bLabor:'Labor',bPack:'Packaging',bShipCost:'Shipping paid',bPod:'Print-on-demand',bOver:'Overhead',bProfit:'Profit',
+s3:'3 · Price finder',s3hint:'Start from the profit you want and get the price you need. Uses the fees above and the costs of the product you pick.',lProduct:'Product',lTarget:'Target',mAmount:'Profit per sale (amount)',mMargin:'Margin (% of price)',lTargetV:'Target value',lGoal:'Monthly profit goal',kPrice:'Price you need',kProfit:'Profit at that price',kMargin:'Margin at that price',kSales:'Sales needed per month',
+nCompare:'Compared with your current price of {price} (profit {profit}). Prices ending in 9 (e.g. {nine}) tend to convert better.',nUnreach:'A margin that high is not reachable once fees are taken into account.',
+footer:'Everything is saved in this browser only. Use "Export backup" before clearing browser data or switching devices. Fees are yours to verify in Shop Manager; the defaults were checked on the date shown.',
+gTitle:"Three steps and you're done",g1:'Pick your country in section 1 and glance at the fee table. If Etsy has changed a fee since the date shown, edit the number.',g2:'Add your products in section 2 with price, shipping and costs. Profit and margin update as you type.',g3:'Use the price finder in section 3 to work backwards from the profit you want.',gNote:'Your data is saved automatically in this browser. Click "Export backup" now and then to keep a copy. Nothing is sent anywhere: this file works with the internet switched off.',gStart:'Start',
+tFees:'Fees set for {c}',tBackup:'Backup downloaded',tRestored:'Backup restored',tBad:'That file is not a backup from this app',tKeep:'Keep at least one product',tCsv:'CSV downloaded',example:'Example product',productN:'Product {n}',copy:'(copy)',
+csv:['Product','Price','Shipping charged','Revenue','Etsy fees','Costs','Profit','Margin %'],
+c:{US:'United States',ES:'Spain',FR:'France',IT:'Italy',DE:'Germany',EU:'Other EU (euro)',UK:'United Kingdom',CA:'Canada',AU:'Australia',XX:'Other / custom'}},
+es:{title:'Calculadora de comisiones y precios de Etsy',tagline:'Funciona sin conexión · Tus datos se quedan en este navegador · Pago único, sin suscripción',bGuide:'Guía rápida',bExport:'Exportar copia',bImport:'Importar copia',bCsv:'Exportar CSV',bPrint:'Imprimir / PDF',
+s1:'1 · Tu tienda',s1hint:'Elige tu país. Todas las comisiones son editables: compruébalas en Administrador de tienda → Finanzas → Comisiones y actualiza la fecha. Las comisiones cambian; la app nunca las adivina.',lCountry:'País del vendedor (perfil de comisiones)',lCur:'Símbolo de moneda de la tienda',lDate:'Comisiones verificadas el',lHourly:'Tu tarifa por hora de trabajo',
+thFee:'Comisión',thFixed:'Fija',thApplies:'Se aplica a',fListing:'Publicación',fListingTag:'0,20 USD por anuncio y por venta',fListingA:'Cada pedido (los anuncios con varias unidades se renuevan en cada venta)',fTrans:'Transacción',fTransA:'Precio + envío cobrado + envoltorio',fProc:'Procesamiento del pago',fProcA:'Total del pedido, por pedido',fReg:'Tasa operativa regulatoria',fRegA:'Precio + envío (no se cobra en EE. UU. ni Alemania)',fConv:'Conversión de moneda',fConvA:'Solo si la moneda del anuncio ≠ moneda de cobro',
+tagVerified:'verificado',tagCheck:'comprobar en el Administrador',lOffsite:'Offsite Ads',oNone:'No atribuida (venta orgánica)',o15:'Atribuida · tienda por debajo de 10 000 USD/año · 15 %',o12:'Atribuida · tienda por encima de 10 000 USD/año · 12 %',lCap:'Tope de Offsite Ads por pedido',lEtsyAds:'Etsy Ads (tu coste medio por pedido)',lVat:'IVA sobre las comisiones de Etsy',lConvOn:'Aplicar comisión de conversión de moneda',
+s1note:'Offsite Ads se cobra sobre el pedido completo (precio + envío + envoltorio); por eso recorta el margen más de lo que parece. Etsy Ads es pago por clic: introduce lo que gastas de verdad por cada pedido conseguido (Administrador → Marketing → Etsy Ads → coste ÷ pedidos). El IVA sobre comisiones afecta a vendedores de la UE y Reino Unido sin NIF-IVA.',
+s2:'2 · Tus productos',s2hint:'Añade cada producto que vendes. Escribe lo que cobras y lo que te cuesta; la app muestra comisiones, beneficio y margen por venta. Verde ≥ 25 % de margen, ámbar 10–25 %, rojo por debajo del 10 % o pérdida.',pName:'Nombre del producto',pPrice:'Precio que cobras',pShip:'Envío que cobras',pMat:'Materiales / coste del producto',pHours:'Horas de trabajo',pPack:'Embalaje',pShipCost:'Envío que pagas de verdad',pPod:'Coste de impresión bajo demanda (Printify, Printful…)',pOver:'Gastos generales por unidad (herramientas, cuotas, software)',
+rProfit:'Beneficio',rLoss:'Pérdida',rPerSale:'por venta',rFees:'Comisiones',rCosts:'Costes',rReceive:'Recibes',rBreak:'Desglose de comisiones y costes',bDup:'Duplicar',bDel:'Eliminar',bAdd:'+ Añadir producto',
+bRevenue:'Ingresos (precio + envío cobrado)',bListing:'Publicación',bTrans:'Transacción',bProc:'Procesamiento del pago',bReg:'Tasa operativa regulatoria',bConv:'Conversión de moneda',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'IVA sobre comisiones',bMat:'Materiales',bLabor:'Mano de obra',bPack:'Embalaje',bShipCost:'Envío pagado',bPod:'Impresión bajo demanda',bOver:'Gastos generales',bProfit:'Beneficio',
+s3:'3 · Buscador de precio',s3hint:'Parte del beneficio que quieres y obtén el precio que necesitas. Usa las comisiones de arriba y los costes del producto que elijas.',lProduct:'Producto',lTarget:'Objetivo',mAmount:'Beneficio por venta (importe)',mMargin:'Margen (% del precio)',lTargetV:'Valor objetivo',lGoal:'Objetivo de beneficio mensual',kPrice:'Precio que necesitas',kProfit:'Beneficio a ese precio',kMargin:'Margen a ese precio',kSales:'Ventas necesarias al mes',
+nCompare:'Comparado con tu precio actual de {price} (beneficio {profit}). Los precios terminados en 9 (p. ej. {nine}) suelen convertir mejor.',nUnreach:'Un margen tan alto no es alcanzable una vez descontadas las comisiones.',
+footer:'Todo se guarda solo en este navegador. Usa "Exportar copia" antes de borrar datos del navegador o cambiar de equipo. Las comisiones debes verificarlas en el Administrador de tienda; las de serie se comprobaron en la fecha indicada.',
+gTitle:'Tres pasos y listo',g1:'Elige tu país en la sección 1 y echa un vistazo a la tabla de comisiones. Si Etsy ha cambiado alguna desde la fecha indicada, edita el número.',g2:'Añade tus productos en la sección 2 con precio, envío y costes. Beneficio y margen se actualizan mientras escribes.',g3:'Usa el buscador de precio de la sección 3 para partir del beneficio que quieres.',gNote:'Tus datos se guardan automáticamente en este navegador. Pulsa "Exportar copia" de vez en cuando para conservar una copia. No se envía nada a ningún sitio: este archivo funciona sin internet.',gStart:'Empezar',
+tFees:'Comisiones configuradas para {c}',tBackup:'Copia descargada',tRestored:'Copia restaurada',tBad:'Ese archivo no es una copia de esta app',tKeep:'Conserva al menos un producto',tCsv:'CSV descargado',example:'Producto de ejemplo',productN:'Producto {n}',copy:'(copia)',
+csv:['Producto','Precio','Envío cobrado','Ingresos','Comisiones Etsy','Costes','Beneficio','Margen %'],
+c:{US:'Estados Unidos',ES:'España',FR:'Francia',IT:'Italia',DE:'Alemania',EU:'Otro país de la UE (euro)',UK:'Reino Unido',CA:'Canadá',AU:'Australia',XX:'Otro / personalizado'}},
+fr:{title:'Calculateur de frais et de prix Etsy',tagline:'Fonctionne hors ligne · Vos données restent dans ce navigateur · Achat unique, sans abonnement',bGuide:'Guide rapide',bExport:'Exporter une sauvegarde',bImport:'Importer une sauvegarde',bCsv:'Exporter en CSV',bPrint:'Imprimer / PDF',
+s1:'1 · Votre boutique',s1hint:'Choisissez votre pays. Tous les frais ci-dessous sont modifiables : vérifiez-les dans Gestionnaire de boutique → Finances → Frais et mettez la date à jour. Les frais changent ; l’application ne devine jamais.',lCountry:'Pays du vendeur (profil de frais)',lCur:'Symbole de la devise de la boutique',lDate:'Frais vérifiés le',lHourly:'Votre taux horaire',
+thFee:'Frais',thFixed:'Fixe',thApplies:'S’applique à',fListing:'Frais de mise en vente',fListingTag:'0,20 USD par fiche et par vente',fListingA:'Chaque commande (les fiches multi-quantités se renouvellent à chaque vente)',fTrans:'Frais de transaction',fTransA:'Prix + livraison facturée + emballage cadeau',fProc:'Frais de traitement du paiement',fProcA:'Total de la commande, par commande',fReg:'Frais d’exploitation réglementaires',fRegA:'Prix + livraison (non facturés aux États-Unis ni en Allemagne)',fConv:'Conversion de devise',fConvA:'Seulement si la devise de la fiche ≠ devise de versement',
+tagVerified:'vérifié',tagCheck:'à vérifier dans le Gestionnaire',lOffsite:'Offsite Ads',oNone:'Non attribuée (vente organique)',o15:'Attribuée · boutique sous 10 000 USD/an · 15 %',o12:'Attribuée · boutique au-dessus de 10 000 USD/an · 12 %',lCap:'Plafond Offsite Ads par commande',lEtsyAds:'Etsy Ads (votre coût moyen par commande)',lVat:'TVA sur les frais Etsy',lConvOn:'Appliquer les frais de conversion de devise',
+s1note:'Les Offsite Ads sont facturées sur la commande entière (prix + livraison + emballage cadeau), d’où un impact sur la marge supérieur au pourcentage affiché. Etsy Ads fonctionne au clic : indiquez ce que vous dépensez réellement par commande obtenue (Gestionnaire → Marketing → Etsy Ads → coût ÷ commandes). La TVA sur les frais concerne les vendeurs de l’UE et du Royaume-Uni sans numéro de TVA.',
+s2:'2 · Vos produits',s2hint:'Ajoutez chaque produit que vous vendez. Saisissez ce que vous facturez et ce qu’il vous coûte ; l’application affiche frais, bénéfice et marge par vente. Vert ≥ 25 % de marge, orange 10–25 %, rouge sous 10 % ou perte.',pName:'Nom du produit',pPrice:'Prix facturé',pShip:'Livraison facturée',pMat:'Matériaux / coût du produit',pHours:'Heures de travail',pPack:'Emballage',pShipCost:'Livraison réellement payée',pPod:'Coût d’impression à la demande (Printify, Printful…)',pOver:'Frais généraux par unité (outils, abonnements, logiciels)',
+rProfit:'Bénéfice',rLoss:'Perte',rPerSale:'par vente',rFees:'Frais',rCosts:'Coûts',rReceive:'Vous recevez',rBreak:'Détail des frais et des coûts',bDup:'Dupliquer',bDel:'Supprimer',bAdd:'+ Ajouter un produit',
+bRevenue:'Chiffre d’affaires (prix + livraison facturée)',bListing:'Frais de mise en vente',bTrans:'Frais de transaction',bProc:'Traitement du paiement',bReg:'Frais d’exploitation réglementaires',bConv:'Conversion de devise',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'TVA sur les frais',bMat:'Matériaux',bLabor:'Main-d’œuvre',bPack:'Emballage',bShipCost:'Livraison payée',bPod:'Impression à la demande',bOver:'Frais généraux',bProfit:'Bénéfice',
+s3:'3 · Trouveur de prix',s3hint:'Partez du bénéfice souhaité et obtenez le prix nécessaire. Utilise les frais ci-dessus et les coûts du produit choisi.',lProduct:'Produit',lTarget:'Objectif',mAmount:'Bénéfice par vente (montant)',mMargin:'Marge (% du prix)',lTargetV:'Valeur cible',lGoal:'Objectif de bénéfice mensuel',kPrice:'Prix nécessaire',kProfit:'Bénéfice à ce prix',kMargin:'Marge à ce prix',kSales:'Ventes nécessaires par mois',
+nCompare:'Par rapport à votre prix actuel de {price} (bénéfice {profit}). Les prix finissant par 9 (p. ex. {nine}) convertissent généralement mieux.',nUnreach:'Une marge aussi élevée n’est pas atteignable une fois les frais déduits.',
+footer:'Tout est enregistré uniquement dans ce navigateur. Utilisez « Exporter une sauvegarde » avant d’effacer les données du navigateur ou de changer d’appareil. Les frais sont à vérifier dans le Gestionnaire de boutique ; les valeurs par défaut ont été contrôlées à la date indiquée.',
+gTitle:'Trois étapes et c’est prêt',g1:'Choisissez votre pays dans la section 1 et jetez un œil au tableau des frais. Si Etsy a modifié un frais depuis la date indiquée, corrigez le chiffre.',g2:'Ajoutez vos produits dans la section 2 avec prix, livraison et coûts. Bénéfice et marge se mettent à jour pendant la saisie.',g3:'Utilisez le trouveur de prix de la section 3 pour partir du bénéfice souhaité.',gNote:'Vos données sont enregistrées automatiquement dans ce navigateur. Cliquez sur « Exporter une sauvegarde » de temps en temps pour garder une copie. Rien n’est envoyé nulle part : ce fichier fonctionne sans internet.',gStart:'Commencer',
+tFees:'Frais configurés pour {c}',tBackup:'Sauvegarde téléchargée',tRestored:'Sauvegarde restaurée',tBad:'Ce fichier n’est pas une sauvegarde de cette application',tKeep:'Conservez au moins un produit',tCsv:'CSV téléchargé',example:'Produit d’exemple',productN:'Produit {n}',copy:'(copie)',
+csv:['Produit','Prix','Livraison facturée','Chiffre d’affaires','Frais Etsy','Coûts','Bénéfice','Marge %'],
+c:{US:'États-Unis',ES:'Espagne',FR:'France',IT:'Italie',DE:'Allemagne',EU:'Autre pays de l’UE (euro)',UK:'Royaume-Uni',CA:'Canada',AU:'Australie',XX:'Autre / personnalisé'}},
+de:{title:'Etsy-Gebühren- und Preisrechner',tagline:'Funktioniert offline · Deine Daten bleiben in diesem Browser · Einmaliger Kauf, kein Abo',bGuide:'Kurzanleitung',bExport:'Sicherung exportieren',bImport:'Sicherung importieren',bCsv:'CSV exportieren',bPrint:'Drucken / PDF',
+s1:'1 · Dein Shop',s1hint:'Wähle dein Land. Jede Gebühr unten ist editierbar: Prüfe sie unter Shop-Manager → Finanzen → Gebühren und aktualisiere das Datum. Gebühren ändern sich; die App rät nie.',lCountry:'Land des Verkäufers (Gebührenprofil)',lCur:'Währungssymbol des Shops',lDate:'Gebühren zuletzt geprüft am',lHourly:'Dein Stundensatz',
+thFee:'Gebühr',thFixed:'Fix',thApplies:'Gilt für',fListing:'Einstellgebühr',fListingTag:'0,20 USD pro Angebot und pro Verkauf',fListingA:'Jede Bestellung (Angebote mit mehreren Stück verlängern sich bei jedem Verkauf)',fTrans:'Transaktionsgebühr',fTransA:'Preis + berechneter Versand + Geschenkverpackung',fProc:'Zahlungsabwicklung',fProcA:'Bestellsumme, pro Bestellung',fReg:'Regulatorische Betriebsgebühr',fRegA:'Preis + Versand (nicht in den USA und Deutschland)',fConv:'Währungsumrechnung',fConvA:'Nur wenn Angebotswährung ≠ Auszahlungswährung',
+tagVerified:'geprüft',tagCheck:'im Shop-Manager prüfen',lOffsite:'Offsite Ads',oNone:'Nicht zugeordnet (organischer Verkauf)',o15:'Zugeordnet · Shop unter 10.000 USD/Jahr · 15 %',o12:'Zugeordnet · Shop über 10.000 USD/Jahr · 12 %',lCap:'Offsite-Ads-Obergrenze pro Bestellung',lEtsyAds:'Etsy Ads (deine durchschnittlichen Kosten pro Bestellung)',lVat:'Umsatzsteuer auf Etsy-Gebühren',lConvOn:'Währungsumrechnungsgebühr anwenden',
+s1note:'Offsite Ads werden auf die gesamte Bestellung berechnet (Preis + Versand + Geschenkverpackung), deshalb drücken sie die Marge stärker als der Prozentsatz vermuten lässt. Etsy Ads sind Pay-per-Click: Trage ein, was du tatsächlich pro erzielter Bestellung ausgibst (Shop-Manager → Marketing → Etsy Ads → Kosten ÷ Bestellungen). Umsatzsteuer auf Gebühren betrifft Verkäufer in der EU und im Vereinigten Königreich ohne USt-IdNr.',
+s2:'2 · Deine Produkte',s2hint:'Füge jedes Produkt hinzu, das du verkaufst. Gib ein, was du berechnest und was es dich kostet; die App zeigt Gebühren, Gewinn und Marge pro Verkauf. Grün ≥ 25 % Marge, Gelb 10–25 %, Rot unter 10 % oder Verlust.',pName:'Produktname',pPrice:'Dein Verkaufspreis',pShip:'Berechneter Versand',pMat:'Material / Wareneinsatz',pHours:'Arbeitsstunden',pPack:'Verpackung',pShipCost:'Tatsächlich gezahlter Versand',pPod:'Print-on-Demand-Kosten (Printify, Printful…)',pOver:'Gemeinkosten pro Stück (Werkzeuge, Gebühren, Software)',
+rProfit:'Gewinn',rLoss:'Verlust',rPerSale:'pro Verkauf',rFees:'Gebühren',rCosts:'Kosten',rReceive:'Du erhältst',rBreak:'Aufschlüsselung von Gebühren und Kosten',bDup:'Duplizieren',bDel:'Löschen',bAdd:'+ Produkt hinzufügen',
+bRevenue:'Umsatz (Preis + berechneter Versand)',bListing:'Einstellgebühr',bTrans:'Transaktionsgebühr',bProc:'Zahlungsabwicklung',bReg:'Regulatorische Betriebsgebühr',bConv:'Währungsumrechnung',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'USt auf Gebühren',bMat:'Material',bLabor:'Arbeit',bPack:'Verpackung',bShipCost:'Gezahlter Versand',bPod:'Print-on-Demand',bOver:'Gemeinkosten',bProfit:'Gewinn',
+s3:'3 · Preisfinder',s3hint:'Gehe vom gewünschten Gewinn aus und erhalte den nötigen Preis. Nutzt die Gebühren oben und die Kosten des gewählten Produkts.',lProduct:'Produkt',lTarget:'Ziel',mAmount:'Gewinn pro Verkauf (Betrag)',mMargin:'Marge (% des Preises)',lTargetV:'Zielwert',lGoal:'Monatliches Gewinnziel',kPrice:'Nötiger Preis',kProfit:'Gewinn bei diesem Preis',kMargin:'Marge bei diesem Preis',kSales:'Nötige Verkäufe pro Monat',
+nCompare:'Im Vergleich zu deinem aktuellen Preis von {price} (Gewinn {profit}). Preise, die auf 9 enden (z. B. {nine}), verkaufen sich meist besser.',nUnreach:'Eine so hohe Marge ist nach Abzug der Gebühren nicht erreichbar.',
+footer:'Alles wird nur in diesem Browser gespeichert. Nutze „Sicherung exportieren“, bevor du Browserdaten löschst oder das Gerät wechselst. Die Gebühren prüfst du im Shop-Manager; die Vorgaben wurden am angezeigten Datum kontrolliert.',
+gTitle:'Drei Schritte und fertig',g1:'Wähle dein Land in Abschnitt 1 und wirf einen Blick auf die Gebührentabelle. Hat Etsy seit dem angezeigten Datum eine Gebühr geändert, korrigiere die Zahl.',g2:'Füge in Abschnitt 2 deine Produkte mit Preis, Versand und Kosten hinzu. Gewinn und Marge aktualisieren sich beim Tippen.',g3:'Nutze den Preisfinder in Abschnitt 3, um vom gewünschten Gewinn rückwärts zu rechnen.',gNote:'Deine Daten werden automatisch in diesem Browser gespeichert. Klicke ab und zu auf „Sicherung exportieren“, um eine Kopie zu behalten. Nichts wird irgendwohin gesendet: Diese Datei funktioniert ohne Internet.',gStart:'Los geht’s',
+tFees:'Gebühren eingestellt für {c}',tBackup:'Sicherung heruntergeladen',tRestored:'Sicherung wiederhergestellt',tBad:'Diese Datei ist keine Sicherung dieser App',tKeep:'Behalte mindestens ein Produkt',tCsv:'CSV heruntergeladen',example:'Beispielprodukt',productN:'Produkt {n}',copy:'(Kopie)',
+csv:['Produkt','Preis','Berechneter Versand','Umsatz','Etsy-Gebühren','Kosten','Gewinn','Marge %'],
+c:{US:'Vereinigte Staaten',ES:'Spanien',FR:'Frankreich',IT:'Italien',DE:'Deutschland',EU:'Anderes EU-Land (Euro)',UK:'Vereinigtes Königreich',CA:'Kanada',AU:'Australien',XX:'Anderes / eigene Werte'}},
+it:{title:'Calcolatore di commissioni e prezzi Etsy',tagline:'Funziona offline · I tuoi dati restano in questo browser · Acquisto unico, senza abbonamento',bGuide:'Guida rapida',bExport:'Esporta backup',bImport:'Importa backup',bCsv:'Esporta CSV',bPrint:'Stampa / PDF',
+s1:'1 · Il tuo negozio',s1hint:'Scegli il tuo paese. Ogni commissione qui sotto è modificabile: verificale in Gestore negozio → Finanze → Commissioni e aggiorna la data. Le commissioni cambiano; l’app non tira mai a indovinare.',lCountry:'Paese del venditore (profilo commissioni)',lCur:'Simbolo della valuta del negozio',lDate:'Commissioni verificate il',lHourly:'La tua tariffa oraria',
+thFee:'Commissione',thFixed:'Fissa',thApplies:'Si applica a',fListing:'Commissione di inserzione',fListingTag:'0,20 USD per inserzione e per vendita',fListingA:'Ogni ordine (le inserzioni multi-quantità si rinnovano a ogni vendita)',fTrans:'Commissione di transazione',fTransA:'Prezzo + spedizione addebitata + confezione regalo',fProc:'Elaborazione del pagamento',fProcA:'Totale dell’ordine, per ordine',fReg:'Commissione operativa regolatoria',fRegA:'Prezzo + spedizione (non addebitata negli USA e in Germania)',fConv:'Conversione di valuta',fConvA:'Solo se la valuta dell’inserzione ≠ valuta di pagamento',
+tagVerified:'verificato',tagCheck:'verifica nel Gestore negozio',lOffsite:'Offsite Ads',oNone:'Non attribuita (vendita organica)',o15:'Attribuita · negozio sotto 10.000 USD/anno · 15 %',o12:'Attribuita · negozio sopra 10.000 USD/anno · 12 %',lCap:'Tetto Offsite Ads per ordine',lEtsyAds:'Etsy Ads (il tuo costo medio per ordine)',lVat:'IVA sulle commissioni Etsy',lConvOn:'Applica la commissione di conversione valuta',
+s1note:'Le Offsite Ads si calcolano sull’intero ordine (prezzo + spedizione + confezione regalo): per questo riducono il margine più della percentuale dichiarata. Etsy Ads è pay-per-click: inserisci quanto spendi davvero per ogni ordine ottenuto (Gestore → Marketing → Etsy Ads → costo ÷ ordini). L’IVA sulle commissioni riguarda i venditori UE e UK senza partita IVA.',
+s2:'2 · I tuoi prodotti',s2hint:'Aggiungi ogni prodotto che vendi. Inserisci quanto fai pagare e quanto ti costa; l’app mostra commissioni, profitto e margine per vendita. Verde ≥ 25 % di margine, ambra 10–25 %, rosso sotto il 10 % o perdita.',pName:'Nome del prodotto',pPrice:'Prezzo che fai pagare',pShip:'Spedizione che fai pagare',pMat:'Materiali / costo del prodotto',pHours:'Ore di lavoro',pPack:'Imballaggio',pShipCost:'Spedizione che paghi davvero',pPod:'Costo print-on-demand (Printify, Printful…)',pOver:'Spese generali per unità (strumenti, canoni, software)',
+rProfit:'Profitto',rLoss:'Perdita',rPerSale:'per vendita',rFees:'Commissioni',rCosts:'Costi',rReceive:'Ricevi',rBreak:'Dettaglio di commissioni e costi',bDup:'Duplica',bDel:'Elimina',bAdd:'+ Aggiungi prodotto',
+bRevenue:'Ricavi (prezzo + spedizione addebitata)',bListing:'Inserzione',bTrans:'Transazione',bProc:'Elaborazione del pagamento',bReg:'Commissione operativa regolatoria',bConv:'Conversione di valuta',bOffsite:'Offsite Ads',bEtsyAds:'Etsy Ads',bVat:'IVA sulle commissioni',bMat:'Materiali',bLabor:'Manodopera',bPack:'Imballaggio',bShipCost:'Spedizione pagata',bPod:'Print-on-demand',bOver:'Spese generali',bProfit:'Profitto',
+s3:'3 · Trova prezzo',s3hint:'Parti dal profitto che vuoi e ottieni il prezzo necessario. Usa le commissioni sopra e i costi del prodotto scelto.',lProduct:'Prodotto',lTarget:'Obiettivo',mAmount:'Profitto per vendita (importo)',mMargin:'Margine (% del prezzo)',lTargetV:'Valore obiettivo',lGoal:'Obiettivo di profitto mensile',kPrice:'Prezzo necessario',kProfit:'Profitto a quel prezzo',kMargin:'Margine a quel prezzo',kSales:'Vendite necessarie al mese',
+nCompare:'Rispetto al tuo prezzo attuale di {price} (profitto {profit}). I prezzi che finiscono in 9 (es. {nine}) di solito convertono meglio.',nUnreach:'Un margine così alto non è raggiungibile una volta sottratte le commissioni.',
+footer:'Tutto viene salvato solo in questo browser. Usa "Esporta backup" prima di cancellare i dati del browser o cambiare dispositivo. Le commissioni vanno verificate nel Gestore negozio; quelle predefinite sono state controllate alla data indicata.',
+gTitle:'Tre passi ed è fatta',g1:'Scegli il tuo paese nella sezione 1 e dai un’occhiata alla tabella delle commissioni. Se Etsy ne ha cambiata una dopo la data indicata, correggi il numero.',g2:'Aggiungi i tuoi prodotti nella sezione 2 con prezzo, spedizione e costi. Profitto e margine si aggiornano mentre scrivi.',g3:'Usa il trova prezzo della sezione 3 per partire dal profitto che vuoi.',gNote:'I tuoi dati vengono salvati automaticamente in questo browser. Premi "Esporta backup" ogni tanto per conservarne una copia. Nulla viene inviato da nessuna parte: questo file funziona senza internet.',gStart:'Inizia',
+tFees:'Commissioni impostate per {c}',tBackup:'Backup scaricato',tRestored:'Backup ripristinato',tBad:'Quel file non è un backup di questa app',tKeep:'Mantieni almeno un prodotto',tCsv:'CSV scaricato',example:'Prodotto di esempio',productN:'Prodotto {n}',copy:'(copia)',
+csv:['Prodotto','Prezzo','Spedizione addebitata','Ricavi','Commissioni Etsy','Costi','Profitto','Margine %'],
+c:{US:'Stati Uniti',ES:'Spagna',FR:'Francia',IT:'Italia',DE:'Germania',EU:'Altro paese UE (euro)',UK:'Regno Unito',CA:'Canada',AU:'Australia',XX:'Altro / personalizzato'}}
 };
 const KEY = 'etsyFeeCalc.v1';
 const $ = id => document.getElementById(id);
 const n = v => { const x = parseFloat(v); return isFinite(x) ? x : 0; };
+let L = I18N.en;
+const t = (k, vars) => { let s = (L[k] !== undefined ? L[k] : I18N.en[k]); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
 
-const defaultProduct = () => ({id: Date.now() + Math.random(), name:'', price:25, ship:0, mat:5, hours:0.5, pack:0.5, shipcost:0, pod:0, over:0, note:''});
+const defaultProduct = () => ({id: Date.now() + Math.random(), name:'', price:25, ship:0, mat:5, hours:0.5, pack:0.5, shipcost:0, pod:0, over:0});
 let S = {
-  country:'US', cur:'$', feeDate:VERIFIED, hourly:15,
+  lang:'', country:'US', cur:'$', feeDate:VERIFIED, hourly:15,
   listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, conv:2.5, convOn:false,
   offsite:'none', offcap:100, etsyads:0, vatOn:false, vat:0,
   products:[], seen:false
 };
 
-function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); S=Object.assign(S,o); } }catch(e){} if(!S.products.length){ const p=defaultProduct(); p.name='Example product'; S.products.push(p);} }
+function detectLang(){ const b=(navigator.language||'en').slice(0,2).toLowerCase(); return I18N[b] ? b : 'en'; }
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); S=Object.assign(S,o); } }catch(e){} if(!S.lang) S.lang=detectLang(); L=I18N[S.lang]||I18N.en; if(!S.products.length){ const p=defaultProduct(); p.name=t('example'); S.products.push(p);} }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); }
+function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._h); el._h=setTimeout(()=>el.classList.remove('show'),1800); }
 const money = v => S.cur + (Math.round(v*100)/100).toFixed(2);
 const pct = v => (Math.round(v*10)/10).toFixed(1)+'%';
 
 // ---- core calculation ----
 function fees(price, ship){
-  const total = price + ship;
-  const f = {};
-  f.listing = S.listing;
-  f.trans = total * S.trans/100;
-  f.proc = total * S.proc/100 + S.procfix;
-  f.reg = total * S.reg/100;
+  const total = price + ship; const f = {};
+  f.listing = S.listing; f.trans = total * S.trans/100; f.proc = total * S.proc/100 + S.procfix; f.reg = total * S.reg/100;
   f.conv = S.convOn ? total * S.conv/100 : 0;
   f.offsite = S.offsite==='none' ? 0 : Math.min(total * n(S.offsite)/100, S.offcap);
   f.etsyads = S.etsyads;
   const sub = f.listing+f.trans+f.proc+f.reg+f.conv+f.offsite+f.etsyads;
-  f.vat = S.vatOn ? sub * S.vat/100 : 0;
-  f.total = sub + f.vat;
-  return f;
+  f.vat = S.vatOn ? sub * S.vat/100 : 0; f.total = sub + f.vat; return f;
 }
-function costs(p){
-  const c = {};
-  c.mat = p.mat; c.labor = p.hours * S.hourly; c.pack = p.pack; c.shipcost = p.shipcost; c.pod = p.pod; c.over = p.over;
-  c.total = c.mat+c.labor+c.pack+c.shipcost+c.pod+c.over;
-  return c;
-}
+function costs(p){ const c = {mat:p.mat, labor:p.hours*S.hourly, pack:p.pack, shipcost:p.shipcost, pod:p.pod, over:p.over}; c.total = c.mat+c.labor+c.pack+c.shipcost+c.pod+c.over; return c; }
 function calc(p, priceOverride){
   const price = priceOverride!==undefined ? priceOverride : p.price;
-  const f = fees(price, p.ship), c = costs(p);
-  const revenue = price + p.ship;
-  const profit = revenue - f.total - c.total;
-  const margin = price>0 ? profit/price*100 : 0;
+  const f = fees(price, p.ship), c = costs(p); const revenue = price + p.ship;
+  const profit = revenue - f.total - c.total; const margin = price>0 ? profit/price*100 : 0;
   return {price, revenue, f, c, profit, margin};
 }
 function priceFor(p, mode, target){
-  // bisection on price; profit is monotonic increasing in price
   let lo=0, hi=10000;
-  for(let i=0;i<60;i++){
-    const mid=(lo+hi)/2, r=calc(p, mid);
-    const ok = mode==='amount' ? r.profit>=target : r.margin>=target;
-    if(ok) hi=mid; else lo=mid;
-  }
+  for(let i=0;i<60;i++){ const mid=(lo+hi)/2, r=calc(p, mid); const ok = mode==='amount' ? r.profit>=target : r.margin>=target; if(ok) hi=mid; else lo=mid; }
   return Math.ceil(hi*100)/100;
 }
 function badge(m, profit){ if(profit<0||m<10) return 'bad'; if(m<25) return 'warn'; return 'ok'; }
 
-// ---- render ----
-function fillCountries(){ const s=$('country'); s.innerHTML=''; for(const k in PROFILES){ const o=document.createElement('option'); o.value=k; o.textContent=PROFILES[k].name; s.appendChild(o);} }
+// ---- i18n render ----
+function applyLang(){
+  L = I18N[S.lang]||I18N.en; document.documentElement.lang=S.lang; document.title=t('title');
+  document.querySelectorAll('[data-i]').forEach(el=>{ el.textContent=t(el.dataset.i); });
+  $('lang').value=S.lang;
+  const cs=$('country'); const cur=cs.value||S.country; cs.innerHTML=''; for(const k in PROFILES){ const o=document.createElement('option'); o.value=k; o.textContent=t('c')[k]; cs.appendChild(o);} cs.value=cur;
+  renderShopTag();
+}
 function applyProfile(k){ const p=PROFILES[k]; S.country=k; S.cur=p.cur; S.listing=p.listing; S.trans=p.trans; S.proc=p.proc; S.procfix=p.procfix; S.reg=p.reg; S.vat=p.vat; S.vatOn=false; S.feeDate = p.verified? VERIFIED : ''; }
+function renderShopTag(){ const v = PROFILES[S.country] && PROFILES[S.country].verified; const el=$('regTag'); el.textContent = v ? t('tagVerified')+' '+VERIFIED : t('tagCheck'); el.className = 'tag'+(v?'':' warn'); }
 function renderShop(){
   $('country').value=S.country; $('cur').value=S.cur; $('feeDate').value=S.feeDate; $('hourly').value=S.hourly;
   $('f_listing').value=S.listing; $('f_trans').value=S.trans; $('f_proc').value=S.proc; $('f_procfix').value=S.procfix; $('f_reg').value=S.reg; $('f_conv').value=S.conv;
   $('offsite').value=S.offsite; $('f_offcap').value=S.offcap; $('f_etsyads').value=S.etsyads; $('vatOn').checked=S.vatOn; $('f_vat').value=S.vat; $('convOn').checked=S.convOn;
-  const v = PROFILES[S.country] && PROFILES[S.country].verified;
-  const t=$('regTag'); t.textContent = v ? 'verified '+VERIFIED : 'check in Shop Manager'; t.className = 'tag'+(v?'':' warn');
-}
-function productCard(p){
-  const el=document.createElement('div'); el.className='product'; el.dataset.id=p.id;
-  el.innerHTML = `
-    <div class="top"><input type="text" data-k="name" placeholder="Product name" value="${esc(p.name)}"></div>
-    <div class="fields">
-      <div><label>Price you charge</label><input type="number" data-k="price" step="0.01" min="0" value="${p.price}"></div>
-      <div><label>Shipping you charge</label><input type="number" data-k="ship" step="0.01" min="0" value="${p.ship}"></div>
-      <div><label>Materials / cost of goods</label><input type="number" data-k="mat" step="0.01" min="0" value="${p.mat}"></div>
-      <div><label>Hours of work</label><input type="number" data-k="hours" step="0.05" min="0" value="${p.hours}"></div>
-      <div><label>Packaging</label><input type="number" data-k="pack" step="0.01" min="0" value="${p.pack}"></div>
-      <div><label>Shipping you actually pay</label><input type="number" data-k="shipcost" step="0.01" min="0" value="${p.shipcost}"></div>
-      <div><label>Print-on-demand cost (Printify, Printful…)</label><input type="number" data-k="pod" step="0.01" min="0" value="${p.pod}"></div>
-      <div><label>Overhead per unit (tools, fees, software)</label><input type="number" data-k="over" step="0.01" min="0" value="${p.over}"></div>
-    </div>
-    <div class="result" data-r="box"><div><span data-r="profit"></span><small data-r="sub"></small></div><div data-r="margin"></div></div>
-    <details><summary>Fee and cost breakdown</summary><div class="breakdown" data-r="bd"></div></details>
-    <div class="actions"><button data-a="dup">Duplicate</button><button data-a="del" class="danger">Delete</button></div>`;
-  return el;
+  renderShopTag();
 }
 function esc(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function productCard(p){
+  const el=document.createElement('div'); el.className='product'; el.dataset.id=p.id;
+  const f=(k,key,step)=>`<div><label>${t(key)}</label><input type="number" data-k="${k}" step="${step}" min="0" value="${p[k]}"></div>`;
+  el.innerHTML = `
+    <div class="top"><input type="text" data-k="name" placeholder="${esc(t('pName'))}" value="${esc(p.name)}"></div>
+    <div class="fields">${f('price','pPrice','0.01')}${f('ship','pShip','0.01')}${f('mat','pMat','0.01')}${f('hours','pHours','0.05')}${f('pack','pPack','0.01')}${f('shipcost','pShipCost','0.01')}${f('pod','pPod','0.01')}${f('over','pOver','0.01')}</div>
+    <div class="result" data-r="box"><div><span data-r="profit"></span><small data-r="sub"></small></div><div data-r="margin"></div></div>
+    <details><summary>${t('rBreak')}</summary><div class="breakdown" data-r="bd"></div></details>
+    <div class="actions"><button data-a="dup">${t('bDup')}</button><button data-a="del" class="danger">${t('bDel')}</button></div>`;
+  return el;
+}
 function renderProducts(){ const c=$('cards'); c.innerHTML=''; S.products.forEach(p=>c.appendChild(productCard(p))); updateAll(); }
 function updateCard(el, p){
   const r=calc(p), b=badge(r.margin, r.profit);
-  const box=el.querySelector('[data-r=box]'); box.className='result '+b;
-  el.querySelector('[data-r=profit]').textContent = (r.profit<0?'Loss ':'Profit ')+money(Math.abs(r.profit))+' per sale';
-  el.querySelector('[data-r=sub]').textContent = 'Fees '+money(r.f.total)+' · Costs '+money(r.c.total)+' · You receive '+money(r.revenue-r.f.total);
+  el.querySelector('[data-r=box]').className='result '+b;
+  el.querySelector('[data-r=profit]').textContent = (r.profit<0?t('rLoss'):t('rProfit'))+' '+money(Math.abs(r.profit))+' '+t('rPerSale');
+  el.querySelector('[data-r=sub]').textContent = t('rFees')+' '+money(r.f.total)+' · '+t('rCosts')+' '+money(r.c.total)+' · '+t('rReceive')+' '+money(r.revenue-r.f.total);
   el.querySelector('[data-r=margin]').textContent = pct(r.margin);
-  const f=r.f, c=r.c, rows=[
-    ['Revenue (price + shipping charged)', r.revenue],
-    ['Listing fee', -f.listing],['Transaction fee '+pct(S.trans), -f.trans],['Payment processing', -f.proc]];
-  if(f.reg) rows.push(['Regulatory operating fee', -f.reg]);
-  if(f.conv) rows.push(['Currency conversion', -f.conv]);
-  if(f.offsite) rows.push(['Offsite Ads', -f.offsite]);
-  if(f.etsyads) rows.push(['Etsy Ads', -f.etsyads]);
-  if(f.vat) rows.push(['VAT on fees', -f.vat]);
-  rows.push(['Materials', -c.mat]); if(c.labor) rows.push(['Labor ('+p.hours+' h × '+money(S.hourly)+')', -c.labor]);
-  if(c.pack) rows.push(['Packaging', -c.pack]); if(c.shipcost) rows.push(['Shipping paid', -c.shipcost]); if(c.pod) rows.push(['Print-on-demand', -c.pod]); if(c.over) rows.push(['Overhead', -c.over]);
-  const bd=el.querySelector('[data-r=bd]');
-  bd.innerHTML = rows.map(x=>`<div><span>${x[0]}</span><span>${x[1]<0?'−':''}${money(Math.abs(x[1]))}</span></div>`).join('') + `<div class="total"><span>Profit</span><span>${money(r.profit)}</span></div>`;
+  const f=r.f, c=r.c, rows=[[t('bRevenue'), r.revenue],[t('bListing'), -f.listing],[t('bTrans')+' '+pct(S.trans), -f.trans],[t('bProc'), -f.proc]];
+  if(f.reg) rows.push([t('bReg'), -f.reg]); if(f.conv) rows.push([t('bConv'), -f.conv]); if(f.offsite) rows.push([t('bOffsite'), -f.offsite]); if(f.etsyads) rows.push([t('bEtsyAds'), -f.etsyads]); if(f.vat) rows.push([t('bVat'), -f.vat]);
+  rows.push([t('bMat'), -c.mat]); if(c.labor) rows.push([t('bLabor')+' ('+p.hours+' h × '+money(S.hourly)+')', -c.labor]);
+  if(c.pack) rows.push([t('bPack'), -c.pack]); if(c.shipcost) rows.push([t('bShipCost'), -c.shipcost]); if(c.pod) rows.push([t('bPod'), -c.pod]); if(c.over) rows.push([t('bOver'), -c.over]);
+  el.querySelector('[data-r=bd]').innerHTML = rows.map(x=>`<div><span>${esc(x[0])}</span><span>${x[1]<0?'−':''}${money(Math.abs(x[1]))}</span></div>`).join('') + `<div class="total"><span>${t('bProfit')}</span><span>${money(r.profit)}</span></div>`;
 }
 function updateAll(){ document.querySelectorAll('.product').forEach(el=>{ const p=S.products.find(x=>String(x.id)===el.dataset.id); if(p) updateCard(el,p); }); renderReverseOptions(); updateReverse(); save(); }
-function renderReverseOptions(){ const s=$('rvProduct'); const cur=s.value; s.innerHTML=''; S.products.forEach((p,i)=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name||('Product '+(i+1)); s.appendChild(o); }); if([...s.options].some(o=>o.value===cur)) s.value=cur; }
+function renderReverseOptions(){ const s=$('rvProduct'); const cur=s.value; s.innerHTML=''; S.products.forEach((p,i)=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name||t('productN',{n:i+1}); s.appendChild(o); }); if([...s.options].some(o=>o.value===cur)) s.value=cur; }
 function updateReverse(){
-  const p=S.products.find(x=>String(x.id)===$('rvProduct').value); if(!p){ return; }
+  const p=S.products.find(x=>String(x.id)===$('rvProduct').value); if(!p) return;
   const mode=$('rvMode').value, target=n($('rvTarget').value), goal=n($('rvGoal').value);
-  if(mode==='margin' && target>=95){ $('rvNote').textContent='A margin that high is not reachable once fees are taken into account.'; return; }
+  if(mode==='margin' && target>=95){ $('rvNote').textContent=t('nUnreach'); return; }
   const price=priceFor(p, mode, target), r=calc(p, price);
   $('rvPrice').textContent=money(price); $('rvProfit').textContent=money(r.profit); $('rvMargin').textContent=pct(r.margin);
   $('rvSales').textContent = r.profit>0 ? Math.ceil(goal/r.profit) : '–';
-  $('rvNote').textContent = 'Compared with your current price of '+money(p.price)+' (profit '+money(calc(p).profit)+'). Prices ending in 9 (e.g. '+money(Math.max(price, Math.ceil(price)-0.01))+') tend to convert better in the US market.';
+  $('rvNote').textContent = t('nCompare',{price:money(p.price), profit:money(calc(p).profit), nine:money(Math.max(price, Math.ceil(price)-0.01))});
 }
 
 // ---- events ----
 function bindShop(){
-  $('country').addEventListener('change', e=>{ applyProfile(e.target.value); renderShop(); updateAll(); toast('Fees set for '+PROFILES[S.country].name); });
+  $('lang').addEventListener('change', e=>{ S.lang=e.target.value; applyLang(); renderProducts(); });
+  $('country').addEventListener('change', e=>{ applyProfile(e.target.value); renderShop(); updateAll(); toast(t('tFees',{c:t('c')[S.country]})); });
   const map={cur:'cur',feeDate:'feeDate',hourly:'hourly',f_listing:'listing',f_trans:'trans',f_proc:'proc',f_procfix:'procfix',f_reg:'reg',f_conv:'conv',f_offcap:'offcap',f_etsyads:'etsyads',f_vat:'vat'};
   for(const id in map){ $(id).addEventListener('input', e=>{ const k=map[id]; S[k] = (id==='cur'||id==='feeDate') ? e.target.value : n(e.target.value); updateAll(); }); }
   $('offsite').addEventListener('change', e=>{ S.offsite=e.target.value; updateAll(); });
@@ -326,27 +383,26 @@ $('cards').addEventListener('input', e=>{
 });
 $('cards').addEventListener('click', e=>{
   const b=e.target.closest('button'); if(!b) return; const el=b.closest('.product'); const i=S.products.findIndex(x=>String(x.id)===el.dataset.id); if(i<0) return;
-  if(b.dataset.a==='del'){ if(S.products.length===1){ toast('Keep at least one product'); return; } S.products.splice(i,1); renderProducts(); }
-  if(b.dataset.a==='dup'){ const c=Object.assign({}, S.products[i], {id:Date.now()+Math.random(), name:(S.products[i].name||'Product')+' (copy)'}); S.products.splice(i+1,0,c); renderProducts(); }
+  if(b.dataset.a==='del'){ if(S.products.length===1){ toast(t('tKeep')); return; } S.products.splice(i,1); renderProducts(); }
+  if(b.dataset.a==='dup'){ const c=Object.assign({}, S.products[i], {id:Date.now()+Math.random(), name:(S.products[i].name||t('productN',{n:i+1}))+' '+t('copy')}); S.products.splice(i+1,0,c); renderProducts(); }
 });
-$('btnAdd').addEventListener('click', ()=>{ S.products.push(defaultProduct()); renderProducts(); const last=$('cards').lastElementChild; last.querySelector('input[type=text]').focus(); });
+$('btnAdd').addEventListener('click', ()=>{ S.products.push(defaultProduct()); renderProducts(); $('cards').lastElementChild.querySelector('input[type=text]').focus(); });
 $('btnGuide').addEventListener('click', ()=>{ $('guide').hidden=false; });
 $('btnGuideClose').addEventListener('click', ()=>{ $('guide').hidden=true; S.seen=true; save(); });
 $('btnPrint').addEventListener('click', ()=>window.print());
-$('btnExport').addEventListener('click', ()=>{ download('etsy-fee-calculator-backup.json', JSON.stringify(S,null,2), 'application/json'); toast('Backup downloaded'); });
+$('btnExport').addEventListener('click', ()=>{ download('etsy-fee-calculator-backup.json', JSON.stringify(S,null,2), 'application/json'); toast(t('tBackup')); });
 $('btnImport').addEventListener('click', ()=>$('fileImport').click());
-$('fileImport').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.products)) throw 0; S=Object.assign(S,o); renderShop(); renderProducts(); toast('Backup restored'); }catch(err){ toast('That file is not a backup from this app'); } }; r.readAsText(f); e.target.value=''; });
+$('fileImport').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.products)) throw 0; S=Object.assign(S,o); applyLang(); renderShop(); renderProducts(); toast(t('tRestored')); }catch(err){ toast(t('tBad')); } }; r.readAsText(f); e.target.value=''; });
 $('btnCsv').addEventListener('click', ()=>{
-  const head=['Product','Price','Shipping charged','Revenue','Etsy fees','Costs','Profit','Margin %'];
   const rows=S.products.map(p=>{ const r=calc(p); return [p.name, r.price, p.ship, r.revenue, r.f.total, r.c.total, r.profit, r.margin].map((v,i)=> i===0 ? '"'+String(v).replace(/"/g,'""')+'"' : (Math.round(v*100)/100)); });
-  download('etsy-products.csv', [head.join(','), ...rows.map(r=>r.join(','))].join('\n'), 'text/csv'); toast('CSV downloaded');
+  download('etsy-products.csv', [t('csv').join(','), ...rows.map(r=>r.join(','))].join('\n'), 'text/csv'); toast(t('tCsv'));
 });
 function download(name, text, type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
 
 // ---- boot ----
-load(); fillCountries(); renderShop(); bindShop(); renderProducts();
+load(); applyLang(); renderShop(); bindShop(); renderProducts();
 if(!S.seen) $('guide').hidden=false;
-window.__calc = {calc, fees, priceFor, state:()=>S}; // for tests
+window.__calc = {calc, fees, priceFor, state:()=>S, t};
 })();
 </script>
 </body>
