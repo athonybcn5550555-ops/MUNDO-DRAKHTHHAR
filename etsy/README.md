@@ -14,6 +14,7 @@ Documentación de trabajo para lanzar y operar la tienda de Etsy
 | `07-investigacion-mercado.md` | Investigación de mercado del nicho de software y herramientas digitales en Etsy EE. UU. (sept. 2026), con fuentes. |
 | `08-protocolo-campo.md` | Cómo capturar desde tu navegador resultados y reseñas de Etsy para que yo los analice. |
 | `herramientas/parsear_listing.py` | Extrae título, precio, valoración y reseñas de páginas de listing guardadas como HTML. |
+| `09-cinco-productos.md` | Los 5 productos elegidos: competencia, quejas con fuente, y en qué seremos mejores. |
 | `calculadora_precio.py` | Script que calcula el neto por venta con las comisiones de Etsy (España o EE. UU.). |
 
 Orden de trabajo recomendado: leer `01`, tomar las decisiones pendientes que
