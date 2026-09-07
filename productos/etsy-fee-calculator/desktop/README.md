@@ -3,10 +3,17 @@
 Empaqueta `../index.html` como aplicación nativa con icono propio, ventana
 propia y entrada en el menú Inicio o en Aplicaciones.
 
-| Plataforma | Salida | Tamaño aproximado |
+| Plataforma | Salida | Tamaño del paquete |
 |---|---|---|
-| Windows 10/11 | `Fee and Price Calculator_1.4.0_x64-setup.exe` (NSIS, instala para el usuario actual, sin permisos de administrador) | pocos MB |
-| macOS 10.15+ | `Fee and Price Calculator_1.4.0_universal.dmg` (Intel y Apple Silicon) | pocos MB |
+| Windows 10/11 | `.exe` NSIS, instala para el usuario actual, sin permisos de administrador | 1,2 MB |
+| macOS 10.15+ | `.dmg` universal (Intel y Apple Silicon) | 4,1 MB |
+
+## Primera compilación verificada
+
+Ejecución 34107539434 del 7 de septiembre de 2026, commit `e36f5a1`:
+ambos trabajos completados con éxito a la primera. Windows tardó 4 min 29 s
+y macOS 6 min 32 s. Los instaladores quedan en "Artifacts" de esa ejecución
+durante 90 días.
 
 ## Cómo se compila
 
