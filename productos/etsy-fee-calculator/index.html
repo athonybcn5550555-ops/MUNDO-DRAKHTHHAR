@@ -573,7 +573,15 @@ $('btnXlsx').addEventListener('click', ()=>{
   const rows=S.products.map(p=>{ const r=calc(p);
     return [{v:p.name||''},{v:r2(r.price),s:2},{v:r2(p.digital?0:p.ship),s:2},{v:r2(r.revenue),s:2},
             {v:r2(r.f.total),s:2},{v:r2(r.c.total),s:2},{v:r2(r.profit),s:2},{v:r2(r.margin),s:3}]; });
-  download('etsy-products.xlsx', buildXlsx(headers, rows, [34,12,12,12,14,12,12,10], t('xSheet')), '');
+  // Ancho por columna: el texto más largo de la cabecera o de los datos, con margen para la flecha del filtro.
+  const widths = headers.map((h,i)=>{
+    let n = String(h).length + 4;                       // + espacio para el botón de filtro
+    rows.forEach(r=>{ const v=r[i].v;
+      const len = typeof v==='number' ? (Math.round(v*100)/100).toFixed(2).length + 1 : String(v||'').length;
+      if(len+2 > n) n = len+2; });
+    return Math.min(46, Math.max(10, n));
+  });
+  download('etsy-products.xlsx', buildXlsx(headers, rows, widths, t('xSheet')), '');
   toast(t('tXlsx'));
 });
 $('btnCsv').addEventListener('click', ()=>{
