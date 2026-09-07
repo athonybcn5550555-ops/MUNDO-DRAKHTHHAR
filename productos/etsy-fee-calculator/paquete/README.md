@@ -1,8 +1,8 @@
-# Paquete de venta · Fee & Price Calculator v1.6
+# Paquete de venta · Fee & Price Calculator v1.7
 
 | Archivo | Qué es |
 |---|---|
-| `Fee-Price-Calculator-v1.6.zip` | **Lo que se sube a Etsy.** 139 KB. Contiene la app, la guía y la licencia. |
+| `Fee-Price-Calculator-v1.7.zip` | **Lo que se sube a Etsy.** 145 KB. Contiene la app, la guía y la licencia. |
 | `Start-Here.pdf` | Guía de inicio rápido, una página por idioma (inglés, español, francés, alemán, italiano). El manual completo va dentro de la propia app. |
 | `LICENSE.txt` | Licencia de uso en inglés y español. |
 | `SHA256.txt` | Hash del ZIP, para publicarlo en el listing y que el comprador pueda verificar el archivo. |

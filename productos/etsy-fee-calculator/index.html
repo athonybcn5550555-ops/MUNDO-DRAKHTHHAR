@@ -128,6 +128,7 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
       <button id="btnExport" data-i="bExport"></button>
       <button id="btnImport" data-i="bImport"></button>
       <button id="btnCsv" data-i="bCsv"></button>
+      <button id="btnXlsx" data-i="bXlsx"></button>
       <button id="btnPrint" data-i="bPrint"></button>
     </div>
   </div>
@@ -247,7 +248,7 @@ const PROFILES = {
   XX: {cur:'$', listing:0.20, trans:6.5, proc:3, procfix:0.25, reg:0, vat:0, verified:false},
 };
 const I18N = {
-en:{mPause:"Pause",mResume:"Continue",mListenShort:"Listen",mStopShort:"Stop",mMin:"Minimise",mMax:"Expand",mNow:"Reading: ",bManual:"User guide",mTitle:"User guide",mListenAll:"Listen to the whole guide",mClose:"Close",mSection:"Listen to this section",bListen:'Listen to the guide',bStop:'Stop reading',pDigital:'Digital product (no shipping, no packaging)',title:'Fee & Price Calculator',tagline:'For Etsy sellers · Works offline · Your data stays in this browser · One-time purchase, no subscription',bGuide:'Quick guide',bExport:'Export backup',bImport:'Import backup',bCsv:'Export CSV',bPrint:'Print / PDF',
+en:{bXlsx:"Export Excel",tXlsx:"Excel file downloaded",xSheet:"Products",mPause:"Pause",mResume:"Continue",mListenShort:"Listen",mStopShort:"Stop",mMin:"Minimise",mMax:"Expand",mNow:"Reading: ",bManual:"User guide",mTitle:"User guide",mListenAll:"Listen to the whole guide",mClose:"Close",mSection:"Listen to this section",bListen:'Listen to the guide',bStop:'Stop reading',pDigital:'Digital product (no shipping, no packaging)',title:'Fee & Price Calculator',tagline:'For Etsy sellers · Works offline · Your data stays in this browser · One-time purchase, no subscription',bGuide:'Quick guide',bExport:'Export backup',bImport:'Import backup',bCsv:'Export CSV',bPrint:'Print / PDF',
 s1:'1 · Your shop',s1hint:'Pick your country. Every fee below is editable: check them in Shop Manager → Finances → Fees and update the date. Fees change; the app never guesses.',lCountry:'Seller country (fee profile)',lCur:'Shop currency symbol',lDate:'Fees last verified on',lHourly:'Hourly rate for your labor',
 thFee:'Fee',thFixed:'Fixed',thApplies:'Applies to',fListing:'Listing fee',fListingTag:'USD 0.20 per listing and per sale',fListingA:'Each order (multi-quantity listings renew on every sale)',fTrans:'Transaction fee',fTransA:'Price + shipping charged + gift wrap',fProc:'Payment processing',fProcA:'Order total, per order',fReg:'Regulatory operating fee',fRegA:'Price + shipping (not charged in the US or Germany)',fConv:'Currency conversion',fConvA:'Only if listing currency ≠ payout currency',
 tagVerified:'verified',tagCheck:'check in Shop Manager',lOffsite:'Offsite Ads',oNone:'Not attributed (organic sale)',o15:'Attributed · shop under USD 10k/yr · 15%',o12:'Attributed · shop over USD 10k/yr · 12%',lCap:'Offsite Ads cap per order',lEtsyAds:'Etsy Ads (your average cost per order)',lVat:'VAT charged on Etsy fees',lConvOn:'Apply currency conversion fee',
@@ -262,7 +263,7 @@ gTitle:"Three steps and you're done",g1:'Pick your country in section 1 and glan
 tFees:'Fees set for {c}',tBackup:'Backup downloaded',tRestored:'Backup restored',tBad:'That file is not a backup from this app',tKeep:'Keep at least one product',tCsv:'CSV downloaded',example:'Example product',productN:'Product {n}',copy:'(copy)',
 csv:['Product','Price','Shipping charged','Revenue','Etsy fees','Costs','Profit','Margin %'],
 c:{US:'United States',ES:'Spain',FR:'France',IT:'Italy',DE:'Germany',EU:'Other EU (euro)',UK:'United Kingdom',CA:'Canada',AU:'Australia',XX:'Other / custom'}},
-es:{mPause:"Pausa",mResume:"Continuar",mListenShort:"Escuchar",mStopShort:"Parar",mMin:"Minimizar",mMax:"Ampliar",mNow:"Leyendo: ",bManual:"Manual de uso",mTitle:"Manual de uso",mListenAll:"Escuchar el manual entero",mClose:"Cerrar",mSection:"Escuchar esta sección",bListen:'Escuchar la guía',bStop:'Dejar de leer',pDigital:'Producto digital (sin envío ni embalaje)',title:'Calculadora de comisiones y precios',tagline:'Para vendedores de Etsy · Funciona sin conexión · Tus datos se quedan en este navegador · Pago único, sin suscripción',bGuide:'Guía rápida',bExport:'Exportar copia',bImport:'Importar copia',bCsv:'Exportar CSV',bPrint:'Imprimir / PDF',
+es:{bXlsx:"Exportar Excel",tXlsx:"Archivo de Excel descargado",xSheet:"Productos",mPause:"Pausa",mResume:"Continuar",mListenShort:"Escuchar",mStopShort:"Parar",mMin:"Minimizar",mMax:"Ampliar",mNow:"Leyendo: ",bManual:"Manual de uso",mTitle:"Manual de uso",mListenAll:"Escuchar el manual entero",mClose:"Cerrar",mSection:"Escuchar esta sección",bListen:'Escuchar la guía',bStop:'Dejar de leer',pDigital:'Producto digital (sin envío ni embalaje)',title:'Calculadora de comisiones y precios',tagline:'Para vendedores de Etsy · Funciona sin conexión · Tus datos se quedan en este navegador · Pago único, sin suscripción',bGuide:'Guía rápida',bExport:'Exportar copia',bImport:'Importar copia',bCsv:'Exportar CSV',bPrint:'Imprimir / PDF',
 s1:'1 · Tu tienda',s1hint:'Elige tu país. Todas las comisiones son editables: compruébalas en Administrador de tienda → Finanzas → Comisiones y actualiza la fecha. Las comisiones cambian; la app nunca las adivina.',lCountry:'País del vendedor (perfil de comisiones)',lCur:'Símbolo de moneda de la tienda',lDate:'Comisiones verificadas el',lHourly:'Tu tarifa por hora de trabajo',
 thFee:'Comisión',thFixed:'Fija',thApplies:'Se aplica a',fListing:'Publicación',fListingTag:'0,20 USD por anuncio y por venta',fListingA:'Cada pedido (los anuncios con varias unidades se renuevan en cada venta)',fTrans:'Transacción',fTransA:'Precio + envío cobrado + envoltorio',fProc:'Procesamiento del pago',fProcA:'Total del pedido, por pedido',fReg:'Tasa operativa regulatoria',fRegA:'Precio + envío (no se cobra en EE. UU. ni Alemania)',fConv:'Conversión de moneda',fConvA:'Solo si la moneda del anuncio ≠ moneda de cobro',
 tagVerified:'verificado',tagCheck:'comprobar en el Administrador',lOffsite:'Offsite Ads',oNone:'No atribuida (venta orgánica)',o15:'Atribuida · tienda por debajo de 10 000 USD/año · 15 %',o12:'Atribuida · tienda por encima de 10 000 USD/año · 12 %',lCap:'Tope de Offsite Ads por pedido',lEtsyAds:'Etsy Ads (tu coste medio por pedido)',lVat:'IVA sobre las comisiones de Etsy',lConvOn:'Aplicar comisión de conversión de moneda',
@@ -277,7 +278,7 @@ gTitle:'Tres pasos y listo',g1:'Elige tu país en la sección 1 y echa un vistaz
 tFees:'Comisiones configuradas para {c}',tBackup:'Copia descargada',tRestored:'Copia restaurada',tBad:'Ese archivo no es una copia de esta app',tKeep:'Conserva al menos un producto',tCsv:'CSV descargado',example:'Producto de ejemplo',productN:'Producto {n}',copy:'(copia)',
 csv:['Producto','Precio','Envío cobrado','Ingresos','Comisiones Etsy','Costes','Beneficio','Margen %'],
 c:{US:'Estados Unidos',ES:'España',FR:'Francia',IT:'Italia',DE:'Alemania',EU:'Otro país de la UE (euro)',UK:'Reino Unido',CA:'Canadá',AU:'Australia',XX:'Otro / personalizado'}},
-fr:{mPause:"Pause",mResume:"Continuer",mListenShort:"Écouter",mStopShort:"Arrêter",mMin:"Réduire",mMax:"Agrandir",mNow:"Lecture : ",bManual:"Guide d'utilisation",mTitle:"Guide d'utilisation",mListenAll:"Écouter tout le guide",mClose:"Fermer",mSection:"Écouter cette section",bListen:'Écouter le guide',bStop:'Arrêter la lecture',pDigital:'Produit numérique (sans livraison ni emballage)',title:'Calculateur de frais et de prix',tagline:'Pour les vendeurs Etsy · Fonctionne hors ligne · Vos données restent dans ce navigateur · Achat unique, sans abonnement',bGuide:'Guide rapide',bExport:'Exporter une sauvegarde',bImport:'Importer une sauvegarde',bCsv:'Exporter en CSV',bPrint:'Imprimer / PDF',
+fr:{bXlsx:"Exporter Excel",tXlsx:"Fichier Excel téléchargé",xSheet:"Produits",mPause:"Pause",mResume:"Continuer",mListenShort:"Écouter",mStopShort:"Arrêter",mMin:"Réduire",mMax:"Agrandir",mNow:"Lecture : ",bManual:"Guide d'utilisation",mTitle:"Guide d'utilisation",mListenAll:"Écouter tout le guide",mClose:"Fermer",mSection:"Écouter cette section",bListen:'Écouter le guide',bStop:'Arrêter la lecture',pDigital:'Produit numérique (sans livraison ni emballage)',title:'Calculateur de frais et de prix',tagline:'Pour les vendeurs Etsy · Fonctionne hors ligne · Vos données restent dans ce navigateur · Achat unique, sans abonnement',bGuide:'Guide rapide',bExport:'Exporter une sauvegarde',bImport:'Importer une sauvegarde',bCsv:'Exporter en CSV',bPrint:'Imprimer / PDF',
 s1:'1 · Votre boutique',s1hint:'Choisissez votre pays. Tous les frais ci-dessous sont modifiables : vérifiez-les dans Gestionnaire de boutique → Finances → Frais et mettez la date à jour. Les frais changent ; l’application ne devine jamais.',lCountry:'Pays du vendeur (profil de frais)',lCur:'Symbole de la devise de la boutique',lDate:'Frais vérifiés le',lHourly:'Votre taux horaire',
 thFee:'Frais',thFixed:'Fixe',thApplies:'S’applique à',fListing:'Frais de mise en vente',fListingTag:'0,20 USD par fiche et par vente',fListingA:'Chaque commande (les fiches multi-quantités se renouvellent à chaque vente)',fTrans:'Frais de transaction',fTransA:'Prix + livraison facturée + emballage cadeau',fProc:'Frais de traitement du paiement',fProcA:'Total de la commande, par commande',fReg:'Frais d’exploitation réglementaires',fRegA:'Prix + livraison (non facturés aux États-Unis ni en Allemagne)',fConv:'Conversion de devise',fConvA:'Seulement si la devise de la fiche ≠ devise de versement',
 tagVerified:'vérifié',tagCheck:'à vérifier dans le Gestionnaire',lOffsite:'Offsite Ads',oNone:'Non attribuée (vente organique)',o15:'Attribuée · boutique sous 10 000 USD/an · 15 %',o12:'Attribuée · boutique au-dessus de 10 000 USD/an · 12 %',lCap:'Plafond Offsite Ads par commande',lEtsyAds:'Etsy Ads (votre coût moyen par commande)',lVat:'TVA sur les frais Etsy',lConvOn:'Appliquer les frais de conversion de devise',
@@ -292,7 +293,7 @@ gTitle:'Trois étapes et c’est prêt',g1:'Choisissez votre pays dans la sectio
 tFees:'Frais configurés pour {c}',tBackup:'Sauvegarde téléchargée',tRestored:'Sauvegarde restaurée',tBad:'Ce fichier n’est pas une sauvegarde de cette application',tKeep:'Conservez au moins un produit',tCsv:'CSV téléchargé',example:'Produit d’exemple',productN:'Produit {n}',copy:'(copie)',
 csv:['Produit','Prix','Livraison facturée','Chiffre d’affaires','Frais Etsy','Coûts','Bénéfice','Marge %'],
 c:{US:'États-Unis',ES:'Espagne',FR:'France',IT:'Italie',DE:'Allemagne',EU:'Autre pays de l’UE (euro)',UK:'Royaume-Uni',CA:'Canada',AU:'Australie',XX:'Autre / personnalisé'}},
-de:{mPause:"Pause",mResume:"Fortsetzen",mListenShort:"Anhören",mStopShort:"Stopp",mMin:"Verkleinern",mMax:"Vergrößern",mNow:"Liest: ",bManual:"Handbuch",mTitle:"Handbuch",mListenAll:"Ganzes Handbuch anhören",mClose:"Schließen",mSection:"Diesen Abschnitt anhören",bListen:'Anleitung anhören',bStop:'Vorlesen beenden',pDigital:'Digitales Produkt (kein Versand, keine Verpackung)',title:'Gebühren- und Preisrechner',tagline:'Für Etsy-Verkäufer · Funktioniert offline · Deine Daten bleiben in diesem Browser · Einmaliger Kauf, kein Abo',bGuide:'Kurzanleitung',bExport:'Sicherung exportieren',bImport:'Sicherung importieren',bCsv:'CSV exportieren',bPrint:'Drucken / PDF',
+de:{bXlsx:"Excel exportieren",tXlsx:"Excel-Datei heruntergeladen",xSheet:"Produkte",mPause:"Pause",mResume:"Fortsetzen",mListenShort:"Anhören",mStopShort:"Stopp",mMin:"Verkleinern",mMax:"Vergrößern",mNow:"Liest: ",bManual:"Handbuch",mTitle:"Handbuch",mListenAll:"Ganzes Handbuch anhören",mClose:"Schließen",mSection:"Diesen Abschnitt anhören",bListen:'Anleitung anhören',bStop:'Vorlesen beenden',pDigital:'Digitales Produkt (kein Versand, keine Verpackung)',title:'Gebühren- und Preisrechner',tagline:'Für Etsy-Verkäufer · Funktioniert offline · Deine Daten bleiben in diesem Browser · Einmaliger Kauf, kein Abo',bGuide:'Kurzanleitung',bExport:'Sicherung exportieren',bImport:'Sicherung importieren',bCsv:'CSV exportieren',bPrint:'Drucken / PDF',
 s1:'1 · Dein Shop',s1hint:'Wähle dein Land. Jede Gebühr unten ist editierbar: Prüfe sie unter Shop-Manager → Finanzen → Gebühren und aktualisiere das Datum. Gebühren ändern sich; die App rät nie.',lCountry:'Land des Verkäufers (Gebührenprofil)',lCur:'Währungssymbol des Shops',lDate:'Gebühren zuletzt geprüft am',lHourly:'Dein Stundensatz',
 thFee:'Gebühr',thFixed:'Fix',thApplies:'Gilt für',fListing:'Einstellgebühr',fListingTag:'0,20 USD pro Angebot und pro Verkauf',fListingA:'Jede Bestellung (Angebote mit mehreren Stück verlängern sich bei jedem Verkauf)',fTrans:'Transaktionsgebühr',fTransA:'Preis + berechneter Versand + Geschenkverpackung',fProc:'Zahlungsabwicklung',fProcA:'Bestellsumme, pro Bestellung',fReg:'Regulatorische Betriebsgebühr',fRegA:'Preis + Versand (nicht in den USA und Deutschland)',fConv:'Währungsumrechnung',fConvA:'Nur wenn Angebotswährung ≠ Auszahlungswährung',
 tagVerified:'geprüft',tagCheck:'im Shop-Manager prüfen',lOffsite:'Offsite Ads',oNone:'Nicht zugeordnet (organischer Verkauf)',o15:'Zugeordnet · Shop unter 10.000 USD/Jahr · 15 %',o12:'Zugeordnet · Shop über 10.000 USD/Jahr · 12 %',lCap:'Offsite-Ads-Obergrenze pro Bestellung',lEtsyAds:'Etsy Ads (deine durchschnittlichen Kosten pro Bestellung)',lVat:'Umsatzsteuer auf Etsy-Gebühren',lConvOn:'Währungsumrechnungsgebühr anwenden',
@@ -307,7 +308,7 @@ gTitle:'Drei Schritte und fertig',g1:'Wähle dein Land in Abschnitt 1 und wirf e
 tFees:'Gebühren eingestellt für {c}',tBackup:'Sicherung heruntergeladen',tRestored:'Sicherung wiederhergestellt',tBad:'Diese Datei ist keine Sicherung dieser App',tKeep:'Behalte mindestens ein Produkt',tCsv:'CSV heruntergeladen',example:'Beispielprodukt',productN:'Produkt {n}',copy:'(Kopie)',
 csv:['Produkt','Preis','Berechneter Versand','Umsatz','Etsy-Gebühren','Kosten','Gewinn','Marge %'],
 c:{US:'Vereinigte Staaten',ES:'Spanien',FR:'Frankreich',IT:'Italien',DE:'Deutschland',EU:'Anderes EU-Land (Euro)',UK:'Vereinigtes Königreich',CA:'Kanada',AU:'Australien',XX:'Anderes / eigene Werte'}},
-it:{mPause:"Pausa",mResume:"Continua",mListenShort:"Ascolta",mStopShort:"Ferma",mMin:"Riduci",mMax:"Ingrandisci",mNow:"Sta leggendo: ",bManual:"Manuale d'uso",mTitle:"Manuale d'uso",mListenAll:"Ascolta tutto il manuale",mClose:"Chiudi",mSection:"Ascolta questa sezione",bListen:'Ascolta la guida',bStop:'Interrompi la lettura',pDigital:'Prodotto digitale (senza spedizione né imballaggio)',title:'Calcolatore di commissioni e prezzi',tagline:'Per venditori Etsy · Funziona offline · I tuoi dati restano in questo browser · Acquisto unico, senza abbonamento',bGuide:'Guida rapida',bExport:'Esporta backup',bImport:'Importa backup',bCsv:'Esporta CSV',bPrint:'Stampa / PDF',
+it:{bXlsx:"Esporta Excel",tXlsx:"File Excel scaricato",xSheet:"Prodotti",mPause:"Pausa",mResume:"Continua",mListenShort:"Ascolta",mStopShort:"Ferma",mMin:"Riduci",mMax:"Ingrandisci",mNow:"Sta leggendo: ",bManual:"Manuale d'uso",mTitle:"Manuale d'uso",mListenAll:"Ascolta tutto il manuale",mClose:"Chiudi",mSection:"Ascolta questa sezione",bListen:'Ascolta la guida',bStop:'Interrompi la lettura',pDigital:'Prodotto digitale (senza spedizione né imballaggio)',title:'Calcolatore di commissioni e prezzi',tagline:'Per venditori Etsy · Funziona offline · I tuoi dati restano in questo browser · Acquisto unico, senza abbonamento',bGuide:'Guida rapida',bExport:'Esporta backup',bImport:'Importa backup',bCsv:'Esporta CSV',bPrint:'Stampa / PDF',
 s1:'1 · Il tuo negozio',s1hint:'Scegli il tuo paese. Ogni commissione qui sotto è modificabile: verificale in Gestore negozio → Finanze → Commissioni e aggiorna la data. Le commissioni cambiano; l’app non tira mai a indovinare.',lCountry:'Paese del venditore (profilo commissioni)',lCur:'Simbolo della valuta del negozio',lDate:'Commissioni verificate il',lHourly:'La tua tariffa oraria',
 thFee:'Commissione',thFixed:'Fissa',thApplies:'Si applica a',fListing:'Commissione di inserzione',fListingTag:'0,20 USD per inserzione e per vendita',fListingA:'Ogni ordine (le inserzioni multi-quantità si rinnovano a ogni vendita)',fTrans:'Commissione di transazione',fTransA:'Prezzo + spedizione addebitata + confezione regalo',fProc:'Elaborazione del pagamento',fProcA:'Totale dell’ordine, per ordine',fReg:'Commissione operativa regolatoria',fRegA:'Prezzo + spedizione (non addebitata negli USA e in Germania)',fConv:'Conversione di valuta',fConvA:'Solo se la valuta dell’inserzione ≠ valuta di pagamento',
 tagVerified:'verificato',tagCheck:'verifica nel Gestore negozio',lOffsite:'Offsite Ads',oNone:'Non attribuita (vendita organica)',o15:'Attribuita · negozio sotto 10.000 USD/anno · 15 %',o12:'Attribuita · negozio sopra 10.000 USD/anno · 12 %',lCap:'Tetto Offsite Ads per ordine',lEtsyAds:'Etsy Ads (il tuo costo medio per ordine)',lVat:'IVA sulle commissioni Etsy',lConvOn:'Applica la commissione di conversione valuta',
@@ -566,16 +567,79 @@ $('btnPrint').addEventListener('click', ()=>window.print());
 $('btnExport').addEventListener('click', ()=>{ download('etsy-fee-calculator-backup.json', JSON.stringify(S,null,2), 'application/json'); toast(t('tBackup')); });
 $('btnImport').addEventListener('click', ()=>$('fileImport').click());
 $('fileImport').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.products)||!o.products.length) throw 0; o.products=o.products.map(x=>Object.assign(defaultProduct(),x)); if(!I18N[o.lang]) delete o.lang; S=Object.assign(S,o); applyLang(); renderShop(); renderProducts(); toast(t('tRestored')); }catch(err){ toast(t('tBad')); } }; r.readAsText(f); e.target.value=''; });
+$('btnXlsx').addEventListener('click', ()=>{
+  const cur=S.cur, C=t('csv'), r2=v=>Math.round(v*100)/100;
+  const headers=[C[0], C[1]+' ('+cur+')', C[2]+' ('+cur+')', C[3]+' ('+cur+')', C[4]+' ('+cur+')', C[5]+' ('+cur+')', C[6]+' ('+cur+')', C[7]];
+  const rows=S.products.map(p=>{ const r=calc(p);
+    return [{v:p.name||''},{v:r2(r.price),s:2},{v:r2(p.digital?0:p.ship),s:2},{v:r2(r.revenue),s:2},
+            {v:r2(r.f.total),s:2},{v:r2(r.c.total),s:2},{v:r2(r.profit),s:2},{v:r2(r.margin),s:3}]; });
+  download('etsy-products.xlsx', buildXlsx(headers, rows, [34,12,12,12,14,12,12,10], t('xSheet')), '');
+  toast(t('tXlsx'));
+});
 $('btnCsv').addEventListener('click', ()=>{
   const sep = S.lang==='en' ? ',' : ';'; const num = v => { const x=(Math.round(v*100)/100).toFixed(2); return S.lang==='en' ? x : x.replace('.',','); };
   const q = v => '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
   const rows=S.products.map(p=>{ const r=calc(p); return [q(p.name), num(r.price), num(p.digital?0:p.ship), num(r.revenue), num(r.f.total), num(r.c.total), num(r.profit), num(r.margin)]; });
   download('etsy-products.csv', '\ufeff'+[t('csv').map(q).join(sep), ...rows.map(r=>r.join(sep))].join('\r\n'), 'text/csv;charset=utf-8'); toast(t('tCsv'));
 });
+// ---- XLSX propio: un .xlsx es un ZIP con XML dentro. Sin librerías externas. ----
+const CRCT=(()=>{ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c = c&1 ? 0xEDB88320^(c>>>1) : c>>>1; t[n]=c>>>0; } return t; })();
+function crc32(u8){ let c=0xFFFFFFFF; for(let i=0;i<u8.length;i++) c=CRCT[(c^u8[i])&0xFF]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }
+function zipStore(files){
+  const enc=new TextEncoder(), parts=[], central=[]; let off=0;
+  files.forEach(f=>{
+    const name=enc.encode(f.name), data=typeof f.data==='string'?enc.encode(f.data):f.data, crc=crc32(data);
+    const lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint32(14,crc,true);
+    lh.setUint32(18,data.length,true); lh.setUint32(22,data.length,true); lh.setUint16(26,name.length,true);
+    parts.push(new Uint8Array(lh.buffer), name, data);
+    const cd=new DataView(new ArrayBuffer(46));
+    cd.setUint32(0,0x02014b50,true); cd.setUint16(4,20,true); cd.setUint16(6,20,true); cd.setUint32(16,crc,true);
+    cd.setUint32(20,data.length,true); cd.setUint32(24,data.length,true); cd.setUint16(28,name.length,true);
+    cd.setUint32(42,off,true);
+    central.push(new Uint8Array(cd.buffer), name);
+    off += 30+name.length+data.length;
+  });
+  let cdSize=0; central.forEach(c=>cdSize+=c.length);
+  const eo=new DataView(new ArrayBuffer(22));
+  eo.setUint32(0,0x06054b50,true); eo.setUint16(8,files.length,true); eo.setUint16(10,files.length,true);
+  eo.setUint32(12,cdSize,true); eo.setUint32(16,off,true);
+  return new Blob([...parts,...central,new Uint8Array(eo.buffer)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+const xmlEsc = v => String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const colName = i => { let n='', x=i; do { n=String.fromCharCode(65+(x%26))+n; x=Math.floor(x/26)-1; } while(x>=0); return n; };
+function buildXlsx(headers, rows, widths, sheetName){
+  const cell=(c,r,v,style)=>{
+    const ref=colName(c)+r;
+    if(typeof v==='number' && isFinite(v)) return '<c r="'+ref+'"'+(style?' s="'+style+'"':'')+'><v>'+v+'</v></c>';
+    return '<c r="'+ref+'"'+(style?' s="'+style+'"':'')+' t="inlineStr"><is><t xml:space="preserve">'+xmlEsc(v)+'</t></is></c>';
+  };
+  let sd='<row r="1">'+headers.map((h,i)=>cell(i,1,h,1)).join('')+'</row>';
+  rows.forEach((row,ri)=>{ sd+='<row r="'+(ri+2)+'">'+row.map((v,i)=>cell(i,ri+2,v.v,v.s)).join('')+'</row>'; });
+  const last=colName(headers.length-1)+(rows.length+1);
+  const sheet='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+   +'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+   +'<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'
+   +'<cols>'+widths.map((w,i)=>'<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>').join('')+'</cols>'
+   +'<sheetData>'+sd+'</sheetData><autoFilter ref="A1:'+last+'"/></worksheet>';
+  const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+  return zipStore([
+   {name:'[Content_Types].xml', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'},
+   {name:'_rels/.rels', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
+   {name:'xl/workbook.xml', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="'+R+'"><sheets><sheet name="'+xmlEsc(sheetName).slice(0,31)+'" sheetId="1" r:id="rId1"/></sheets></workbook>'},
+   {name:'xl/_rels/workbook.xml.rels', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="'+R+'/styles" Target="styles.xml"/></Relationships>'},
+   {name:'xl/styles.xml', data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="#,##0.00"/><numFmt numFmtId="165" formatCode="0.0&quot;%&quot;"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF5B3DF5"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="4"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'},
+   {name:'xl/worksheets/sheet1.xml', data:sheet},
+  ]);
+}
 async function download(name, text, type){
+  const bin = text instanceof Blob;
   const T=window.__TAURI__;
-  if(T && T.dialog && T.fs){ try{ const path=await T.dialog.save({defaultPath:name}); if(path) await T.fs.writeTextFile(path, text); return; }catch(e){ /* si falla, usa el navegador */ } }
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
+  if(T && T.dialog && T.fs){ try{ const path=await T.dialog.save({defaultPath:name});
+      if(path){ if(bin) await T.fs.writeFile(path, new Uint8Array(await text.arrayBuffer())); else await T.fs.writeTextFile(path, text); }
+      return; }catch(e){ /* si falla, usa el navegador */ } }
+  const blob = bin ? text : new Blob([text],{type});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
 
 // ---- boot ----
 load(); applyLang(); renderShop(); bindShop(); renderProducts();

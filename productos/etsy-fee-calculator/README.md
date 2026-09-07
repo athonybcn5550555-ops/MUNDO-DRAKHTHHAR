@@ -12,7 +12,7 @@ Versión 1.2, 6 de septiembre de 2026. Interruptor "producto digital" por tarjet
 sin errores de consola, cifras iguales a `etsy/calculadora_precio.py`,
 persistencia tras recargar, sin desbordamiento horizontal en móvil (390 px).
 
-SHA-256 de `index.html`: `7c49d19d8893f6c23e9cd6ef74dba2c12656bf681f16726913e7ac581d4989ca`
+SHA-256 de `index.html`: `bf746dc7774c1feb87319c350281b991ba5b48a608d747a769008f981ce0f983`
 
 ## Qué hace (mapeado a las quejas de la competencia, ver etsy/09)
 
@@ -61,6 +61,19 @@ respaldo que relee desde la frase actual si el navegador no reanuda.
 Las locuciones se encadenan frase a frase porque algunos navegadores cortan
 las lecturas largas.
 
+## Exportación a Excel
+
+Botón "Exportar Excel" que genera un `.xlsx` real, no un CSV renombrado:
+importes como números con formato de moneda, margen con formato de
+porcentaje, cabecera fija al desplazar, filtro automático y anchos de
+columna. La hoja lleva el nombre traducido y las cabeceras muestran el
+símbolo de moneda de la tienda.
+
+Está escrito desde cero en la propia app: un `.xlsx` es un ZIP con XML
+dentro, así que la aplicación incluye un compresor ZIP mínimo (con CRC-32)
+y genera las seis partes OOXML necesarias. Sin librerías externas, para que
+el archivo siga siendo autónomo y funcione sin conexión.
+
 ## Pruebas automáticas (Playwright, Chromium)
 
 `tests/test_manual.js` comprueba el manual: nueve secciones en los cinco
@@ -75,6 +88,13 @@ fondo blanco, en dos ocasiones distintas.
 `tests/test_panel.js` comprueba el panel: que no bloquea la app, que se
 minimiza y se recuerda, que sigue leyendo minimizado, pausa, continuar,
 parar, el respaldo de reanudación y el comportamiento en móvil.
+
+`tests/test_xlsx.js` genera un Excel desde la app y `tests/validate_xlsx.py`
+lo valida: ZIP íntegro, las seis partes OOXML, cabecera fija, filtro,
+importes como números y no como texto, y lectura con openpyxl como motor
+independiente. Se probó también con LibreOffice, pero en el contenedor de
+pruebas no abre ningún .xlsx, ni siquiera uno de referencia, así que esa
+comprobación no es concluyente y no se cuenta.
 
 `tests/test_full.js` ejecuta 39 comprobaciones de casos límite, todas en verde:
 entrada con coma o punto decimal y formatos europeo y anglosajón; texto no
