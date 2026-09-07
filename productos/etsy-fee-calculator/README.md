@@ -6,11 +6,11 @@ navegador del comprador y se exportan e importan con un botón.
 
 ## Estado
 
-Versión 1.1, 6 de septiembre de 2026. Idiomas: inglés, español, francés, alemán e italiano, con detección automática y selector en la cabecera. Corregido el botón de la guía inicial, que era invisible en la 1.0. Probada en Chromium con Playwright:
+Versión 1.2, 6 de septiembre de 2026. Interruptor "producto digital" por tarjeta que oculta y anula envío, embalaje e impresión bajo demanda. Idiomas: inglés, español, francés, alemán e italiano, con detección automática y selector en la cabecera. Corregido el botón de la guía inicial, que era invisible en la 1.0. Probada en Chromium con Playwright:
 sin errores de consola, cifras iguales a `etsy/calculadora_precio.py`,
 persistencia tras recargar, sin desbordamiento horizontal en móvil (390 px).
 
-SHA-256 de `index.html`: `d08e743234e4ff3e4003fd8b918ebdb5389761421647ea4024c0675836be7b9d`
+SHA-256 de `index.html`: `096ad2637546bba33008b32ca423410862e58b4611d0b6adeb6854868cd2cfb9`
 
 ## Qué hace (mapeado a las quejas de la competencia, ver etsy/09)
 
