@@ -12,7 +12,7 @@ Versión 1.2, 6 de septiembre de 2026. Interruptor "producto digital" por tarjet
 sin errores de consola, cifras iguales a `etsy/calculadora_precio.py`,
 persistencia tras recargar, sin desbordamiento horizontal en móvil (390 px).
 
-SHA-256 de `index.html`: `1b817ead3b85d7dd37e7a07cade54eeb7c400b3beb095c01b89f61a235fde15f`
+SHA-256 de `index.html`: `04d252dad0afe87cb65ede1d23ec34a65b0131c16dcb99cc94b0cdf3e3264e56`
 
 ## Qué hace (mapeado a las quejas de la competencia, ver etsy/09)
 
@@ -43,7 +43,29 @@ ZIP con:
 
 El PDF de inicio y la licencia se generan en la fase de listing.
 
+## Manual de uso integrado
+
+Nueve secciones por idioma, unas 1.500 palabras cada una: qué hace la app,
+configurar la tienda, cada comisión explicada una por una, añadir productos,
+el buscador de precio, copias y exportaciones, un ejemplo resuelto con
+cifras, preguntas y problemas, y una revisión anual. Botón para escuchar el
+manual entero o una sección suelta, con la voz del sistema en el idioma
+seleccionado, resaltando la frase que se está leyendo. Se detiene al cerrar,
+al cambiar de idioma o al pulsar Escape.
+
+Las locuciones se encadenan frase a frase porque algunos navegadores cortan
+las lecturas largas.
+
 ## Pruebas automáticas (Playwright, Chromium)
+
+`tests/test_manual.js` comprueba el manual: nueve secciones en los cinco
+idiomas, lectura completa y por secciones, voz correcta según el idioma,
+resaltado, parada, cambio de idioma durante la lectura y cierre con Escape.
+
+`tests/test_contrast.js` recorre cada botón, selector y campo de todas las
+pantallas y calcula el contraste real del texto sobre su fondo, componiendo
+las capas semitransparentes. Detecta controles invisibles: encontró y evitó
+que se publicaran tres botones con texto blanco sobre fondo blanco.
 
 `tests/test_full.js` ejecuta 39 comprobaciones de casos límite, todas en verde:
 entrada con coma o punto decimal y formatos europeo y anglosajón; texto no
