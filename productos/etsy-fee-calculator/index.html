@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
 <title>Fee & Price Calculator</title>
 <style>
 :root{--bg:#f4f5f8;--card:#fff;--ink:#1c1f2a;--muted:#5d6272;--line:#dfe2ea;--accent:#5b3df5;--accent2:#12b5a5;--ok:#1a9e5c;--warn:#d98a00;--bad:#d7263d;--okbg:#e6f7ee;--warnbg:#fff4e0;--badbg:#fde8ec;--r:12px}
@@ -27,8 +28,11 @@ section h2{margin:0 0 4px;font-size:17px}
 .hint{color:var(--muted);font-size:13px;margin:0 0 12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 14px}
 label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
-input[type=text],input[type=number],select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
-input[type=number]{text-align:right}
+input[type=text],select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+input[inputmode=decimal]{text-align:right;font-variant-numeric:tabular-nums}
+input.bad{border-color:var(--bad);background:var(--badbg)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
 .inline{display:flex;align-items:center;gap:8px}
 .inline input[type=checkbox]{width:18px;height:18px}
 .tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;background:#eef;color:#3b2fa0;margin-left:6px;vertical-align:middle}
@@ -36,7 +40,7 @@ input[type=number]{text-align:right}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
 td.num,th.num{text-align:right;white-space:nowrap}
-td input[type=number]{padding:5px 6px;width:84px;min-width:84px}
+td input[inputmode=decimal]{padding:5px 6px;width:84px;min-width:84px}
 .tablewrap{overflow-x:auto}
 .tablewrap table{min-width:640px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
@@ -63,8 +67,8 @@ details summary{cursor:pointer;font-size:13px;color:var(--accent)}
 .kpi div{background:#f6f5ff;border-radius:10px;padding:12px}
 .kpi span{display:block;font-size:12px;color:var(--muted)}
 .overlay[hidden]{display:none}
-.overlay{position:fixed;inset:0;background:rgba(15,12,40,.72);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
-.overlay .box{background:#fff;color:var(--ink);border-radius:16px;max-width:560px;width:100%;padding:24px}
+.overlay{position:fixed;inset:0;background:rgba(15,12,40,.72);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}
+.overlay .box{background:#fff;color:var(--ink);border-radius:16px;max-width:560px;width:100%;padding:20px 22px;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;margin:auto}
 .overlay .box button.primary{background:var(--accent);border-color:var(--accent);color:#fff;padding:10px 18px;font-size:14px}
 .overlay ol{padding-left:20px}
 .overlay li{margin-bottom:8px}
@@ -103,17 +107,17 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
     <div><label data-i="lCountry"></label><select id="country"></select></div>
     <div><label data-i="lCur"></label><input type="text" id="cur" maxlength="4"></div>
     <div><label data-i="lDate"></label><input type="text" id="feeDate" placeholder="YYYY-MM-DD"></div>
-    <div><label data-i="lHourly"></label><input type="number" id="hourly" step="0.5" min="0"></div>
+    <div><label data-i="lHourly"></label><input type="text" inputmode="decimal" id="hourly"></div>
   </div>
   <div class="tablewrap" style="margin-top:12px">
   <table>
     <thead><tr><th data-i="thFee"></th><th class="num">%</th><th class="num" data-i="thFixed"></th><th data-i="thApplies"></th></tr></thead>
     <tbody>
-      <tr><td><span data-i="fListing"></span> <span class="tag" data-i="fListingTag"></span></td><td class="num">–</td><td class="num"><input type="number" id="f_listing" step="0.01" min="0"></td><td data-i="fListingA"></td></tr>
-      <tr><td data-i="fTrans"></td><td class="num"><input type="number" id="f_trans" step="0.1" min="0"></td><td class="num">–</td><td data-i="fTransA"></td></tr>
-      <tr><td data-i="fProc"></td><td class="num"><input type="number" id="f_proc" step="0.1" min="0"></td><td class="num"><input type="number" id="f_procfix" step="0.01" min="0"></td><td data-i="fProcA"></td></tr>
-      <tr><td><span data-i="fReg"></span> <span class="tag" id="regTag"></span></td><td class="num"><input type="number" id="f_reg" step="0.01" min="0"></td><td class="num">–</td><td data-i="fRegA"></td></tr>
-      <tr><td data-i="fConv"></td><td class="num"><input type="number" id="f_conv" step="0.1" min="0"></td><td class="num">–</td><td data-i="fConvA"></td></tr>
+      <tr><td><span data-i="fListing"></span> <span class="tag" data-i="fListingTag"></span></td><td class="num">–</td><td class="num"><input type="text" inputmode="decimal" id="f_listing"></td><td data-i="fListingA"></td></tr>
+      <tr><td data-i="fTrans"></td><td class="num"><input type="text" inputmode="decimal" id="f_trans"></td><td class="num">–</td><td data-i="fTransA"></td></tr>
+      <tr><td data-i="fProc"></td><td class="num"><input type="text" inputmode="decimal" id="f_proc"></td><td class="num"><input type="text" inputmode="decimal" id="f_procfix"></td><td data-i="fProcA"></td></tr>
+      <tr><td><span data-i="fReg"></span> <span class="tag" id="regTag"></span></td><td class="num"><input type="text" inputmode="decimal" id="f_reg"></td><td class="num">–</td><td data-i="fRegA"></td></tr>
+      <tr><td data-i="fConv"></td><td class="num"><input type="text" inputmode="decimal" id="f_conv"></td><td class="num">–</td><td data-i="fConvA"></td></tr>
     </tbody>
   </table>
   </div>
@@ -126,11 +130,11 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
         <option value="12" data-i="o12"></option>
       </select>
     </div>
-    <div><label data-i="lCap"></label><input type="number" id="f_offcap" step="1" min="0"></div>
-    <div><label data-i="lEtsyAds"></label><input type="number" id="f_etsyads" step="0.01" min="0"></div>
+    <div><label data-i="lCap"></label><input type="text" inputmode="decimal" id="f_offcap"></div>
+    <div><label data-i="lEtsyAds"></label><input type="text" inputmode="decimal" id="f_etsyads"></div>
     <div>
       <label data-i="lVat"></label>
-      <div class="inline"><input type="checkbox" id="vatOn"><input type="number" id="f_vat" step="0.5" min="0" style="max-width:90px"><span style="font-size:12px;color:var(--muted)">%</span></div>
+      <div class="inline"><input type="checkbox" id="vatOn"><input type="text" inputmode="decimal" id="f_vat" style="max-width:90px"><span style="font-size:12px;color:var(--muted)">%</span></div>
     </div>
     <div class="inline" style="align-self:end"><input type="checkbox" id="convOn"><label style="margin:0" for="convOn" data-i="lConvOn"></label></div>
   </div>
@@ -150,8 +154,8 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
   <div class="grid">
     <div><label data-i="lProduct"></label><select id="rvProduct"></select></div>
     <div><label data-i="lTarget"></label><select id="rvMode"><option value="amount" data-i="mAmount"></option><option value="margin" data-i="mMargin"></option></select></div>
-    <div><label data-i="lTargetV"></label><input type="number" id="rvTarget" step="0.5" min="0" value="10"></div>
-    <div><label data-i="lGoal"></label><input type="number" id="rvGoal" step="10" min="0" value="500"></div>
+    <div><label data-i="lTargetV"></label><input type="text" inputmode="decimal" id="rvTarget" value="10"></div>
+    <div><label data-i="lGoal"></label><input type="text" inputmode="decimal" id="rvGoal" value="500"></div>
   </div>
   <div class="kpi" style="margin-top:14px">
     <div><span data-i="kPrice"></span><b class="big" id="rvPrice">–</b></div>
@@ -167,8 +171,8 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30p
 <footer data-i="footer"></footer>
 
 <div class="overlay" id="guide" hidden>
-  <div class="box">
-    <h2 style="margin-top:0" data-i="gTitle"></h2>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <h2 style="margin-top:0" id="guideTitle" data-i="gTitle"></h2>
     <ol><li data-i="g1"></li><li data-i="g2"></li><li data-i="g3"></li></ol>
     <p style="font-size:13px;color:var(--muted)" data-i="gNote"></p>
     <div class="actions"><button class="primary" id="btnGuideClose" data-i="gStart"></button></div>
@@ -272,7 +276,13 @@ c:{US:'Stati Uniti',ES:'Spagna',FR:'Francia',IT:'Italia',DE:'Germania',EU:'Altro
 };
 const KEY = 'etsyFeeCalc.v1';
 const $ = id => document.getElementById(id);
-const n = v => { const x = parseFloat(v); return isFinite(x) ? x : 0; };
+const n = v => { if(typeof v==='number') return isFinite(v)?v:0; let s=String(v==null?'':v).trim().replace(/\s/g,'').replace(/[^\d.,\-]/g,''); if(!s) return 0;
+  if(s.includes(',')&&s.includes('.')){ if(s.lastIndexOf(',')>s.lastIndexOf('.')) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(/,/g,''); }
+  else if(s.includes(',')){ s=s.replace(/,/g,'.'); }
+  if((s.match(/\./g)||[]).length>1){ const i=s.lastIndexOf('.'); s=s.slice(0,i).replace(/\./g,'')+s.slice(i); }
+  const x=parseFloat(s); return isFinite(x)?x:0; };
+const looksNumeric = v => v==null || String(v).trim()==='' || /^[\s\d.,\-+€$£¥%]*$/.test(String(v));
+function readNum(el, allowNeg){ const raw=el.value; const ok=looksNumeric(raw); el.classList.toggle('bad', !ok); let x=n(raw); if(!allowNeg&&x<0) x=0; return x; }
 let L = I18N.en;
 const t = (k, vars) => { let s = (L[k] !== undefined ? L[k] : I18N.en[k]); if (vars) for (const v in vars) s = s.split('{'+v+'}').join(vars[v]); return s; };
 
@@ -285,11 +295,13 @@ let S = {
 };
 
 function detectLang(){ const b=(navigator.language||'en').slice(0,2).toLowerCase(); return I18N[b] ? b : 'en'; }
-function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); S=Object.assign(S,o); } }catch(e){} if(!S.lang) S.lang=detectLang(); L=I18N[S.lang]||I18N.en; if(!S.products.length){ const p=defaultProduct(); p.name=t('example'); S.products.push(p);} }
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const o=JSON.parse(raw); if(Array.isArray(o.products)) o.products=o.products.map(x=>Object.assign(defaultProduct(),x)); S=Object.assign(S,o); } }catch(e){} if(!S.lang) S.lang=detectLang(); L=I18N[S.lang]||I18N.en; if(!S.products.length){ const p=defaultProduct(); p.name=t('example'); S.products.push(p);} }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._h); el._h=setTimeout(()=>el.classList.remove('show'),1800); }
-const money = v => S.cur + (Math.round(v*100)/100).toFixed(2);
-const pct = v => (Math.round(v*10)/10).toFixed(1)+'%';
+const LOC={en:'en-US',es:'es-ES',fr:'fr-FR',de:'de-DE',it:'it-IT'};
+const fmt=(v,d)=>{ try{ return new Intl.NumberFormat(LOC[S.lang]||'en-US',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v); }catch(e){ return v.toFixed(d); } };
+const money = v => { const neg=v<-0.004; const s=fmt(Math.abs(Math.round(v*100)/100),2); return (neg?'−':'')+(S.lang==='en'?S.cur+s:s+'\u00a0'+S.cur); };
+const pct = v => fmt(Math.round(v*10)/10,1)+(S.lang==='en'?'%':'\u00a0%');
 
 // ---- core calculation ----
 function fees(price, ship){
@@ -335,12 +347,12 @@ function esc(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'
 function productCard(p){
   const el=document.createElement('div'); el.className='product'; el.dataset.id=p.id;
   const phys={ship:1,pack:1,shipcost:1,pod:1};
-  const f=(k,key,step)=>`<div${phys[k]?' data-phys':''}><label>${t(key)}</label><input type="number" data-k="${k}" step="${step}" min="0" value="${p[k]}"></div>`;
+  const f=(k,key)=>`<div${phys[k]?' data-phys':''}><label>${t(key)}</label><input type="text" inputmode="decimal" data-k="${k}" aria-label="${esc(t(key))}" value="${p[k]}"></div>`;
   if(p.digital) el.classList.add('digital');
   el.innerHTML = `
     <div class="top"><input type="text" data-k="name" placeholder="${esc(t('pName'))}" value="${esc(p.name)}"></div>
     <label class="digi"><input type="checkbox" data-k="digital" ${p.digital?'checked':''}>${t('pDigital')}</label>
-    <div class="fields">${f('price','pPrice','0.01')}${f('ship','pShip','0.01')}${f('mat','pMat','0.01')}${f('hours','pHours','0.05')}${f('pack','pPack','0.01')}${f('shipcost','pShipCost','0.01')}${f('pod','pPod','0.01')}${f('over','pOver','0.01')}</div>
+    <div class="fields">${f('price','pPrice')}${f('ship','pShip')}${f('mat','pMat')}${f('hours','pHours')}${f('pack','pPack')}${f('shipcost','pShipCost')}${f('pod','pPod')}${f('over','pOver')}</div>
     <div class="result" data-r="box"><div><span data-r="profit"></span><small data-r="sub"></small></div><div data-r="margin"></div></div>
     <details><summary>${t('rBreak')}</summary><div class="breakdown" data-r="bd"></div></details>
     <div class="actions"><button data-a="dup">${t('bDup')}</button><button data-a="del" class="danger">${t('bDel')}</button></div>`;
@@ -363,9 +375,11 @@ function updateAll(){ document.querySelectorAll('.product').forEach(el=>{ const 
 function renderReverseOptions(){ const s=$('rvProduct'); const cur=s.value; s.innerHTML=''; S.products.forEach((p,i)=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name||t('productN',{n:i+1}); s.appendChild(o); }); if([...s.options].some(o=>o.value===cur)) s.value=cur; }
 function updateReverse(){
   const p=S.products.find(x=>String(x.id)===$('rvProduct').value); if(!p) return;
-  const mode=$('rvMode').value, target=n($('rvTarget').value), goal=n($('rvGoal').value);
-  if(mode==='margin' && target>=95){ $('rvNote').textContent=t('nUnreach'); return; }
+  const mode=$('rvMode').value, target=readNum($('rvTarget'),true), goal=readNum($('rvGoal'));
+  const unreachable=()=>{ ['rvPrice','rvProfit','rvMargin','rvSales'].forEach(id=>$(id).textContent='–'); $('rvNote').textContent=t('nUnreach'); };
+  if(mode==='margin' && target>=95){ unreachable(); return; }
   const price=priceFor(p, mode, target), r=calc(p, price);
+  if(price>=9999 || (mode==='amount' ? r.profit<target-0.01 : r.margin<target-0.05)){ unreachable(); return; }
   $('rvPrice').textContent=money(price); $('rvProfit').textContent=money(r.profit); $('rvMargin').textContent=pct(r.margin);
   $('rvSales').textContent = r.profit>0 ? Math.ceil(goal/r.profit) : '–';
   $('rvNote').textContent = t('nCompare',{price:money(p.price), profit:money(calc(p).profit), nine:money(Math.max(price, Math.ceil(price)-0.01))});
@@ -376,7 +390,7 @@ function bindShop(){
   $('lang').addEventListener('change', e=>{ S.lang=e.target.value; applyLang(); renderProducts(); });
   $('country').addEventListener('change', e=>{ applyProfile(e.target.value); renderShop(); updateAll(); toast(t('tFees',{c:t('c')[S.country]})); });
   const map={cur:'cur',feeDate:'feeDate',hourly:'hourly',f_listing:'listing',f_trans:'trans',f_proc:'proc',f_procfix:'procfix',f_reg:'reg',f_conv:'conv',f_offcap:'offcap',f_etsyads:'etsyads',f_vat:'vat'};
-  for(const id in map){ $(id).addEventListener('input', e=>{ const k=map[id]; S[k] = (id==='cur'||id==='feeDate') ? e.target.value : n(e.target.value); updateAll(); }); }
+  for(const id in map){ $(id).addEventListener('input', e=>{ const k=map[id]; S[k] = (id==='cur'||id==='feeDate') ? e.target.value.trim() : readNum(e.target); updateAll(); }); }
   $('offsite').addEventListener('change', e=>{ S.offsite=e.target.value; updateAll(); });
   $('vatOn').addEventListener('change', e=>{ S.vatOn=e.target.checked; updateAll(); });
   $('convOn').addEventListener('change', e=>{ S.convOn=e.target.checked; updateAll(); });
@@ -385,7 +399,7 @@ function bindShop(){
 $('cards').addEventListener('input', e=>{
   const el=e.target.closest('.product'); if(!el) return; const p=S.products.find(x=>String(x.id)===el.dataset.id); if(!p) return;
   const k=e.target.dataset.k; if(!k) return;
-  if(k==='digital'){ p.digital=e.target.checked; el.classList.toggle('digital', p.digital); } else p[k] = k==='name' ? e.target.value : n(e.target.value);
+  if(k==='digital'){ p.digital=e.target.checked; el.classList.toggle('digital', p.digital); } else p[k] = k==='name' ? e.target.value : readNum(e.target);
   updateCard(el,p); renderReverseOptions(); updateReverse(); save();
 });
 $('cards').addEventListener('click', e=>{
@@ -394,21 +408,26 @@ $('cards').addEventListener('click', e=>{
   if(b.dataset.a==='dup'){ const c=Object.assign({}, S.products[i], {id:Date.now()+Math.random(), name:(S.products[i].name||t('productN',{n:i+1}))+' '+t('copy')}); S.products.splice(i+1,0,c); renderProducts(); }
 });
 $('btnAdd').addEventListener('click', ()=>{ S.products.push(defaultProduct()); renderProducts(); $('cards').lastElementChild.querySelector('input[type=text]').focus(); });
-$('btnGuide').addEventListener('click', ()=>{ $('guide').hidden=false; });
-$('btnGuideClose').addEventListener('click', ()=>{ $('guide').hidden=true; S.seen=true; save(); });
+function openGuide(){ $('guide').hidden=false; $('btnGuideClose').focus(); }
+function closeGuide(){ $('guide').hidden=true; S.seen=true; save(); $('btnGuide').focus(); }
+$('btnGuide').addEventListener('click', openGuide);
+$('btnGuideClose').addEventListener('click', closeGuide);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && !$('guide').hidden) closeGuide(); });
 $('btnPrint').addEventListener('click', ()=>window.print());
 $('btnExport').addEventListener('click', ()=>{ download('etsy-fee-calculator-backup.json', JSON.stringify(S,null,2), 'application/json'); toast(t('tBackup')); });
 $('btnImport').addEventListener('click', ()=>$('fileImport').click());
-$('fileImport').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.products)) throw 0; S=Object.assign(S,o); applyLang(); renderShop(); renderProducts(); toast(t('tRestored')); }catch(err){ toast(t('tBad')); } }; r.readAsText(f); e.target.value=''; });
+$('fileImport').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.products)||!o.products.length) throw 0; o.products=o.products.map(x=>Object.assign(defaultProduct(),x)); if(!I18N[o.lang]) delete o.lang; S=Object.assign(S,o); applyLang(); renderShop(); renderProducts(); toast(t('tRestored')); }catch(err){ toast(t('tBad')); } }; r.readAsText(f); e.target.value=''; });
 $('btnCsv').addEventListener('click', ()=>{
-  const rows=S.products.map(p=>{ const r=calc(p); return [p.name, r.price, p.digital?0:p.ship, r.revenue, r.f.total, r.c.total, r.profit, r.margin].map((v,i)=> i===0 ? '"'+String(v).replace(/"/g,'""')+'"' : (Math.round(v*100)/100)); });
-  download('etsy-products.csv', [t('csv').join(','), ...rows.map(r=>r.join(','))].join('\n'), 'text/csv'); toast(t('tCsv'));
+  const sep = S.lang==='en' ? ',' : ';'; const num = v => { const x=(Math.round(v*100)/100).toFixed(2); return S.lang==='en' ? x : x.replace('.',','); };
+  const q = v => '"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows=S.products.map(p=>{ const r=calc(p); return [q(p.name), num(r.price), num(p.digital?0:p.ship), num(r.revenue), num(r.f.total), num(r.c.total), num(r.profit), num(r.margin)]; });
+  download('etsy-products.csv', '\ufeff'+[t('csv').map(q).join(sep), ...rows.map(r=>r.join(sep))].join('\r\n'), 'text/csv;charset=utf-8'); toast(t('tCsv'));
 });
 function download(name, text, type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
 
 // ---- boot ----
 load(); applyLang(); renderShop(); bindShop(); renderProducts();
-if(!S.seen) $('guide').hidden=false;
+if(!S.seen) openGuide();
 window.__calc = {calc, fees, priceFor, state:()=>S, t};
 })();
 </script>
