@@ -12,7 +12,7 @@ Versión 1.2, 6 de septiembre de 2026. Interruptor "producto digital" por tarjet
 sin errores de consola, cifras iguales a `etsy/calculadora_precio.py`,
 persistencia tras recargar, sin desbordamiento horizontal en móvil (390 px).
 
-SHA-256 de `index.html`: `bf746dc7774c1feb87319c350281b991ba5b48a608d747a769008f981ce0f983`
+SHA-256 de `index.html`: `374374eb9476f6eaad419179b323197beb724ccb3a5c7be7c35f12f31e6da85b`
 
 ## Qué hace (mapeado a las quejas de la competencia, ver etsy/09)
 
@@ -66,7 +66,8 @@ las lecturas largas.
 Botón "Exportar Excel" que genera un `.xlsx` real, no un CSV renombrado:
 importes como números con formato de moneda, margen con formato de
 porcentaje, cabecera fija al desplazar, filtro automático y anchos de
-columna. La hoja lleva el nombre traducido y las cabeceras muestran el
+columna calculados con el texto real de cada cabecera y de los datos, para
+que nada se corte en ningún idioma. La hoja lleva el nombre traducido y las cabeceras muestran el
 símbolo de moneda de la tienda.
 
 Está escrito desde cero en la propia app: un `.xlsx` es un ZIP con XML
@@ -95,6 +96,10 @@ importes como números y no como texto, y lectura con openpyxl como motor
 independiente. Se probó también con LibreOffice, pero en el contenedor de
 pruebas no abre ningún .xlsx, ni siquiera uno de referencia, así que esa
 comprobación no es concluyente y no se cuenta.
+
+`tests/test_widths.js` exporta en español, alemán e inglés y comprueba que
+cada cabecera cabe en su columna, incluidas las alemanas, que son las más
+largas.
 
 `tests/test_full.js` ejecuta 39 comprobaciones de casos límite, todas en verde:
 entrada con coma o punto decimal y formatos europeo y anglosajón; texto no
