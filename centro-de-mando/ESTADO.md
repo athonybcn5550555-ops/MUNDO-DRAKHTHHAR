@@ -1,27 +1,38 @@
-# Estado · 2026-09-07 (creación del sistema)
-
-Foto inicial, tomada al construir el Centro de Mando. A partir de aquí la
-Routine diaria la actualiza sola.
+# Estado · 2026-09-07 (barrido de la tarde, 19:23)
 
 ## Aviso activo
-- `ElegTuPatinete - actualizar precios` terminó con error el 2026-09-07.
-  Pendiente: Antonio debe pasar el mensaje de error (la tarea corre en su
-  PC local, fuera del alcance de esta sesión) para poder diagnosticarla.
+- `ElegTuPatinete - actualizar precios` dio error el 2026-09-07 según el
+  parte de hoy del Centro de Mando local (`parte_de_hoy`). En el listado en
+  vivo de tareas programadas (`estado_de_las_tareas`), sin embargo, esa
+  misma tarea aparece ahora como "bien" junto con las otras 10 tareas. No
+  se puede saber desde aquí si se recuperó sola en un reintento o si el
+  aviso y el estado "bien" conviven porque miden cosas distintas — el
+  mensaje de error concreto corre en el PC local de Antonio, fuera del
+  alcance de esta sesión. Pendiente: que Antonio confirme si sigue
+  fallando o ya está resuelto.
+- Antonio: el equipo local estuvo apagado anoche (turno de noche sin
+  trabajar), según el propio parte de hoy.
 
 ## Decisiones pendientes
 - Hay 1 decisión señalada en el parte de hoy del Centro de Mando local sin
   detalle accesible desde aquí. Pendiente de que Antonio la traslade o de
   que el propio Centro de Mando local la exponga con más detalle.
+- **Nueva hoy:** ¿se fusiona la rama `claude/tienda-etsy-v49wjl` (tienda
+  Etsy "DrakhtharSoftware") a la rama de trabajo diario del Administrador,
+  o se sigue trabajando aparte? Detalle completo en
+  `centro-de-mando/pendientes/2026-09-07-informe-etsy-fee-calculator-listo-para-publicar.md`.
 
 ## Frentes abiertos
-- 54 frentes abiertos acumulados (KDP, Drakhthar, Etsy, webs), sin desglose
-  disponible todavía desde las herramientas conectadas a esta sesión.
+- 54 frentes abiertos acumulados (KDP, Drakhthar, Etsy, webs), según el
+  parte de hoy del Centro de Mando local — sin desglose disponible todavía
+  desde las herramientas conectadas a esta sesión más allá de lo que ya
+  está documentado abajo.
 
 ## Tareas automáticas ya en marcha (equipo local de Antonio)
-Todas reportadas "bien" el 2026-09-07:
+Consultado en vivo hoy (`estado_de_las_tareas`), las 11 tareas programadas
+aparecen "bien":
 - Centro de Mando - turno de noche
-- ElegTuPatinete - actualizar precios (bien en el listado general, pero con
-  error puntual hoy — ver aviso arriba)
+- ElegTuPatinete - actualizar precios (ver aviso activo arriba)
 - Escribir artículo diario patinetes
 - Informe tráfico webs (cada 3 días)
 - KDP Inteligencia - captura única
@@ -32,59 +43,96 @@ Todas reportadas "bien" el 2026-09-07:
 - Vigilancia nichos KDP
 - Vigilante webs Antonio
 
-## Frente: tienda Etsy "DrakhtharSoftware" (software de escritorio)
-Descubierta el 2026-09-07 en la rama sin fusionar `claude/tienda-etsy-v49wjl`
-de este mismo repo. Es un negocio real en marcha, parado en cuanto a
-listings activos: 2 ventas históricas, 5.0★ (1 reseña), 3 meses de
-antigüedad, **0 artículos activos ahora mismo**.
+## Borradores pendientes de aprobación (todos, con ruta)
+- `centro-de-mando/pendientes/2026-09-07-informe-etsy-fee-calculator-listo-para-publicar.md`
+  — informe: el primer producto de la tienda Etsy (Fee & Price Calculator)
+  está construido, probado y con el listing redactado; qué falta para
+  publicarlo y qué decisión se pide a Antonio.
+- `centro-de-mando/pendientes/2026-09-07-informe-niche-research-kdp.md`
+  — informe: nichos de bajo contenido para KDP que señalan varias fuentes
+  públicas en 2026, con aviso explícito de que son datos de blogs de
+  terceros, no cifras verificadas de Amazon.
+- (De sesiones anteriores, en la rama sin fusionar `claude/tienda-etsy-v49wjl`,
+  no en `pendientes/`): `productos/etsy-fee-calculator/paquete/10-textos-listing.md`
+  con el título, tags, descripción y precio del primer listing de Etsy,
+  completo y listo para copiar/pegar en cuanto Antonio apruebe publicar.
 
-Catálogo previsto (`etsy/09-cinco-productos.md`), en este orden de
-construcción:
-1. Etsy Fee & Price Calculator — **YA CONSTRUIDO Y LANZADO** como release
-   `calculator-v1.4.0` (instalador Windows, manual en 5 idiomas). No
-   publicado todavía como listing activo.
-2. Etsy Profit Book — **siguiente en la cola**, hay un WIP sin probar
-   (commit `85c454e`).
-3. Listing Image Prep
-4. Reseller Ledger
-5. Paycheck Budget
+## Pagos/renovaciones
+- Sin renovaciones a menos de 60 días vista confirmadas. Próximo pago
+  conocido: **2027-07-16**, laiayjudit.com (~16 $, renovación automática
+  vía Shopify) — muy lejos, no urgente.
+- Intento de verificar por WHOIS/RDAP público la fecha de laiayjudit.com:
+  fallido hoy por bloqueo de red de esta sesión (`EGRESS_BLOCKED` en
+  whois.com, rdap.verisign.com y en el propio dominio). Detalle en
+  `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
 
-Decisiones D1–D6 del plan (`etsy/01-plan-lanzamiento.md`), resueltas el
-2026-09-07 con Antonio:
-- **D1 (nombre de la tienda):** lo gestiona Antonio personalmente. El
-  Administrador NO debe tocar el nombre/branding de la tienda, solo vigilar
-  su estado.
-- **D2 (catálogo):** confirmado el orden de arriba.
-- **D3 (plataformas):** Windows primero (ya es lo que hay construido);
-  macOS más adelante si el producto vende.
-- **D4 (firma de código):** sin firmar por ahora. Usar la alternativa
-  gratuita ya prevista en el plan: hash SHA-256 + informe público de
-  VirusTotal + vídeo de instalación en el listing.
-- **D5 (licencias):** sin clave de licencia por ahora, entrega directa del
-  ZIP.
-- **D6 (precio ancla):** banda 9–29 € por herramienta suelta, pack a
-  39–49 €, sujeto a confirmación final de Antonio antes de publicar
-  cualquier listing con precio real.
+## Datos de contabilidad que faltan por confirmar (Antonio)
+- ElegTuPatinete: dominio, proveedor, coste anual y fecha de renovación —
+  no indexado públicamente, no se puede confirmar por WHOIS.
+- Web(s) de Drakhthar / Proyecto JL: dominio, proveedor, coste y renovación.
+- Si `drakhthar-gifts` (63 PDFs de actividades) está publicado en algún
+  sitio o parado.
 
-Pendiente de decidir: si se fusiona el trabajo de esta rama al flujo
-diario del Administrador (para que la Routine siga construyendo el
-catálogo como borrador) o se sigue trabajando directamente en esa rama.
+## Correos
+- Sin acceso a Gmail en esta sesión (no hay herramientas `mcp__Gmail__*`
+  disponibles hoy). No se ha podido revisar bandeja ni preparar borradores
+  de respuesta.
 
-## Frente: `drakhthar-gifts` (63 PDFs de regalo ya terminados)
-Repo separado con 63 libros/cuadernos de actividades en inglés (Antiguo
-Egipto, Roma, mitología griega, dinosaurios, capitales del mundo, Segunda
-Guerra Mundial...), sin ninguna metadata de negocio (ni tienda, ni
-dominio, ni precios). **Pendiente de que Antonio confirme si ya están
-publicados en algún sitio o si están terminados y parados.**
+## Herramientas disponibles hoy / no disponibles
+- **Disponibles:** GitHub (lectura y escritura vía API, confirmado con
+  `get_me` y con la creación de archivos de hoy), `estado_de_las_tareas` y
+  `parte_de_hoy` del Centro de Mando local, `WebSearch`.
+- **No disponibles hoy:** herramienta `add_repo` (no existe como tal en
+  esta sesión; el acceso de lectura/escritura al repo ya venía concedido
+  de fábrica, así que no bloqueó el trabajo, pero se deja constancia de
+  que la herramienta que pide el guion diario no está aquí). `WebFetch`
+  está presente pero el proxy de red bloquea (`EGRESS_BLOCKED`) cualquier
+  dominio probado hoy (whois.com, rdap.verisign.com, laiayjudit.com), así
+  que no se ha podido comprobar directamente ninguna web ni hacer WHOIS.
+  Gmail: sin conector esta sesión.
 
 ## Huecos sin cubrir
 - Vídeos publicitarios: sin herramienta conectada.
 - Etsy: sin conector para publicar de verdad (solo se puede preparar
-  contenido, no subirlo).
+  contenido, no subirlo). El primer producto ya está listo para publicar
+  en cuanto Antonio revise el informe de hoy.
 - Contabilidad: sin conector real. Registro manual en
   `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
 - Libros KDP: los 63 PDFs de `drakhthar-gifts` existen pero su estado de
   publicación real no está confirmado todavía.
-- Dominio de "ElegTuPatinete": no se ha podido confirmar públicamente
-  (no aparece indexado). Pendiente de que Antonio confirme si tiene
-  dominio propio o corre sobre otra plataforma.
+- Dominio de "ElegTuPatinete": no se ha podido confirmar públicamente.
+- Verificación pública de dominios (WHOIS/RDAP): bloqueada por red en esta
+  sesión, ver arriba.
+- Gmail: sin conector esta sesión, no se ha podido revisar correo.
+
+## Frente: tienda Etsy "DrakhtharSoftware" (software de escritorio)
+Sigue en la rama sin fusionar `claude/tienda-etsy-v49wjl`. Negocio real
+parado en listings activos: 2 ventas históricas, 5,0★ (1 reseña), 3 meses
+de antigüedad, 0 artículos activos ahora mismo. Hoy se ha confirmado que
+el producto 1 del catálogo (Etsy Fee & Price Calculator) está totalmente
+construido, probado con suites automáticas y con el listing redactado —
+ver el informe de hoy en `pendientes/` para el detalle y la checklist real
+de lo que falta antes de publicar.
+
+Catálogo previsto (`etsy/09-cinco-productos.md`), orden de construcción:
+1. Etsy Fee & Price Calculator — construido, probado, listing redactado.
+   Pendiente de aprobación para publicar (ver informe de hoy).
+2. Etsy Profit Book — siguiente en la cola, WIP sin probar (commit `85c454e`).
+3. Listing Image Prep
+4. Reseller Ledger
+5. Paycheck Budget
+
+Decisiones D1–D6 ya resueltas el 2026-09-07 con Antonio (sin cambios hoy):
+D1 nombre de tienda (lo lleva Antonio, el Administrador no lo toca), D2
+catálogo confirmado, D3 Windows primero (macOS más adelante si vende — el
+instalador de escritorio de macOS ya existe como release de GitHub pero no
+se vende en Etsy, solo la app HTML), D4 sin firma de código (hash SHA-256 +
+VirusTotal + vídeo), D5 sin licencia, entrega directa del ZIP, D6 banda de
+precio 9–29 € suelto / 39–49 € pack, sujeto a confirmación final antes de
+publicar con precio real.
+
+## Frente: `drakhthar-gifts` (63 PDFs de regalo ya terminados)
+Repo separado, fuera del alcance de esta sesión (acceso GitHub limitado a
+`MUNDO-DRAKHTHHAR`). Sin metadata de negocio. Pendiente de que Antonio
+confirme si ya están publicados en algún sitio o si están terminados y
+parados.
