@@ -28,8 +28,8 @@ WARRANTY AND LIABILITY
   from the use of this software.
 
 SUPPORT
-  Message support and free minor updates for 30 days after purchase, through
-  Etsy messages.
+  Message support and minor updates included for 30 days after purchase,
+  through Etsy messages.
 
 ===============================================================================
 ESPANOL
@@ -58,7 +58,7 @@ GARANTIA Y RESPONSABILIDAD
   del lucro cesante ni de otros danos derivados del uso de este programa.
 
 SOPORTE
-  Soporte por mensaje y actualizaciones menores gratuitas durante 30 dias
+  Soporte por mensaje y actualizaciones menores incluidas durante 30 dias
   desde la compra, a traves de los mensajes de Etsy.
 
 ===============================================================================

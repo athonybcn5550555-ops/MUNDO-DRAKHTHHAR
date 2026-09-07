@@ -93,7 +93,7 @@ REFUNDS
 Digital files cannot be returned. If it does not work on a browser that meets the requirements, message me first: I will get it running or refund you.
 
 SUPPORT
-Message support and free minor updates for 30 days after purchase. I answer within 24 hours.
+Message support and minor updates included for 30 days after purchase. I answer within 24 hours.
 ```
 
 ---
