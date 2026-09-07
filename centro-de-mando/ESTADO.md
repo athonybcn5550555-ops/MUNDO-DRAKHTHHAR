@@ -132,7 +132,25 @@ precio 9–29 € suelto / 39–49 € pack, sujeto a confirmación final antes 
 publicar con precio real.
 
 ## Frente: `drakhthar-gifts` (63 PDFs de regalo ya terminados)
-Repo separado, fuera del alcance de esta sesión (acceso GitHub limitado a
-`MUNDO-DRAKHTHHAR`). Sin metadata de negocio. Pendiente de que Antonio
-confirme si ya están publicados en algún sitio o si están terminados y
-parados.
+Investigado a fondo el 2026-09-07 (fuera del barrido diario, a petición de
+Antonio): 153 commits revisados, ninguno menciona Amazon/KDP/Etsy/ISBN;
+sin archivo de metadata de negocio en el repo.
+
+**Hallazgo importante:** la marca que aparece DENTRO de los propios PDFs es
+**"Puzzle Games Press"**, no "Drakhthar" — "Drakhthar" parece ser solo el
+nombre interno del repo/proyecto. Búsquedas en Amazon y Etsy de "Puzzle
+Games Press" y de "Drakhthar" no encontraron ningún listado real vinculado
+a esa marca. No hay prueba de que estén publicados, pero tampoco se puede
+descartar que se subieran bajo otro pseudónimo no identificado en los
+archivos.
+
+**Aviso de calidad, pendiente de que Antonio decida:** varias portadas
+tienen errores de plantilla sin depurar — ej. "Coloring Book - Ocean
+World" dice "Dinosaurios (Niños) · Serie 04" en la portada, y una de
+"Word Search: Ancient Egypt" dice literalmente "Test · Serie 01". Parece
+un pipeline de generación automática sin control de calidad final.
+
+Pendiente de que Antonio confirme: (1) si "Puzzle Games Press" es una
+marca suya ya en uso o hay que decidir bajo qué nombre publicar esto, y
+(2) si hace falta revisar los 63 PDFs antes de publicar cualquiera, por
+los errores de portada encontrados.
