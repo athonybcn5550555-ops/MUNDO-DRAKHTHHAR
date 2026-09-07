@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etsy Profit Book</title>
+<style>
+:root{--bg:#f4f5f8;--card:#fff;--ink:#1c1f2a;--muted:#5d6272;--line:#dfe2ea;--accent:#5b3df5;--ok:#1a9e5c;--warn:#8a5a00;--bad:#d7263d;--okbg:#e6f7ee;--warnbg:#fff4e0;--badbg:#fde8ec;--r:12px;--s1:#2a78d6;--s2:#eb6834;--grid:#e6e8ef}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header{background:linear-gradient(120deg,#1b1340,#3a1f7a 55%,#0f6f78);color:#fff;padding:16px 20px 0}
+.wrap{max-width:1140px;margin:0 auto}
+header .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:22px}
+header p{margin:4px 0 0;opacity:.85;font-size:13px}
+header select{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 10px;font:inherit;font-size:13px}
+header select option{color:#1c1f2a}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer}
+nav{display:flex;gap:4px;margin-top:14px;overflow-x:auto}
+nav button{border:none;border-radius:8px 8px 0 0;background:rgba(255,255,255,.1);padding:10px 14px;white-space:nowrap}
+nav button.on{background:var(--bg);color:var(--ink);font-weight:600}
+main{padding:16px 20px 60px}
+main button{border-color:var(--line);background:#fff;color:var(--ink)}
+main button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+main button.danger{color:var(--bad)}
+main button.small{padding:5px 9px;font-size:12px}
+main button:hover{filter:brightness(.96)}
+main button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 16px}
+section h2{margin:0 0 4px;font-size:17px}
+h3{margin:14px 0 6px;font-size:14px}
+.hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px 14px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
+input[type=text],input[type=number],input[type=date],select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
+.inline{display:flex;align-items:center;gap:8px}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;background:#eef;color:#3b2fa0;vertical-align:middle}
+.tag.warn{background:var(--warnbg);color:var(--warn)}
+.tag.ok{background:var(--okbg);color:var(--ok)}
+.tag.bad{background:var(--badbg);color:var(--bad)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;white-space:nowrap}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.total td{font-weight:600;border-top:2px solid var(--line)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi div{background:#f6f5ff;border-radius:10px;padding:12px}
+.kpi span{display:block;font-size:12px;color:var(--muted)}
+.kpi b{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi b.hero{font-size:34px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin-bottom:12px}
+.toolbar > div{min-width:140px}
+.drop{border:2px dashed var(--line);border-radius:var(--r);padding:18px;text-align:center;color:var(--muted);font-size:13px;background:#fbfbfd}
+.drop.over{border-color:var(--accent);background:#f3f0ff}
+.chart{position:relative}
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);margin:6px 0 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.tip{position:absolute;pointer-events:none;background:#1c1f2a;color:#fff;font-size:12px;padding:6px 9px;border-radius:8px;white-space:nowrap;transform:translate(-50%,-110%);display:none}
+.overlay[hidden]{display:none}
+.overlay{position:fixed;inset:0;background:rgba(15,12,40,.72);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
+.overlay .box{background:#fff;color:var(--ink);border-radius:16px;max-width:720px;width:100%;padding:22px;max-height:92vh;overflow:auto}
+.overlay .box button.primary{background:var(--accent);border-color:var(--accent);color:#fff;padding:10px 18px;font-size:14px}
+.overlay .box button{border-color:var(--line);background:#fff;color:var(--ink)}
+.overlay ol{padding-left:20px}
+.overlay li{margin-bottom:8px}
+.mapgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.mapgrid label{margin:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:10px 20px 30px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c1f2a;color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+.toast.show{opacity:1}
+.note{background:var(--warnbg);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+.pill{font-size:11px;padding:1px 6px;border-radius:999px;background:#eef;color:#3b2fa0}
+[hidden]{display:none!important}
+@media (max-width:560px){main{padding:12px}section{padding:12px}.mapgrid{grid-template-columns:1fr}header h1{font-size:19px}}
+@media print{header .bar,header select,nav,main button,.drop,footer,#guide,.toast{display:none!important}body{background:#fff}section{break-inside:avoid;border:none}}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="row">
+      <div><h1 data-i="title"></h1><p data-i="tagline"></p></div>
+      <select id="lang" aria-label="Language"><option value="en">English</option><option value="es">Español</option></select>
+    </div>
+    <div class="bar">
+      <button id="btnGuide" data-i="bGuide"></button>
+      <button id="btnExport" data-i="bExport"></button>
+      <button id="btnImport" data-i="bImport"></button>
+      <button id="btnPrint" data-i="bPrint"></button>
+    </div>
+    <nav id="nav">
+      <button data-tab="dash" data-i="tDash"></button>
+      <button data-tab="orders" data-i="tOrders"></button>
+      <button data-tab="fees" data-i="tFees"></button>
+      <button data-tab="expenses" data-i="tExp"></button>
+      <button data-tab="taxes" data-i="tTax"></button>
+      <button data-tab="settings" data-i="tSet"></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div id="exampleNote" class="note" hidden></div>
+
+<div class="toolbar" id="periodBar">
+  <div><label data-i="lYear"></label><select id="pYear"></select></div>
+  <div><label data-i="lPeriod"></label><select id="pRange">
+    <option value="all" data-i="pAll"></option><option value="q1">Q1</option><option value="q2">Q2</option><option value="q3">Q3</option><option value="q4">Q4</option>
+    <option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option><option value="9">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+  </select></div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="tab-dash" class="tab">
+  <section>
+    <h2 data-i="dTitle"></h2>
+    <p class="hint" data-i="dHint"></p>
+    <div class="kpi" id="kpis"></div>
+  </section>
+  <section>
+    <h2 data-i="dChart"></h2>
+    <p class="hint" data-i="dChartHint"></p>
+    <div class="chart" id="chart"></div>
+  </section>
+  <section>
+    <h2 data-i="dMonths"></h2>
+    <div class="tablewrap"><table id="monthTable"></table></div>
+  </section>
+</div>
+
+<!-- ORDERS -->
+<div id="tab-orders" class="tab" hidden>
+  <section>
+    <h2 data-i="oTitle"></h2>
+    <p class="hint" data-i="oHint"></p>
+    <div class="drop" id="dropOrders" data-i="oDrop"></div>
+    <div class="actions">
+      <button class="primary" id="btnOrdersFile" data-i="oPick"></button>
+      <button id="btnAddOrder" data-i="oAdd"></button>
+      <button id="btnOrdersCsv" data-i="oCsv"></button>
+      <button class="danger" id="btnOrdersClear" data-i="oClear"></button>
+    </div>
+  </section>
+  <section>
+    <div class="tablewrap"><table id="orderTable"></table></div>
+  </section>
+</div>
+
+<!-- FEES / STATEMENT -->
+<div id="tab-fees" class="tab" hidden>
+  <section>
+    <h2 data-i="fTitle"></h2>
+    <p class="hint" data-i="fHint"></p>
+    <div class="drop" id="dropStmt" data-i="fDrop"></div>
+    <div class="actions"><button class="primary" id="btnStmtFile" data-i="fPick"></button><button class="danger" id="btnStmtClear" data-i="fClear"></button></div>
+  </section>
+  <section>
+    <h2 data-i="fByType"></h2>
+    <div class="tablewrap"><table id="feeTable"></table></div>
+  </section>
+  <section>
+    <h2 data-i="fRecon"></h2>
+    <p class="hint" data-i="fReconHint"></p>
+    <div class="tablewrap"><table id="reconTable"></table></div>
+  </section>
+</div>
+
+<!-- EXPENSES -->
+<div id="tab-expenses" class="tab" hidden>
+  <section>
+    <h2 data-i="eTitle"></h2>
+    <p class="hint" data-i="eHint"></p>
+    <div class="grid">
+      <div><label data-i="lDate"></label><input type="date" id="eDate"></div>
+      <div><label data-i="lCategory"></label><select id="eCat"></select></div>
+      <div><label data-i="lAmount"></label><input type="number" id="eAmount" step="0.01" min="0"></div>
+      <div><label data-i="lNote"></label><input type="text" id="eNote"></div>
+    </div>
+    <div class="actions"><button class="primary" id="btnAddExp" data-i="eAdd"></button><button id="btnExpCsv" data-i="eCsv"></button></div>
+  </section>
+  <section>
+    <h2 data-i="eByCat"></h2>
+    <div class="tablewrap"><table id="expCatTable"></table></div>
+  </section>
+  <section>
+    <div class="tablewrap"><table id="expTable"></table></div>
+  </section>
+</div>
+
+<!-- TAXES -->
+<div id="tab-taxes" class="tab" hidden>
+  <section>
+    <h2 data-i="xTitle"></h2>
+    <p class="hint" data-i="xHint"></p>
+    <div class="tablewrap"><table id="taxTable"></table></div>
+    <div class="actions"><button id="btnTaxCsv" data-i="xCsv"></button><button id="btnTaxPrint" data-i="bPrint"></button></div>
+  </section>
+</div>
+
+<!-- SETTINGS -->
+<div id="tab-settings" class="tab" hidden>
+  <section>
+    <h2 data-i="sTitle"></h2>
+    <p class="hint" data-i="sHint"></p>
+    <div class="grid">
+      <div><label data-i="lCountry"></label><select id="country"></select></div>
+      <div><label data-i="lCur"></label><input type="text" id="cur" maxlength="4"></div>
+      <div><label data-i="lListing"></label><input type="number" id="f_listing" step="0.01" min="0"></div>
+      <div><label data-i="lTrans"></label><input type="number" id="f_trans" step="0.1" min="0"></div>
+      <div><label data-i="lProc"></label><input type="number" id="f_proc" step="0.1" min="0"></div>
+      <div><label data-i="lProcFix"></label><input type="number" id="f_procfix" step="0.01" min="0"></div>
+      <div><label data-i="lReg"></label><input type="number" id="f_reg" step="0.01" min="0"></div>
+      <div><label data-i="lDateFmt"></label><select id="dateFmt"><option value="auto" data-i="dfAuto"></option><option value="mdy">MM/DD/YYYY</option><option value="dmy">DD/MM/YYYY</option><option value="ymd">YYYY-MM-DD</option></select></div>
+    </div>
+    <p class="hint" style="margin-top:10px" data-i="sNote"></p>
+    <div class="actions"><button id="btnExample" data-i="sExample"></button><button class="danger" id="btnWipe" data-i="sWipe"></button></div>
+  </section>
+</div>
+
+</main>
+<footer data-i="footer"></footer>
+
+<div class="overlay" id="guide" hidden>
+  <div class="box">
+    <h2 style="margin-top:0" data-i="gTitle"></h2>
+    <ol><li data-i="g1"></li><li data-i="g2"></li><li data-i="g3"></li><li data-i="g4"></li></ol>
+    <p style="font-size:13px;color:var(--muted)" data-i="gNote"></p>
+    <div class="actions"><button class="primary" id="btnGuideClose" data-i="gStart"></button></div>
+  </div>
+</div>
+
+<div class="overlay" id="mapper" hidden>
+  <div class="box">
+    <h2 style="margin-top:0" id="mapTitle"></h2>
+    <p class="hint" id="mapHint"></p>
+    <div class="mapgrid" id="mapGrid"></div>
+    <h3 data-i="mPreview"></h3>
+    <div class="tablewrap"><table id="mapPreview"></table></div>
+    <div class="actions"><button class="primary" id="btnMapOk" data-i="mImport"></button><button id="btnMapCancel" data-i="mCancel"></button></div>
+  </div>
+</div>
+
+<div class="overlay" id="orderForm" hidden>
+  <div class="box">
+    <h2 style="margin-top:0" data-i="ofTitle"></h2>
+    <div class="grid">
+      <div><label data-i="lDate"></label><input type="date" id="ofDate"></div>
+      <div><label data-i="lOrderId"></label><input type="text" id="ofId"></div>
+      <div><label data-i="lItems"></label><input type="number" id="ofItems" step="0.01" min="0"></div>
+      <div><label data-i="lShip"></label><input type="number" id="ofShip" step="0.01" min="0" value="0"></div>
+      <div><label data-i="lDiscount"></label><input type="number" id="ofDisc" step="0.01" min="0" value="0"></div>
+      <div><label data-i="lTaxCol"></label><input type="number" id="ofTax" step="0.01" min="0" value="0"></div>
+      <div><label data-i="lSku"></label><input type="text" id="ofSku"></div>
+    </div>
+    <div class="actions"><button class="primary" id="btnOfSave" data-i="ofSave"></button><button id="btnOfCancel" data-i="mCancel"></button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="fileBackup" accept="application/json" hidden>
+<input type="file" id="fileOrders" accept=".csv,text/csv" hidden>
+<input type="file" id="fileStmt" accept=".csv,text/csv" hidden>
+
+<script>
+(function(){
+'use strict';
+const VERIFIED='2026-09-06';
+const PROFILES={US:{cur:'$',listing:0.20,trans:6.5,proc:3,procfix:0.25,reg:0,verified:true},ES:{cur:'€',listing:0.18,trans:6.5,proc:4,procfix:0.30,reg:0.88,verified:true},FR:{cur:'€',listing:0.18,trans:6.5,proc:4,procfix:0.30,reg:1.14,verified:true},IT:{cur:'€',listing:0.18,trans:6.5,proc:4,procfix:0.30,reg:0.80,verified:true},DE:{cur:'€',listing:0.18,trans:6.5,proc:4,procfix:0.30,reg:0,verified:true},EU:{cur:'€',listing:0.18,trans:6.5,proc:4,procfix:0.30,reg:0,verified:false},UK:{cur:'£',listing:0.16,trans:6.5,proc:4,procfix:0.20,reg:0.48,verified:false},CA:{cur:'C$',listing:0.27,trans:6.5,proc:3,procfix:0.25,reg:0.50,verified:false},AU:{cur:'A$',listing:0.30,trans:6.5,proc:3,procfix:0.25,reg:0,verified:false},XX:{cur:'$',listing:0.20,trans:6.5,proc:3,procfix:0.25,reg:0,verified:false}};
+const CATS=['materials','packaging','shipping','software','marketing','equipment','otherfees','other'];
+const I18N={
+en:{title:'Etsy Profit Book',tagline:'Bookkeeping for Etsy sellers · Works offline · Your data stays in this browser',bGuide:'Quick guide',bExport:'Export backup',bImport:'Import backup',bPrint:'Print / PDF',
+tDash:'Dashboard',tOrders:'Orders',tFees:'Fees & deposits',tExp:'Expenses',tTax:'Tax summary',tSet:'Settings',lYear:'Year',lPeriod:'Period',pAll:'Whole year',
+exampleNote:'You are looking at example data so you can see how the app works. Import your own orders or clear the examples in Settings.',
+dTitle:'How the shop is doing',dHint:'Revenue is what buyers paid for items and shipping, before Etsy fees. Profit is revenue minus Etsy fees minus your expenses. Taxes Etsy collected from buyers are not counted as income.',
+kRevenue:'Revenue',kFees:'Etsy fees',kExpenses:'Expenses',kProfit:'Net profit',kOrders:'Orders',kAvg:'Average order',kMargin:'Margin',
+dChart:'Revenue and profit by month',dChartHint:'Hover a month for the numbers.',dMonths:'Month by month',
+thMonth:'Month',thOrders:'Orders',thRevenue:'Revenue',thFees:'Etsy fees',thExpenses:'Expenses',thProfit:'Profit',thMargin:'Margin',thSource:'Fees',srcActual:'actual',srcEstimated:'estimated',
+oTitle:'Orders',oHint:'Import the orders file Etsy gives you (Shop Manager → Settings → Options → Download Data → Orders). The app recognises the columns and shows you the mapping before importing. Orders already imported are updated, not duplicated.',oDrop:'Drop the orders CSV here',oPick:'Choose orders CSV',oAdd:'+ Add order by hand',oCsv:'Export CSV',oClear:'Delete all orders',
+thDate:'Date',thOrder:'Order',thItems:'Items',thShip:'Shipping',thDiscount:'Discount',thTax:'Tax collected by Etsy',thTotal:'Buyer paid',thNet:'Net after fees',thSku:'SKU / note',thStatus:'Status',
+fTitle:'Fees and deposits from your Etsy Payments statement',fHint:'Import the monthly statement CSV (Shop Manager → Finances → Payment account → Monthly statements → CSV). With it, the app uses the exact fees Etsy charged instead of estimates, and checks your deposits.',fDrop:'Drop the statement CSV here',fPick:'Choose statement CSV',fClear:'Delete statement data',
+fByType:'What Etsy charged, by type',fRecon:'Deposits check',fReconHint:'Compares the net of your orders with the deposits Etsy sent in the same month. Small differences are normal (timing, refunds, reserves). A large gap means a missing deposit or a fee you did not expect: check the month in Etsy.',
+thType:'Type',thAmount:'Amount',thCount:'Lines',thNetOrders:'Net from orders',thDeposits:'Deposits',thDiff:'Difference',rOk:'matches',rCheck:'check',rNoData:'no statement',
+eTitle:'Expenses',eHint:'Everything you spend to run the shop. Keep receipts; this list is what your accountant needs.',lDate:'Date',lCategory:'Category',lAmount:'Amount',lNote:'Note',eAdd:'+ Add expense',eCsv:'Export CSV',eByCat:'By category',thCategory:'Category',thNote:'Note',
+cat:{materials:'Materials',packaging:'Packaging',shipping:'Shipping labels',software:'Software & tools',marketing:'Marketing & ads',equipment:'Equipment',otherfees:'Other fees',other:'Other'},
+xTitle:'Tax summary',xHint:'Totals for the selected year, by quarter. Give this to your accountant or use it for your own return. Sales tax and VAT that Etsy collected from buyers are shown separately: Etsy remits them, they are not your income.',xCsv:'Export CSV',
+xGross:'Gross sales (items + shipping)',xDiscounts:'Discounts given',xRefunds:'Refunds',xFees:'Etsy fees',xExpenses:'Expenses',xProfit:'Net profit',xCollected:'Collected by Etsy from buyers (not income)',xOrders:'Orders',thQ:'Quarter',thYear:'Year',
+sTitle:'Settings',sHint:'Fee profile used to estimate fees when no statement is imported. Check the values in Shop Manager → Finances → Fees; every one is editable.',lCountry:'Seller country',lCur:'Currency symbol',lListing:'Listing fee (fixed)',lTrans:'Transaction fee %',lProc:'Payment processing %',lProcFix:'Payment processing fixed',lReg:'Regulatory operating fee %',lDateFmt:'Date format in CSV files',dfAuto:'Detect automatically',
+sNote:'Fee defaults were verified on '+VERIFIED+' for the US, Spain, France, Italy and Germany. Other countries: check in Shop Manager. Data is saved in this browser only; export a backup regularly.',sExample:'Load example data',sWipe:'Delete everything',
+c:{US:'United States',ES:'Spain',FR:'France',IT:'Italy',DE:'Germany',EU:'Other EU (euro)',UK:'United Kingdom',CA:'Canada',AU:'Australia',XX:'Other / custom'},
+footer:'Everything is saved in this browser only. Use "Export backup" before clearing browser data or switching devices.',
+gTitle:'Four steps to a clear picture',g1:'Import your orders CSV in the Orders tab. The app shows how it read the columns; fix anything and import.',g2:'Optionally import your monthly Etsy Payments statement in Fees & deposits, so fees are exact and deposits are checked.',g3:'Add your expenses in the Expenses tab as they happen.',g4:'Read the Dashboard and, at tax time, the Tax summary.',gNote:'Your data is saved automatically in this browser. Click "Export backup" now and then to keep a copy. Nothing is sent anywhere: this file works with the internet switched off.',gStart:'Start',
+mOrders:'Import orders: check the columns',mStmt:'Import statement: check the columns',mHint:'The app matched your file\'s columns to what it needs. Change any dropdown if a match is wrong. Grey fields are optional.',mPreview:'Preview (first rows as they will be imported)',mImport:'Import',mCancel:'Cancel',mNone:'— not in file —',
+fld:{date:'Sale date *',orderId:'Order ID *',items:'Item total *',ship:'Shipping charged',discount:'Discount',tax:'Sales tax',vat:'VAT paid by buyer',total:'Order total',procFee:'Card processing fee',net:'Order net',status:'Status',sku:'SKU',sdate:'Date *',stype:'Type *',stitle:'Title',samount:'Amount *',sfees:'Fees & taxes',snet:'Net'},
+ofTitle:'Add order by hand',lOrderId:'Order ID',lItems:'Item total',lShip:'Shipping charged',lDiscount:'Discount',lTaxCol:'Tax collected by Etsy',lSku:'SKU / note',ofSave:'Save order',
+tImported:'{n} orders imported ({u} updated)',tStmt:'{n} statement lines imported',tBackup:'Backup downloaded',tRestored:'Backup restored',tBad:'That file is not a backup from this app',tCsv:'CSV downloaded',tNoDate:'Could not read dates. Set the date format in Settings and try again.',tNeed:'Required fields are missing in the mapping',tDeleted:'Deleted',tExample:'Example data loaded',
+confirmClear:'Delete all orders? This cannot be undone.',confirmWipe:'Delete every order, statement line and expense? Export a backup first if in doubt.',
+csvOrders:['Date','Order ID','Items','Shipping','Discount','Tax collected','Buyer paid','Etsy fees','Fees source','Net','SKU','Status'],csvExp:['Date','Category','Amount','Note'],csvTax:['Line','Q1','Q2','Q3','Q4','Year']},
+es:{title:'Etsy Profit Book',tagline:'Contabilidad para vendedores de Etsy · Funciona sin conexión · Tus datos se quedan en este navegador',bGuide:'Guía rápida',bExport:'Exportar copia',bImport:'Importar copia',bPrint:'Imprimir / PDF',
+tDash:'Panel',tOrders:'Pedidos',tFees:'Comisiones y depósitos',tExp:'Gastos',tTax:'Resumen fiscal',tSet:'Ajustes',lYear:'Año',lPeriod:'Periodo',pAll:'Todo el año',
+exampleNote:'Estás viendo datos de ejemplo para ver cómo funciona la app. Importa tus pedidos o borra los ejemplos en Ajustes.',
+dTitle:'Cómo va la tienda',dHint:'Ingresos es lo que pagaron los compradores por artículos y envío, antes de comisiones de Etsy. Beneficio es ingresos menos comisiones de Etsy menos tus gastos. Los impuestos que Etsy cobró a los compradores no cuentan como ingreso.',
+kRevenue:'Ingresos',kFees:'Comisiones Etsy',kExpenses:'Gastos',kProfit:'Beneficio neto',kOrders:'Pedidos',kAvg:'Pedido medio',kMargin:'Margen',
+dChart:'Ingresos y beneficio por mes',dChartHint:'Pasa el ratón por un mes para ver las cifras.',dMonths:'Mes a mes',
+thMonth:'Mes',thOrders:'Pedidos',thRevenue:'Ingresos',thFees:'Comisiones',thExpenses:'Gastos',thProfit:'Beneficio',thMargin:'Margen',thSource:'Comisiones',srcActual:'reales',srcEstimated:'estimadas',
+oTitle:'Pedidos',oHint:'Importa el archivo de pedidos que te da Etsy (Administrador de tienda → Ajustes → Opciones → Descargar datos → Pedidos). La app reconoce las columnas y te enseña el mapeo antes de importar. Los pedidos ya importados se actualizan, no se duplican.',oDrop:'Arrastra aquí el CSV de pedidos',oPick:'Elegir CSV de pedidos',oAdd:'+ Añadir pedido a mano',oCsv:'Exportar CSV',oClear:'Borrar todos los pedidos',
+thDate:'Fecha',thOrder:'Pedido',thItems:'Artículos',thShip:'Envío',thDiscount:'Descuento',thTax:'Impuestos cobrados por Etsy',thTotal:'Pagó el comprador',thNet:'Neto tras comisiones',thSku:'SKU / nota',thStatus:'Estado',
+fTitle:'Comisiones y depósitos desde tu extracto de Etsy Payments',fHint:'Importa el CSV del extracto mensual (Administrador → Finanzas → Cuenta de pagos → Extractos mensuales → CSV). Con él, la app usa las comisiones exactas que Etsy cobró en lugar de estimarlas, y comprueba tus depósitos.',fDrop:'Arrastra aquí el CSV del extracto',fPick:'Elegir CSV del extracto',fClear:'Borrar datos del extracto',
+fByType:'Qué cobró Etsy, por tipo',fRecon:'Comprobación de depósitos',fReconHint:'Compara el neto de tus pedidos con los depósitos que Etsy envió el mismo mes. Diferencias pequeñas son normales (fechas, reembolsos, reservas). Una diferencia grande significa un depósito que falta o una comisión inesperada: revisa ese mes en Etsy.',
+thType:'Tipo',thAmount:'Importe',thCount:'Líneas',thNetOrders:'Neto de pedidos',thDeposits:'Depósitos',thDiff:'Diferencia',rOk:'cuadra',rCheck:'revisar',rNoData:'sin extracto',
+eTitle:'Gastos',eHint:'Todo lo que gastas para llevar la tienda. Guarda los justificantes; esta lista es lo que necesita tu gestor.',lDate:'Fecha',lCategory:'Categoría',lAmount:'Importe',lNote:'Nota',eAdd:'+ Añadir gasto',eCsv:'Exportar CSV',eByCat:'Por categoría',thCategory:'Categoría',thNote:'Nota',
+cat:{materials:'Materiales',packaging:'Embalaje',shipping:'Etiquetas de envío',software:'Software y herramientas',marketing:'Marketing y anuncios',equipment:'Equipamiento',otherfees:'Otras comisiones',other:'Otros'},
+xTitle:'Resumen fiscal',xHint:'Totales del año seleccionado, por trimestre. Dáselo a tu gestor o úsalo para tu declaración. El impuesto de ventas y el IVA que Etsy cobró a los compradores aparecen aparte: los liquida Etsy, no son ingreso tuyo.',xCsv:'Exportar CSV',
+xGross:'Ventas brutas (artículos + envío)',xDiscounts:'Descuentos aplicados',xRefunds:'Reembolsos',xFees:'Comisiones de Etsy',xExpenses:'Gastos',xProfit:'Beneficio neto',xCollected:'Cobrado por Etsy a los compradores (no es ingreso)',xOrders:'Pedidos',thQ:'Trimestre',thYear:'Año',
+sTitle:'Ajustes',sHint:'Perfil de comisiones usado para estimarlas cuando no hay extracto importado. Comprueba los valores en Administrador → Finanzas → Comisiones; todos son editables.',lCountry:'País del vendedor',lCur:'Símbolo de moneda',lListing:'Publicación (fija)',lTrans:'Transacción %',lProc:'Procesamiento del pago %',lProcFix:'Procesamiento del pago, parte fija',lReg:'Tasa operativa regulatoria %',lDateFmt:'Formato de fecha en los CSV',dfAuto:'Detectar automáticamente',
+sNote:'Las comisiones de serie se verificaron el '+VERIFIED+' para EE. UU., España, Francia, Italia y Alemania. Otros países: comprobar en el Administrador. Los datos se guardan solo en este navegador; exporta una copia con regularidad.',sExample:'Cargar datos de ejemplo',sWipe:'Borrarlo todo',
+c:{US:'Estados Unidos',ES:'España',FR:'Francia',IT:'Italia',DE:'Alemania',EU:'Otro país de la UE (euro)',UK:'Reino Unido',CA:'Canadá',AU:'Australia',XX:'Otro / personalizado'},
+footer:'Todo se guarda solo en este navegador. Usa "Exportar copia" antes de borrar datos del navegador o cambiar de equipo.',
+gTitle:'Cuatro pasos para verlo claro',g1:'Importa tu CSV de pedidos en la pestaña Pedidos. La app te enseña cómo ha leído las columnas; corrige lo que haga falta e importa.',g2:'Si quieres, importa el extracto mensual de Etsy Payments en Comisiones y depósitos, para que las comisiones sean exactas y se comprueben los depósitos.',g3:'Añade tus gastos en la pestaña Gastos según se produzcan.',g4:'Lee el Panel y, cuando toque, el Resumen fiscal.',gNote:'Tus datos se guardan automáticamente en este navegador. Pulsa "Exportar copia" de vez en cuando para conservar una copia. No se envía nada a ningún sitio: este archivo funciona sin internet.',gStart:'Empezar',
+mOrders:'Importar pedidos: revisa las columnas',mStmt:'Importar extracto: revisa las columnas',mHint:'La app ha emparejado las columnas de tu archivo con lo que necesita. Cambia cualquier desplegable si un emparejamiento es incorrecto. Los campos en gris son opcionales.',mPreview:'Vista previa (primeras filas tal como se importarán)',mImport:'Importar',mCancel:'Cancelar',mNone:'— no está en el archivo —',
+fld:{date:'Fecha de venta *',orderId:'ID de pedido *',items:'Total de artículos *',ship:'Envío cobrado',discount:'Descuento',tax:'Impuesto de ventas',vat:'IVA pagado por el comprador',total:'Total del pedido',procFee:'Comisión de procesamiento',net:'Neto del pedido',status:'Estado',sku:'SKU',sdate:'Fecha *',stype:'Tipo *',stitle:'Título',samount:'Importe *',sfees:'Comisiones e impuestos',snet:'Neto'},
+ofTitle:'Añadir pedido a mano',lOrderId:'ID de pedido',lItems:'Total de artículos',lShip:'Envío cobrado',lDiscount:'Descuento',lTaxCol:'Impuestos cobrados por Etsy',lSku:'SKU / nota',ofSave:'Guardar pedido',
+tImported:'{n} pedidos importados ({u} actualizados)',tStmt:'{n} líneas de extracto importadas',tBackup:'Copia descargada',tRestored:'Copia restaurada',tBad:'Ese archivo no es una copia de esta app',tCsv:'CSV descargado',tNoDate:'No se han podido leer las fechas. Ajusta el formato de fecha en Ajustes y vuelve a intentarlo.',tNeed:'Faltan campos obligatorios en el mapeo',tDeleted:'Borrado',tExample:'Datos de ejemplo cargados',
+confirmClear:'¿Borrar todos los pedidos? No se puede deshacer.',confirmWipe:'¿Borrar todos los pedidos, líneas de extracto y gastos? Exporta una copia antes si tienes dudas.',
+csvOrders:['Fecha','ID pedido','Artículos','Envío','Descuento','Impuestos cobrados','Pagó el comprador','Comisiones Etsy','Origen comisiones','Neto','SKU','Estado'],csvExp:['Fecha','Categoría','Importe','Nota'],csvTax:['Concepto','T1','T2','T3','T4','Año']}
+};
+const KEY='etsyProfitBook.v1';
+const $=id=>document.getElementById(id);
+const n=v=>{ if(typeof v==='number') return isFinite(v)?v:0; if(v==null) return 0; let s=String(v).trim().replace(/[^\d,.\-()]/g,''); const neg=/^\(.*\)$/.test(s)||s.startsWith('-'); s=s.replace(/[()\-]/g,''); if(s.includes(',')&&s.includes('.')){ if(s.lastIndexOf(',')>s.lastIndexOf('.')) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(/,/g,''); } else if(s.includes(',')){ const parts=s.split(','); s = parts[parts.length-1].length===3 && parts.length>1 && !/^0/.test(parts[parts.length-1]) ? s.replace(/,/g,'') : s.replace(',','.'); } const x=parseFloat(s); return isFinite(x)?(neg?-x:x):0; };
+let L=I18N.en; const t=(k,vars)=>{ let s=L[k]!==undefined?L[k]:I18N.en[k]; if(typeof s==='string'&&vars) for(const v in vars) s=s.split('{'+v+'}').join(vars[v]); return s; };
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let S={lang:'',country:'US',cur:'$',listing:0.20,trans:6.5,proc:3,procfix:0.25,reg:0,dateFmt:'auto',orders:[],stmt:[],expenses:[],maps:{},seen:false,example:false,tab:'dash',pYear:'',pRange:'all'};
+function detectLang(){ const b=(navigator.language||'en').slice(0,2).toLowerCase(); return I18N[b]?b:'en'; }
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw)); }catch(e){} if(!S.lang) S.lang=detectLang(); L=I18N[S.lang]||I18N.en; if(!S.orders.length&&!S.expenses.length&&!S.seen){ loadExample(); } }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ toast('Storage full'); } }
+function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._h); el._h=setTimeout(()=>el.classList.remove('show'),2200); }
+const money=v=>(v<0?'−':'')+S.cur+Math.abs(Math.round(v*100)/100).toFixed(2);
+const pct=v=>(Math.round(v*10)/10).toFixed(1)+'%';
+const ym=d=>d.slice(0,7);
+const MONTHS={en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']};
+const mName=(k)=>{ const [y,m]=k.split('-'); return (MONTHS[S.lang]||MONTHS.en)[+m-1]+' '+y; };
+
+// ---------- CSV ----------
+function parseCSV(text){
+  text=text.replace(/^﻿/,'');
+  const firstLine=text.split(/\r?\n/)[0]||''; const delim=(firstLine.split(';').length>firstLine.split(',').length)?';':',';
+  const rows=[]; let row=[],cell='',q=false;
+  for(let i=0;i<text.length;i++){ const ch=text[i];
+    if(q){ if(ch==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=ch; }
+    else if(ch==='"') q=true;
+    else if(ch===delim){ row.push(cell); cell=''; }
+    else if(ch==='\n'||ch==='\r'){ if(ch==='\r'&&text[i+1]==='\n') i++; row.push(cell); rows.push(row); row=[]; cell=''; }
+    else cell+=ch; }
+  if(cell!==''||row.length){ row.push(cell); rows.push(row); }
+  const headers=(rows.shift()||[]).map(h=>h.trim());
+  return {headers, rows:rows.filter(r=>r.some(c=>c&&c.trim()!=='')).map(r=>{ const o={}; headers.forEach((h,i)=>o[h]=r[i]!==undefined?r[i]:''); return o; })};
+}
+function parseDate(s){
+  if(!s) return null; s=String(s).trim();
+  let m;
+  if((m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return iso(m[1],m[2],m[3]);
+  if((m=s.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/))){ let a=+m[1],b=+m[2],y=+m[3]; if(y<100) y+=2000; const fmt=S.dateFmt; let mo,d;
+    if(fmt==='dmy'){ d=a;mo=b; } else if(fmt==='mdy'){ mo=a;d=b; } else { if(a>12){ d=a;mo=b; } else if(b>12){ mo=a;d=b; } else { mo=a;d=b; } }
+    if(mo<1||mo>12||d<1||d>31) return null; return iso(y,mo,d); }
+  const months={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12,ene:1,abr:4,ago:8,dic:12};
+  if((m=s.match(/^([A-Za-z]{3})[a-z]*\.?\s+(\d{1,2}),?\s+(\d{4})/))){ const mo=months[m[1].toLowerCase()]; if(mo) return iso(m[3],mo,m[2]); }
+  if((m=s.match(/^(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?\s+(\d{4})/))){ const mo=months[m[2].toLowerCase()]; if(mo) return iso(m[3],mo,m[1]); }
+  const d=new Date(s); return isNaN(d)?null:d.toISOString().slice(0,10);
+}
+function iso(y,m,d){ return String(y).padStart(4,'0')+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0'); }
+function download(name,text,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500); }
+function csvLine(arr){ return arr.map(v=>{ v=v==null?'':String(v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }).join(','); }
+
+// ---------- field specs & mapping ----------
+const ORDER_FIELDS=[
+ {k:'date',req:true,alts:['sale date','date','order date','fecha']},
+ {k:'orderId',req:true,alts:['order id','order number','order','receipt','pedido']},
+ {k:'items',req:true,alts:['order value','item total','items total','subtotal','order subtotal','value']},
+ {k:'ship',alts:['shipping','shipping charged','shipping price','postage']},
+ {k:'discount',alts:['discount amount','discount','coupon amount']},
+ {k:'tax',alts:['sales tax','tax']},
+ {k:'vat',alts:['vat paid by buyer','vat','iva']},
+ {k:'total',alts:['order total','total','grand total']},
+ {k:'procFee',alts:['card processing fees','processing fee','payment processing']},
+ {k:'net',alts:['order net','net','adjusted net order amount']},
+ {k:'status',alts:['status','order status']},
+ {k:'sku',alts:['sku','item name','title','listing']}];
+const STMT_FIELDS=[
+ {k:'sdate',req:true,alts:['date','fecha']},
+ {k:'stype',req:true,alts:['type','tipo']},
+ {k:'stitle',alts:['title','description','info','título']},
+ {k:'samount',req:true,alts:['amount','importe']},
+ {k:'sfees',alts:['fees & taxes','fees and taxes','fees','comisiones']},
+ {k:'snet',alts:['net','neto']}];
+function guessMap(headers,fields,saved){
+  const map={}; const low=headers.map(h=>h.toLowerCase().trim());
+  fields.forEach(f=>{ if(saved&&saved[f.k]&&headers.includes(saved[f.k])){ map[f.k]=saved[f.k]; return; }
+    let hit=null; for(const a of f.alts){ const i=low.indexOf(a); if(i>=0){hit=headers[i];break;} }
+    if(!hit) for(const a of f.alts){ const i=low.findIndex(h=>h.includes(a)&&!Object.values(map).includes(headers[low.indexOf(h)])); if(i>=0){hit=headers[i];break;} }
+    map[f.k]=hit||''; });
+  return map;
+}
+let pending=null;
+function openMapper(kind,parsed){
+  const fields=kind==='orders'?ORDER_FIELDS:STMT_FIELDS; const map=guessMap(parsed.headers,fields,S.maps[kind]);
+  pending={kind,parsed,fields,map};
+  $('mapTitle').textContent=t(kind==='orders'?'mOrders':'mStmt'); $('mapHint').textContent=t('mHint');
+  const g=$('mapGrid'); g.innerHTML='';
+  fields.forEach(f=>{ const d=document.createElement('div'); d.innerHTML=`<label${f.req?'':' style="color:var(--muted)"'}>${esc(t('fld')[f.k])}</label><select data-f="${f.k}"><option value="">${esc(t('mNone'))}</option>${parsed.headers.map(h=>`<option value="${esc(h)}"${map[f.k]===h?' selected':''}>${esc(h)}</option>`).join('')}</select>`; g.appendChild(d); });
+  g.querySelectorAll('select').forEach(s=>s.addEventListener('change',e=>{ pending.map[e.target.dataset.f]=e.target.value; renderPreview(); }));
+  renderPreview(); $('mapper').hidden=false;
+}
+function renderPreview(){
+  const {kind,parsed,fields,map}=pending; const rows=parsed.rows.slice(0,5);
+  const cols=fields.filter(f=>map[f.k]);
+  $('mapPreview').innerHTML='<thead><tr>'+cols.map(f=>`<th>${esc(t('fld')[f.k].replace(' *',''))}</th>`).join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(f=>{ let v=r[map[f.k]]; if(f.k==='date'||f.k==='sdate'){ const d=parseDate(v); v=d?d:('⚠ '+v); } return `<td>${esc(v)}</td>`; }).join('')+'</tr>').join('')+'</tbody>';
+}
+function doImport(){
+  const {kind,parsed,fields,map}=pending;
+  if(fields.some(f=>f.req&&!map[f.k])){ toast(t('tNeed')); return; }
+  S.maps[kind]=map;
+  if(kind==='orders'){
+    let added=0,updated=0,bad=0;
+    parsed.rows.forEach(r=>{ const d=parseDate(r[map.date]); if(!d){bad++;return;}
+      const o={id:String(r[map.orderId]).trim(),date:d,items:n(r[map.items]),ship:map.ship?n(r[map.ship]):0,discount:map.discount?Math.abs(n(r[map.discount])):0,tax:(map.tax?n(r[map.tax]):0)+(map.vat?n(r[map.vat]):0),total:map.total?n(r[map.total]):null,procFee:map.procFee?Math.abs(n(r[map.procFee])):null,net:map.net?n(r[map.net]):null,status:map.status?String(r[map.status]).trim():'',sku:map.sku?String(r[map.sku]).trim():'',src:'csv'};
+      const i=S.orders.findIndex(x=>x.id===o.id); if(i>=0){S.orders[i]=o;updated++;} else {S.orders.push(o);added++;} });
+    if(bad&&!added&&!updated){ toast(t('tNoDate')); return; }
+    S.example=false; toast(t('tImported',{n:added+updated,u:updated}));
+  } else {
+    let added=0;
+    parsed.rows.forEach(r=>{ const d=parseDate(r[map.sdate]); if(!d) return; const line={date:d,type:String(r[map.stype]).trim(),title:map.stitle?String(r[map.stitle]).trim():'',amount:n(r[map.samount]),fees:map.sfees?n(r[map.sfees]):0,net:map.snet?n(r[map.snet]):null};
+      line.key=[line.date,line.type,line.title,line.amount,line.fees].join('|'); if(!S.stmt.some(x=>x.key===line.key)){S.stmt.push(line);added++;} });
+    S.example=false; toast(t('tStmt',{n:added}));
+  }
+  $('mapper').hidden=true; pending=null; S.orders.sort((a,b)=>a.date<b.date?1:-1); renderAll(); save();
+}
+
+// ---------- calculations ----------
+function estFees(o){ const base=o.items-o.discount+o.ship; return {listing:S.listing,trans:base*S.trans/100,proc:o.procFee!=null?o.procFee:(base*S.proc/100+S.procfix),reg:base*S.reg/100}; }
+function hasStmt(monthKey){ return S.stmt.some(l=>ym(l.date)===monthKey); }
+function stmtFees(monthKey){ // negative amounts of non-sale, non-deposit, non-refund lines = fees
+  let f=0; S.stmt.forEach(l=>{ if(ym(l.date)!==monthKey) return; const ty=l.type.toLowerCase(); if(/deposit|dep[oó]sito|payout/.test(ty)) return; if(/refund|reembolso/.test(ty)) return;
+    if(/sale|venta/.test(ty)){ f+=Math.abs(l.fees||0); } else { f+=Math.abs(l.fees||0)+(l.amount<0?Math.abs(l.amount):0); } }); return f; }
+function stmtRefunds(monthKey){ let r=0; S.stmt.forEach(l=>{ if(ym(l.date)===monthKey&&/refund|reembolso/.test(l.type.toLowerCase())) r+=Math.abs(l.amount||0); }); return r; }
+function stmtDeposits(monthKey){ let d=0; S.stmt.forEach(l=>{ if(ym(l.date)===monthKey&&/deposit|dep[oó]sito|payout/.test(l.type.toLowerCase())) d+=Math.abs(l.amount||l.net||0); }); return d; }
+function orderRevenue(o){ return o.items-o.discount+o.ship; }
+function orderFees(o){ const f=estFees(o); return f.listing+f.trans+f.proc+f.reg; }
+function orderNet(o){ return o.net!=null?o.net:orderRevenue(o)-orderFees(o); }
+function inRange(dateStr){ const y=dateStr.slice(0,4), m=+dateStr.slice(5,7); if(S.pYear&&y!==S.pYear) return false; const r=S.pRange; if(r==='all') return true; if(r[0]==='q'){ const q=+r[1]; return Math.ceil(m/3)===q; } return m===+r; }
+function monthsInRange(){ const set=new Set(); S.orders.forEach(o=>inRange(o.date)&&set.add(ym(o.date))); S.expenses.forEach(e=>inRange(e.date)&&set.add(ym(e.date))); S.stmt.forEach(l=>inRange(l.date)&&set.add(ym(l.date))); return [...set].sort(); }
+function monthStats(k){
+  const os=S.orders.filter(o=>ym(o.date)===k); const revenue=os.reduce((a,o)=>a+orderRevenue(o),0);
+  const actual=hasStmt(k); const fees=actual?stmtFees(k):os.reduce((a,o)=>a+orderFees(o),0);
+  const refunds=actual?stmtRefunds(k):0;
+  const expenses=S.expenses.filter(e=>ym(e.date)===k).reduce((a,e)=>a+e.amount,0);
+  const profit=revenue-fees-refunds-expenses;
+  return {k,orders:os.length,revenue,fees,refunds,expenses,profit,actual,taxCollected:os.reduce((a,o)=>a+o.tax,0),discounts:os.reduce((a,o)=>a+o.discount,0),netOrders:os.reduce((a,o)=>a+orderNet(o),0),deposits:stmtDeposits(k)};
+}
+function sumStats(list){ const s={orders:0,revenue:0,fees:0,refunds:0,expenses:0,profit:0,taxCollected:0,discounts:0,allActual:list.length>0}; list.forEach(m=>{ for(const k of ['orders','revenue','fees','refunds','expenses','profit','taxCollected','discounts']) s[k]+=m[k]; if(!m.actual) s.allActual=false; }); return s; }
+
+// ---------- render ----------
+function applyLang(){ L=I18N[S.lang]||I18N.en; document.documentElement.lang=S.lang; document.title=t('title'); document.querySelectorAll('[data-i]').forEach(el=>{ el.textContent=t(el.dataset.i); }); $('lang').value=S.lang;
+  const cs=$('country'); cs.innerHTML=''; for(const k in PROFILES){ const o=document.createElement('option'); o.value=k; o.textContent=t('c')[k]; cs.appendChild(o);} cs.value=S.country;
+  const ec=$('eCat'); const cur=ec.value; ec.innerHTML=''; CATS.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=t('cat')[c]; ec.appendChild(o); }); if(cur) ec.value=cur; }
+function renderPeriod(){ const years=new Set([String(new Date().getFullYear())]); S.orders.forEach(o=>years.add(o.date.slice(0,4))); S.expenses.forEach(e=>years.add(e.date.slice(0,4))); S.stmt.forEach(l=>years.add(l.date.slice(0,4)));
+  const ys=[...years].sort().reverse(); if(!S.pYear||!years.has(S.pYear)) S.pYear=ys[0]; const sel=$('pYear'); sel.innerHTML=ys.map(y=>`<option value="${y}"${y===S.pYear?' selected':''}>${y}</option>`).join(''); $('pRange').value=S.pRange; }
+function renderTabs(){ document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===S.tab)); document.querySelectorAll('.tab').forEach(d=>d.hidden=d.id!=='tab-'+S.tab); $('periodBar').hidden=(S.tab==='settings'); }
+function renderDash(){
+  const ms=monthsInRange().map(monthStats); const s=sumStats(ms);
+  const margin=s.revenue>0?s.profit/s.revenue*100:0;
+  $('kpis').innerHTML=[['kProfit',money(s.profit),'hero'],['kRevenue',money(s.revenue)],['kFees',money(s.fees)+(s.orders&&!s.allActual?' <span class="tag warn">'+t('srcEstimated')+'</span>':'')],['kExpenses',money(s.expenses)],['kOrders',String(s.orders)],['kAvg',s.orders?money(s.revenue/s.orders):'–'],['kMargin',pct(margin)]]
+    .map(k=>`<div><span>${t(k[0])}</span><b class="${k[2]||''}">${k[1]}</b></div>`).join('');
+  renderChart(ms);
+  $('monthTable').innerHTML=`<thead><tr><th>${t('thMonth')}</th><th class="num">${t('thOrders')}</th><th class="num">${t('thRevenue')}</th><th class="num">${t('thFees')}</th><th class="num">${t('thExpenses')}</th><th class="num">${t('thProfit')}</th><th class="num">${t('thMargin')}</th><th>${t('thSource')}</th></tr></thead><tbody>`+
+    ms.map(m=>`<tr><td>${mName(m.k)}</td><td class="num">${m.orders}</td><td class="num">${money(m.revenue)}</td><td class="num">${money(m.fees)}</td><td class="num">${money(m.expenses)}</td><td class="num">${money(m.profit)}</td><td class="num">${m.revenue?pct(m.profit/m.revenue*100):'–'}</td><td><span class="tag ${m.actual?'ok':'warn'}">${t(m.actual?'srcActual':'srcEstimated')}</span></td></tr>`).join('')+
+    `<tr class="total"><td>Σ</td><td class="num">${s.orders}</td><td class="num">${money(s.revenue)}</td><td class="num">${money(s.fees)}</td><td class="num">${money(s.expenses)}</td><td class="num">${money(s.profit)}</td><td class="num">${pct(margin)}</td><td></td></tr></tbody>`;
+}
+function renderChart(ms){
+  const box=$('chart'); if(!ms.length){ box.innerHTML='<p class="hint">–</p>'; return; }
+  const W=900,H=260,padL=56,padR=12,padT=16,padB=34; const iw=W-padL-padR, ih=H-padT-padB;
+  const maxV=Math.max(1,...ms.map(m=>Math.max(m.revenue,m.profit,0))); const minV=Math.min(0,...ms.map(m=>m.profit));
+  const nice=v=>{ const p=Math.pow(10,Math.floor(Math.log10(Math.max(v,1)))); const r=v/p; const step=r<=2?0.5:r<=5?1:2; return Math.ceil(r/step)*step*p; };
+  const top=nice(maxV), bottom=minV<0?-nice(-minV):0; const range=top-bottom;
+  const y=v=>padT+ih*(1-(v-bottom)/range);
+  const band=iw/ms.length; const bw=Math.min(24,(band-8)/2); const gap=2;
+  let g=''; const ticks=4; for(let i=0;i<=ticks;i++){ const v=bottom+range*i/ticks; g+=`<line x1="${padL}" x2="${W-padR}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="var(--grid)" stroke-width="1"/><text x="${padL-8}" y="${(y(v)+4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--muted)">${S.cur}${Math.round(v).toLocaleString()}</text>`; }
+  let bars=''; ms.forEach((m,i)=>{ const cx=padL+band*i+band/2; const x1=cx-bw-gap/2, x2=cx+gap/2;
+    const bar=(x,v,color)=>{ const y0=y(0), y1=y(v); const h=Math.abs(y0-y1); if(h<0.5) return ''; const top=Math.min(y0,y1); const r=Math.min(4,h/2); const up=v>=0; const path= up ? `M${x},${y0} V${top+r} a${r},${r} 0 0 1 ${r},-${r} h${bw-2*r} a${r},${r} 0 0 1 ${r},${r} V${y0} Z` : `M${x},${y0} V${top+h-r} a${r},${r} 0 0 0 ${r},${r} h${bw-2*r} a${r},${r} 0 0 0 ${r},-${r} V${y0} Z`; return `<path d="${path}" fill="${color}"/>`; };
+    bars+=bar(x1,m.revenue,'var(--s1)')+bar(x2,m.profit,'var(--s2)');
+    bars+=`<rect data-i="${i}" x="${padL+band*i}" y="${padT}" width="${band}" height="${ih}" fill="transparent"/>`;
+    bars+=`<text x="${cx}" y="${H-padB+16}" text-anchor="middle" font-size="11" fill="var(--muted)">${(MONTHS[S.lang]||MONTHS.en)[+m.k.slice(5,7)-1]}</text>`; });
+  const last=ms[ms.length-1]; const lx=padL+band*(ms.length-1)+band/2; const lbl=`<text x="${lx}" y="${(y(Math.max(last.revenue,0))-6).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink)">${money(last.profit)}</text>`;
+  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t('dChart'))}">${g}<line x1="${padL}" x2="${W-padR}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)" stroke-width="1"/>${bars}${lbl}</svg><div class="legend"><span><i style="background:var(--s1)"></i>${t('kRevenue')}</span><span><i style="background:var(--s2)"></i>${t('kProfit')}</span></div><div class="tip" id="tip"></div>`;
+  const tip=$('tip'); box.querySelectorAll('rect[data-i]').forEach(r=>{ r.addEventListener('mousemove',e=>{ const m=ms[+r.dataset.i]; tip.style.display='block'; const b=box.getBoundingClientRect(); tip.style.left=(e.clientX-b.left)+'px'; tip.style.top=(e.clientY-b.top)+'px'; tip.textContent=`${mName(m.k)} · ${t('kRevenue')} ${money(m.revenue)} · ${t('kProfit')} ${money(m.profit)} · ${m.orders} ${t('kOrders').toLowerCase()}`; }); r.addEventListener('mouseleave',()=>tip.style.display='none'); });
+}
+function renderOrders(){
+  const os=S.orders.filter(o=>inRange(o.date));
+  $('orderTable').innerHTML=`<thead><tr><th>${t('thDate')}</th><th>${t('thOrder')}</th><th class="num">${t('thItems')}</th><th class="num">${t('thShip')}</th><th class="num">${t('thDiscount')}</th><th class="num">${t('thTax')}</th><th class="num">${t('thTotal')}</th><th class="num">${t('thFees')}</th><th class="num">${t('thNet')}</th><th>${t('thSku')}</th><th>${t('thStatus')}</th><th></th></tr></thead><tbody>`+
+    os.map((o,i)=>{ const fees=orderFees(o); const actual=hasStmt(ym(o.date)); return `<tr><td>${o.date}</td><td>${esc(o.id)}</td><td class="num">${money(o.items)}</td><td class="num">${money(o.ship)}</td><td class="num">${o.discount?money(-o.discount):'–'}</td><td class="num">${o.tax?money(o.tax):'–'}</td><td class="num">${money(o.total!=null?o.total:orderRevenue(o)+o.tax)}</td><td class="num">${o.net!=null?money(orderRevenue(o)-o.net):money(fees)}${actual||o.net!=null?'':' <span class="tag warn">~</span>'}</td><td class="num">${money(orderNet(o))}</td><td>${esc(o.sku)}</td><td>${esc(o.status)}</td><td><button class="small danger" data-del="${esc(o.id)}">×</button></td></tr>`; }).join('')+'</tbody>';
+  $('orderTable').querySelectorAll('button[data-del]').forEach(b=>b.addEventListener('click',()=>{ S.orders=S.orders.filter(o=>o.id!==b.dataset.del); renderAll(); save(); }));
+}
+function renderFees(){
+  const lines=S.stmt.filter(l=>inRange(l.date)); const by={}; lines.forEach(l=>{ const k=l.type||'?'; by[k]=by[k]||{n:0,amount:0,fees:0}; by[k].n++; by[k].amount+=l.amount; by[k].fees+=l.fees; });
+  const keys=Object.keys(by).sort();
+  $('feeTable').innerHTML=keys.length?`<thead><tr><th>${t('thType')}</th><th class="num">${t('thCount')}</th><th class="num">${t('thAmount')}</th><th class="num">${t('fld').sfees.replace(' *','')}</th></tr></thead><tbody>`+keys.map(k=>`<tr><td>${esc(k)}</td><td class="num">${by[k].n}</td><td class="num">${money(by[k].amount)}</td><td class="num">${money(by[k].fees)}</td></tr>`).join('')+'</tbody>':`<tbody><tr><td class="hint">${t('rNoData')}</td></tr></tbody>`;
+  const ms=monthsInRange().map(monthStats);
+  $('reconTable').innerHTML=`<thead><tr><th>${t('thMonth')}</th><th class="num">${t('thNetOrders')}</th><th class="num">${t('thDeposits')}</th><th class="num">${t('thDiff')}</th><th></th></tr></thead><tbody>`+ms.map(m=>{ if(!m.actual) return `<tr><td>${mName(m.k)}</td><td class="num">${money(m.netOrders)}</td><td class="num">–</td><td class="num">–</td><td><span class="tag">${t('rNoData')}</span></td></tr>`; const diff=m.deposits-m.netOrders; const ok=Math.abs(diff)<=Math.max(5,m.netOrders*0.05); return `<tr><td>${mName(m.k)}</td><td class="num">${money(m.netOrders)}</td><td class="num">${money(m.deposits)}</td><td class="num">${money(diff)}</td><td><span class="tag ${ok?'ok':'bad'}">${t(ok?'rOk':'rCheck')}</span></td></tr>`; }).join('')+'</tbody>';
+}
+function renderExpenses(){
+  const es=S.expenses.filter(e=>inRange(e.date)).sort((a,b)=>a.date<b.date?1:-1); const by={}; es.forEach(e=>{ by[e.cat]=(by[e.cat]||0)+e.amount; }); const tot=es.reduce((a,e)=>a+e.amount,0);
+  $('expCatTable').innerHTML=`<thead><tr><th>${t('thCategory')}</th><th class="num">${t('thAmount')}</th></tr></thead><tbody>`+CATS.filter(c=>by[c]).map(c=>`<tr><td>${t('cat')[c]}</td><td class="num">${money(by[c])}</td></tr>`).join('')+`<tr class="total"><td>Σ</td><td class="num">${money(tot)}</td></tr></tbody>`;
+  $('expTable').innerHTML=`<thead><tr><th>${t('thDate')}</th><th>${t('thCategory')}</th><th class="num">${t('thAmount')}</th><th>${t('thNote')}</th><th></th></tr></thead><tbody>`+es.map(e=>`<tr><td>${e.date}</td><td>${t('cat')[e.cat]||esc(e.cat)}</td><td class="num">${money(e.amount)}</td><td>${esc(e.note)}</td><td><button class="small danger" data-del="${e.id}">×</button></td></tr>`).join('')+'</tbody>';
+  $('expTable').querySelectorAll('button[data-del]').forEach(b=>b.addEventListener('click',()=>{ S.expenses=S.expenses.filter(e=>String(e.id)!==b.dataset.del); renderAll(); save(); }));
+}
+function taxRows(){
+  const y=S.pYear; const q=[1,2,3,4].map(qi=>{ const ms=[]; for(let m=1;m<=12;m++) if(Math.ceil(m/3)===qi) ms.push(y+'-'+String(m).padStart(2,'0')); return sumStats(ms.map(monthStats)); }); const yr=sumStats([1,2,3,4].flatMap(qi=>{ const ms=[]; for(let m=1;m<=12;m++) if(Math.ceil(m/3)===qi) ms.push(y+'-'+String(m).padStart(2,'0')); return ms.map(monthStats); }));
+  const row=(label,k,neg)=>[label,...q.map(s=>(neg?-1:1)*s[k]),(neg?-1:1)*yr[k]];
+  return [row(t('xOrders'),'orders'),row(t('xGross'),'revenue'),row(t('xDiscounts'),'discounts',true),row(t('xRefunds'),'refunds',true),row(t('xFees'),'fees',true),row(t('xExpenses'),'expenses',true),row(t('xProfit'),'profit'),row(t('xCollected'),'taxCollected')];
+}
+function renderTaxes(){ const rows=taxRows(); $('taxTable').innerHTML=`<thead><tr><th></th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">${t('thYear')} ${S.pYear}</th></tr></thead><tbody>`+rows.map((r,i)=>`<tr${r[0]===t('xProfit')?' class="total"':''}><td>${esc(r[0])}</td>${r.slice(1).map(v=>`<td class="num">${i===0?v:money(v)}</td>`).join('')}</tr>`).join('')+'</tbody>'; }
+function renderSettings(){ $('country').value=S.country; $('cur').value=S.cur; $('f_listing').value=S.listing; $('f_trans').value=S.trans; $('f_proc').value=S.proc; $('f_procfix').value=S.procfix; $('f_reg').value=S.reg; $('dateFmt').value=S.dateFmt; }
+function renderAll(){ renderPeriod(); renderTabs(); $('exampleNote').hidden=!S.example; $('exampleNote').textContent=t('exampleNote'); renderDash(); renderOrders(); renderFees(); renderExpenses(); renderTaxes(); renderSettings(); }
+
+// ---------- example data ----------
+function loadExample(){
+  const y=new Date().getFullYear(); const rnd=(seed=>()=>{ seed=(seed*9301+49297)%233280; return seed/233280; })(7);
+  S.orders=[]; S.expenses=[]; S.stmt=[]; let id=3120000001;
+  for(let m=1;m<=Math.max(1,new Date().getMonth()+1);m++){ const cnt=6+Math.floor(rnd()*10); for(let i=0;i<cnt;i++){ const d=iso(y,m,1+Math.floor(rnd()*28)); const items=+(12+Math.floor(rnd()*4)*6+(rnd()<0.3?0.99:0)).toFixed(2); const ship=rnd()<0.5?0:4.5; const tax=+(items*0.07*(rnd()<0.6?1:0)).toFixed(2); S.orders.push({id:String(id++),date:d,items,ship,discount:rnd()<0.2?+(items*0.1).toFixed(2):0,tax,total:null,procFee:null,net:null,status:'Paid',sku:['TOOL-CALC','TOOL-BOOK','TOOL-IMG'][Math.floor(rnd()*3)],src:'example'}); }
+    S.expenses.push({id:'x'+m+'a',date:iso(y,m,3),cat:'software',amount:9.99,note:'Design app'},{id:'x'+m+'b',date:iso(y,m,15),cat:'marketing',amount:+(20+rnd()*30).toFixed(2),note:'Etsy Ads'}); }
+  S.orders.sort((a,b)=>a.date<b.date?1:-1); S.example=true;
+}
+
+// ---------- events ----------
+function bind(){
+  $('lang').addEventListener('change',e=>{ S.lang=e.target.value; applyLang(); renderAll(); save(); });
+  document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{ S.tab=b.dataset.tab; renderTabs(); save(); }));
+  $('pYear').addEventListener('change',e=>{ S.pYear=e.target.value; renderAll(); save(); });
+  $('pRange').addEventListener('change',e=>{ S.pRange=e.target.value; renderAll(); save(); });
+  $('btnGuide').addEventListener('click',()=>{ $('guide').hidden=false; }); $('btnGuideClose').addEventListener('click',()=>{ $('guide').hidden=true; S.seen=true; save(); });
+  $('btnPrint').addEventListener('click',()=>window.print()); $('btnTaxPrint').addEventListener('click',()=>window.print());
+  $('btnExport').addEventListener('click',()=>{ download('etsy-profit-book-backup.json',JSON.stringify(S,null,2),'application/json'); toast(t('tBackup')); });
+  $('btnImport').addEventListener('click',()=>$('fileBackup').click());
+  $('fileBackup').addEventListener('change',e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const o=JSON.parse(r.result); if(!o||!Array.isArray(o.orders)) throw 0; S=Object.assign(S,o); applyLang(); renderAll(); save(); toast(t('tRestored')); }catch(err){ toast(t('tBad')); } }; r.readAsText(f); e.target.value=''; });
+  const readCsv=(file,kind)=>{ const r=new FileReader(); r.onload=()=>{ const parsed=parseCSV(r.result); if(!parsed.headers.length) return; openMapper(kind,parsed); }; r.readAsText(file); };
+  const drop=(el,kind)=>{ el.addEventListener('dragover',e=>{ e.preventDefault(); el.classList.add('over'); }); el.addEventListener('dragleave',()=>el.classList.remove('over')); el.addEventListener('drop',e=>{ e.preventDefault(); el.classList.remove('over'); const f=e.dataTransfer.files[0]; if(f) readCsv(f,kind); }); };
+  drop($('dropOrders'),'orders'); drop($('dropStmt'),'stmt');
+  $('btnOrdersFile').addEventListener('click',()=>$('fileOrders').click()); $('fileOrders').addEventListener('change',e=>{ if(e.target.files[0]) readCsv(e.target.files[0],'orders'); e.target.value=''; });
+  $('btnStmtFile').addEventListener('click',()=>$('fileStmt').click()); $('fileStmt').addEventListener('change',e=>{ if(e.target.files[0]) readCsv(e.target.files[0],'stmt'); e.target.value=''; });
+  $('btnMapOk').addEventListener('click',doImport); $('btnMapCancel').addEventListener('click',()=>{ $('mapper').hidden=true; pending=null; });
+  $('btnOrdersClear').addEventListener('click',()=>{ if(confirm(t('confirmClear'))){ S.orders=[]; S.example=false; renderAll(); save(); toast(t('tDeleted')); } });
+  $('btnStmtClear').addEventListener('click',()=>{ S.stmt=[]; renderAll(); save(); toast(t('tDeleted')); });
+  $('btnOrdersCsv').addEventListener('click',()=>{ const rows=S.orders.filter(o=>inRange(o.date)).map(o=>[o.date,o.id,o.items,o.ship,o.discount,o.tax,o.total!=null?o.total:orderRevenue(o)+o.tax,o.net!=null?orderRevenue(o)-o.net:orderFees(o),(hasStmt(ym(o.date))||o.net!=null)?t('srcActual'):t('srcEstimated'),orderNet(o),o.sku,o.status].map((v,i)=>typeof v==='number'?Math.round(v*100)/100:v)); download('etsy-orders.csv',[csvLine(t('csvOrders')),...rows.map(csvLine)].join('\n'),'text/csv'); toast(t('tCsv')); });
+  $('btnAddOrder').addEventListener('click',()=>{ $('ofDate').value=new Date().toISOString().slice(0,10); $('ofId').value=''; $('ofItems').value=''; $('ofShip').value='0'; $('ofDisc').value='0'; $('ofTax').value='0'; $('ofSku').value=''; $('orderForm').hidden=false; $('ofItems').focus(); });
+  $('btnOfCancel').addEventListener('click',()=>{ $('orderForm').hidden=true; });
+  $('btnOfSave').addEventListener('click',()=>{ const d=$('ofDate').value; const items=n($('ofItems').value); if(!d||!items) return; const id=$('ofId').value.trim()||('M'+Date.now()); const o={id,date:d,items,ship:n($('ofShip').value),discount:n($('ofDisc').value),tax:n($('ofTax').value),total:null,procFee:null,net:null,status:'',sku:$('ofSku').value.trim(),src:'manual'}; const i=S.orders.findIndex(x=>x.id===id); if(i>=0) S.orders[i]=o; else S.orders.push(o); S.orders.sort((a,b)=>a.date<b.date?1:-1); S.example=false; $('orderForm').hidden=true; renderAll(); save(); });
+  $('eDate').value=new Date().toISOString().slice(0,10);
+  $('btnAddExp').addEventListener('click',()=>{ const d=$('eDate').value, a=n($('eAmount').value); if(!d||!a) return; S.expenses.push({id:'e'+Date.now(),date:d,cat:$('eCat').value,amount:a,note:$('eNote').value.trim()}); $('eAmount').value=''; $('eNote').value=''; S.example=false; renderAll(); save(); });
+  $('btnExpCsv').addEventListener('click',()=>{ const rows=S.expenses.filter(e=>inRange(e.date)).map(e=>[e.date,t('cat')[e.cat]||e.cat,Math.round(e.amount*100)/100,e.note]); download('etsy-expenses.csv',[csvLine(t('csvExp')),...rows.map(csvLine)].join('\n'),'text/csv'); toast(t('tCsv')); });
+  $('btnTaxCsv').addEventListener('click',()=>{ const rows=taxRows().map((r,i)=>r.map((v,j)=>j===0?v:(i===0?v:Math.round(v*100)/100))); download('etsy-tax-summary-'+S.pYear+'.csv',[csvLine(t('csvTax')),...rows.map(csvLine)].join('\n'),'text/csv'); toast(t('tCsv')); });
+  $('country').addEventListener('change',e=>{ const p=PROFILES[e.target.value]; S.country=e.target.value; S.cur=p.cur; S.listing=p.listing; S.trans=p.trans; S.proc=p.proc; S.procfix=p.procfix; S.reg=p.reg; renderAll(); save(); });
+  const map={cur:'cur',f_listing:'listing',f_trans:'trans',f_proc:'proc',f_procfix:'procfix',f_reg:'reg'}; for(const id in map){ $(id).addEventListener('input',e=>{ S[map[id]]=id==='cur'?e.target.value:n(e.target.value); renderDash(); renderOrders(); renderTaxes(); save(); }); }
+  $('dateFmt').addEventListener('change',e=>{ S.dateFmt=e.target.value; save(); });
+  $('btnExample').addEventListener('click',()=>{ loadExample(); renderAll(); save(); toast(t('tExample')); });
+  $('btnWipe').addEventListener('click',()=>{ if(confirm(t('confirmWipe'))){ S.orders=[]; S.stmt=[]; S.expenses=[]; S.example=false; renderAll(); save(); toast(t('tDeleted')); } });
+}
+
+load(); applyLang(); bind(); renderAll();
+if(!S.seen) $('guide').hidden=false;
+window.__book={state:()=>S,parseCSV,parseDate,monthStats,orderFees,orderNet,guessMap,ORDER_FIELDS,STMT_FIELDS,n};
+})();
+</script>
+</body>
+</html>
