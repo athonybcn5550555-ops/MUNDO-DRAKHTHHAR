@@ -31,10 +31,18 @@ coste real solo lo sabe Antonio, por factura).
   es un registro manual mantenido por la Routine diaria — no sustituye una
   herramienta contable de verdad si el volumen crece.
 - **2026-09-07:** intento de verificar por WHOIS/RDAP público la fecha de
-  caducidad de `laiayjudit.com` fallido — esta sesión tiene bloqueado por
+  caducidad de `laiayjudit.com` fallido — esa sesión tenía bloqueado por
   el proxy de red el acceso a `whois.com`, `rdap.verisign.com` y al propio
-  dominio (`EGRESS_BLOCKED`). Solo `WebSearch` funciona, y no devuelve el
+  dominio (`EGRESS_BLOCKED`). Solo `WebSearch` funcionaba, y no devuelve el
   registro WHOIS en sí, solo páginas genéricas sobre qué es un WHOIS. La
   fecha de renovación de `laiayjudit.com` sigue siendo la del recordatorio
-  que programó Antonio, sin verificación pública adicional hoy. Ninguna
-  fecha se ha modificado sin esa verificación.
+  que programó Antonio, sin verificación pública adicional. Ninguna fecha
+  se ha modificado sin esa verificación.
+- **2026-09-08:** repetido el intento hoy — mismo resultado. `WebFetch` a
+  `laiayjudit.com` sigue devolviendo `EGRESS_BLOCKED`, y `WebSearch` para
+  "laiayjudit.com" no encuentra el dominio (solo resultados de un negocio
+  distinto, "laijau.com", en Nepal). Tampoco se ha encontrado por búsqueda
+  pública ningún registro de dominio para "ElegTuPatinete". Sin dominios
+  confirmados y accesibles, esta sesión no puede verificar caducidades por
+  su cuenta — sigue pendiente de que Antonio aporte los dominios reales o
+  de que una sesión futura tenga el proxy de red desbloqueado para WHOIS.
