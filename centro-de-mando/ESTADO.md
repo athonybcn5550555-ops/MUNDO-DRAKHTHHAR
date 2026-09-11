@@ -1,109 +1,132 @@
-# Estado · 2026-09-10 (barrido de la mañana)
+# Estado · 2026-09-11 (barrido de la mañana)
 
 ## Aviso activo
-- **"ElegTuPatinete - actualizar precios" ROTA (código 1) hoy** —
-  confirmado en vivo con `estado_de_las_tareas`. El 09-08 este mismo aviso
-  había desaparecido solo, sin explicación; hoy ha vuelto a fallar. Es la
-  única de las 12 tareas programadas del equipo local que no está "bien".
-  Antonio: conviene mirar el log de esa tarea en el Programador de tareas
-  de Windows — esta sesión no tiene acceso a ese log, solo al resumen de
-  estado.
-- **Hueco de barrido el 2026-09-09:** no hay ningún commit de esta Routine
-  ese día (el último antes de hoy es del 2026-09-08). No se puede saber
-  desde aquí si la Routine no se disparó o se disparó y no encontró nada
-  que registrar; se deja constancia por si Antonio esperaba parte de ayer
-  y no le llegó.
-- **Candidato de dominio nuevo — `drakhthar.com`:** `WebSearch` ha
-  encontrado hoy una página pública indexada (`drakhthar.com/aldric.html`)
-  cuyo contenido coincide con la descripción del proyecto Drakhthar.
-  Detalle completo, evidencia y lo que falta confirmar en
+- **Buena noticia: "ElegTuPatinete - actualizar precios" ya no aparece
+  rota.** Confirmado en vivo con `estado_de_las_tareas`: hoy las **13**
+  tareas programadas del equipo local aparecen "bien", incluida esa. El
+  09-10 era la única rota (código 1). No hay explicación desde aquí de
+  qué la arregló — si Antonio no tocó nada, puede volver a fallar sola
+  como ya pasó el 09-08 (desapareció el aviso sin explicación y volvió el
+  09-10); vale la pena confirmarlo en el propio Programador de tareas de
+  Windows si hay ocasión.
+- **Discrepancia en "frentes abiertos" — señalada, no resuelta.** El
+  `ESTADO.md` del 09-10 recogía **18 frentes abiertos** según el parte
+  local de ese día. El `parte_de_hoy` de hoy dice textualmente "no hay
+  frentes nuevos desde la última vez" y "de lo ya sabido siguen abiertos
+  **2 frentes**". Esta sesión no tiene forma de saber si de verdad se
+  cerraron 16 frentes de golpe, si cambió la forma de contar del Centro
+  de Mando local, o si es un dato inestable — se deja constancia en vez
+  de asumir ninguna de las tres.
+- **`drakhthar.com` sigue sin confirmar.** Repetido hoy el intento de
+  entrar a la web (`WebFetch`, error `EGRESS_BLOCKED`, igual que en
+  `laiayjudit.com`) y de buscar el registro WHOIS por `WebSearch` (solo
+  aparecen páginas genéricas de herramientas WHOIS de terceros, sin el
+  registro real). Sigue sin confirmarse que sea de Antonio. Detalle en
   `centro-de-mando/pendientes/2026-09-10-informe-dominio-drakhthar-encontrado.md`
-  y en la tabla de `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
-  **No confirmado que sea de Antonio** — pendiente de que lo diga él.
+  y en `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
 - Sigue abierto (sin cambios) el aviso de canibalización SEO señalado el
   09-08: `centro-de-mando/pendientes/2026-09-08-informe-canibalizacion-seo-diagnostico-y-plan.md`.
-  El hallazgo de `drakhthar.com` de hoy podría ser la pista que le faltaba
-  a ese informe si Antonio confirma que es su dominio.
+  Sigue bloqueado por lo mismo: sin dominio confirmado ni acceso a Search
+  Console.
 
 ## Decisiones pendientes
 - El `parte_de_hoy` de hoy dice "hay 2 decisión que toca revisar hoy para
-  saber si acertamos" (el 09-08 hablaba de 1), sin detalle accesible desde
-  esta sesión. Pendiente de que Antonio las traslade o de que el Centro de
-  Mando local las exponga con más detalle.
+  saber si acertamos" (igual que el 09-10), sin detalle accesible desde
+  esta sesión. Pendiente de que Antonio las traslade o de que el Centro
+  de Mando local las exponga con más detalle.
 - Sigue sin resolver la decisión ya señalada el 2026-09-07 sobre el
   informe `2026-09-07-informe-etsy-fee-calculator-listo-para-publicar.md`:
   falta la checklist final (imágenes/vídeo, pruebas en Windows limpio,
   VirusTotal, verificación de comisiones UK/CA/AU, alta NIF-IVA) antes de
   publicar el primer listing.
+- **Nueva hoy:** confirmar si `drakhthar.com` es de Antonio (ver aviso
+  activo arriba) — desatasca dos frentes a la vez (contabilidad de
+  dominios y el informe de canibalización SEO).
 
 ## Frentes abiertos
-- El parte de hoy cuenta **18 frentes abiertos** (el 09-08 contaba 21 —
-  bajada de 3 sin que esta sesión pueda saber cuáles se cerraron, al no
-  tener desglose accesible más allá de lo ya documentado aquí y en
-  `etsy/`).
+- El parte de hoy cuenta **2 frentes abiertos** (ver discrepancia con el
+  dato del 09-10 en "Aviso activo" — no se puede confirmar el desglose
+  desde esta sesión).
 
 ## Tareas automáticas del equipo local de Antonio
-Consultado en vivo hoy (`estado_de_las_tareas`): **12 tareas** (una más
-que el 09-08 — nueva: "TikTok - seguimiento diario", sin más contexto
-disponible desde aquí). 11 aparecen "bien": Centro de Mando - turno de
-noche · Escribir artículo diario patinetes · Informe tráfico webs (cada 3
-días) · KDP Inteligencia - captura única · Publicar IA para esto
-automático · Publicar artículos automático · Servidor MCP Centro de Mando
-· TikTok - seguimiento diario · Túnel MCP Centro de Mando · Vigilancia
-nichos KDP · Vigilante webs Antonio. 1 aparece **ROTA**: "ElegTuPatinete -
-actualizar precios" (código 1 — ver aviso activo arriba).
+Consultado en vivo hoy (`estado_de_las_tareas`): **13 tareas**, las
+**13 "bien"** — ninguna rota hoy (ver aviso activo sobre
+"ElegTuPatinete"). Lista completa: Actualizar Publicado Hoy · Centro de
+Mando - turno de noche · ElegTuPatinete - actualizar precios · Escribir
+artículo diario patinetes · Informe tráfico webs (cada 3 días) · KDP
+Inteligencia - captura única · Publicar IA para esto automático ·
+Publicar artículos automático · Servidor MCP Centro de Mando · TikTok -
+seguimiento diario · Túnel MCP Centro de Mando · Vigilancia nichos KDP ·
+Vigilante webs Antonio.
 
 ## Borradores pendientes de aprobación (todos, con ruta)
+- `centro-de-mando/pendientes/2026-09-11-etsy-listado-etsy-profit-book-borrador.md`
+  — **nuevo hoy.** Borrador de listing (título, tags, descripción) para
+  "Etsy Profit Book" (producto 2 del catálogo DrakhtharSoftware),
+  redactado leyendo directamente el código de
+  `productos/etsy-profit-book/index.html` (rama `claude/tienda-etsy-v49wjl`)
+  para no inventar funciones. **No es un aviso de "listo para publicar"**:
+  el producto sigue sin pruebas reales (sin suite de tests, sin probar en
+  Windows limpio, sin capturas ni vídeo) — el archivo incluye su propia
+  checklist antes de publicar, calcada de la del producto 1.
 - `centro-de-mando/pendientes/2026-09-10-informe-dominio-drakhthar-encontrado.md`
-  — **nuevo hoy.** Informe: candidato de dominio `drakhthar.com`
-  encontrado por búsqueda pública, pendiente de que Antonio confirme si es
-  suyo, y cómo usarlo para desatascar el informe de canibalización SEO.
+  — informe: candidato de dominio `drakhthar.com` encontrado por búsqueda
+  pública, pendiente de que Antonio confirme si es suyo. Sin novedad
+  hoy más allá de reconfirmar que sigue sin poder verificarse (ver aviso
+  activo).
 - `centro-de-mando/pendientes/2026-09-08-informe-canibalizacion-seo-diagnostico-y-plan.md`
   — informe: qué es la canibalización SEO detectada el 09-08 y plan de
-  solución estándar, a la espera de identificar dominio/páginas concretos
-  (ver hallazgo de hoy arriba).
+  solución estándar, a la espera de identificar dominio/páginas concretos.
 - `centro-de-mando/pendientes/2026-09-07-informe-etsy-fee-calculator-listo-para-publicar.md`
   — informe: el primer producto de la tienda Etsy (Fee & Price Calculator)
   está construido, probado y con el listing redactado; checklist real de
-  lo que falta antes de publicar (imágenes/vídeo, pruebas en Windows
-  limpio, VirusTotal, verificación de comisiones UK/CA/AU, alta NIF-IVA).
+  lo que falta antes de publicar.
 - `centro-de-mando/pendientes/2026-09-07-informe-niche-research-kdp.md`
   — informe: nichos de bajo contenido para KDP señalados por varias
-  fuentes públicas en 2026 (blogs de terceros, no datos verificados de
-  Amazon). Repetida hoy una búsqueda general sobre nichos KDP 2026: solo
-  aparecen guías/ebooks genéricos de terceros vendiendo "listas de
-  nichos", sin datos verificables de Amazon — no se ha añadido nada nuevo
-  al informe por no tener fuente fiable, tal y como pide la regla de oro.
-  Reconfirmado también hoy que "Puzzle Games Press" (marca real de KDP de
-  Antonio) sigue sin aparecer en ningún listado público de Amazon ni Etsy
-  — mismo resultado que el 09-07 y el 09-08.
+  fuentes públicas. Repetida hoy una búsqueda general de nichos KDP 2026:
+  mismo patrón que días anteriores — solo blogs/guías de terceros
+  vendiendo "listas de nichos" (bookfoundry.ai, kdpbuilder.com,
+  lowcontentprofits.com, inkfluenceai.com, kdpeasy.com, entre otros), sin
+  datos verificables de Amazon. No se añade nada nuevo al informe por no
+  tener fuente fiable, tal y como pide la regla de oro. Reconfirmado
+  también hoy (cuarta vez) que "Puzzle Games Press" sigue sin aparecer en
+  ningún listado público de Amazon ni Etsy.
 - (De sesiones anteriores, en la rama sin fusionar `claude/tienda-etsy-v49wjl`,
   no en `pendientes/`): `productos/etsy-fee-calculator/paquete/10-textos-listing.md`
   con el listing completo del primer producto de Etsy, listo para
-  copiar/pegar en cuanto Antonio apruebe publicar.
+  copiar/pegar en cuanto Antonio apruebe publicar; `etsy/09-cinco-productos.md`
+  con el research completo de los 5 productos, usado hoy como base del
+  borrador de listing del producto 2.
 - `productos/etsy-profit-book/index.html` — producto 2 de 5 del catálogo
-  Etsy, WIP sin probar todavía (sin suites de test ni listing redactado,
-  a diferencia del producto 1). Sin cambios hoy.
+  Etsy, WIP sin probar todavía (sin suites de test), pero **ya tiene
+  listing redactado hoy** (ver primer punto de esta lista). Funciones
+  reales confirmadas leyendo el código: dashboard, import de pedidos y de
+  extracto de Etsy Payments con mapeador de columnas y reconciliación,
+  gastos por categoría, resumen fiscal trimestral/anual, copia de
+  seguridad, datos de ejemplo, 2 idiomas (EN/ES).
 
 ## Pagos/renovaciones
 - Sin renovaciones a menos de 60 días vista confirmadas. Próximo pago
   conocido: **2027-07-16**, laiayjudit.com (~16 $, renovación automática
   vía Shopify) — muy lejos, no urgente.
-- Repetido hoy el intento de verificar por WHOIS/RDAP público la fecha de
-  laiayjudit.com y de localizar el dominio de ElegTuPatinete: sin éxito,
-  mismo bloqueo de red (`EGRESS_BLOCKED`) que días anteriores. Como
-  novedad, sí se ha localizado un candidato de dominio para Drakhthar
-  (`drakhthar.com`, ver aviso activo arriba). Detalle en
+- Repetido hoy el intento de verificar por WHOIS/RDAP público
+  `laiayjudit.com` y `drakhthar.com`, y de localizar el dominio de
+  ElegTuPatinete: sin éxito, mismo bloqueo de red (`EGRESS_BLOCKED`) que
+  días anteriores. Detalle completo en
   `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
 
 ## Datos de contabilidad que faltan por confirmar (Antonio)
 - ElegTuPatinete: dominio, proveedor, coste anual y fecha de renovación —
   no indexado públicamente, no se puede confirmar por WHOIS.
 - **`drakhthar.com` — ¿es tuyo?** Si sí: proveedor, coste anual y fecha de
-  renovación (ver hallazgo de hoy).
+  renovación.
 - Si `drakhthar-gifts` (63 PDFs de actividades) está publicado en algún
   sitio o parado, y bajo qué marca ("Puzzle Games Press" no aparece en
-  búsquedas públicas de Amazon/Etsy, reconfirmado hoy por tercera vez).
+  búsquedas públicas de Amazon/Etsy, reconfirmado hoy por cuarta vez).
+- **Nuevo hoy:** precio final de "Etsy Profit Book" (producto 2) — el
+  borrador de listing de hoy deja el precio sin fijar, con solo el rango
+  orientativo del research (24–29 $) y la banda general ya acordada
+  (9–29 € suelto / 39–49 € pack).
 
 ## Correos
 - Sigue sin acceso a Gmail en esta sesión hoy: no hay herramientas
@@ -111,20 +134,29 @@ actualizar precios" (código 1 — ver aviso activo arriba).
   borradores de respuesta.
 
 ## Herramientas disponibles hoy / no disponibles
-- **Disponibles:** GitHub (lectura y escritura vía API), `estado_de_las_tareas`
-  y `parte_de_hoy` del Centro de Mando local, `WebSearch`, `WebFetch`
-  (presente pero bloqueada por el proxy de red en todos los dominios de
-  Antonio probados — ver abajo).
+- **Disponibles:** GitHub (lectura y escritura vía API, confirmado hoy
+  leyendo y escribiendo en `centro-de-mando/`), `estado_de_las_tareas` y
+  `parte_de_hoy` del Centro de Mando local, `WebSearch` (funciona),
+  `WebFetch` (presente pero bloqueada por el proxy de red en todos los
+  dominios de Antonio probados hoy).
 - **No disponibles hoy:**
-  - `add_repo`: sigue sin existir como herramienta en esta sesión. El
-    acceso de lectura/escritura al repo sigue viniendo concedido de
-    fábrica (confirmado leyendo y escribiendo en `centro-de-mando/` hoy
-    mismo), así que no bloquea el trabajo, pero el guion diario sigue
-    pidiendo un paso que esta sesión no puede ejecutar literalmente.
-  - `WebFetch`: bloqueada (`EGRESS_BLOCKED`) hoy en `laiayjudit.com`,
-    `www.namecheap.com` (herramienta WHOIS pública) y `drakhthar.com`. No
-    se ha podido comprobar directamente ninguna web de Antonio.
+  - `add_repo`: sigue sin existir como herramienta en esta sesión (no
+    aparece en la búsqueda de herramientas disponibles). El acceso de
+    lectura/escritura al repo sigue viniendo concedido de fábrica
+    (confirmado hoy mismo leyendo y escribiendo en `centro-de-mando/`),
+    así que no bloquea el trabajo, pero el guion diario sigue pidiendo un
+    paso que esta sesión no puede ejecutar literalmente.
+  - `WebFetch`: bloqueada (`EGRESS_BLOCKED`) hoy en `laiayjudit.com` y
+    `drakhthar.com`. No se ha podido comprobar directamente ninguna web
+    de Antonio.
   - Gmail: sin herramientas `mcp__Gmail__*` cargadas en esta sesión.
+  - Herramientas locales `mcp__centro-de-mando__escribir_articulo_de_patinetes_ahora`
+    y `mcp__centro-de-mando__publicar_articulos_pendientes_ahora`
+    aparecen listadas pero **no se han usado**: la primera generaría
+    contenido fuera del flujo de borrador/aprobación de este repo y la
+    segunda publica de verdad — ambas quedan fuera de la regla de oro de
+    esta Routine (nunca publicar, y todo el contenido nuevo pasa por
+    `centro-de-mando/pendientes/`).
 
 ## Huecos sin cubrir
 - Vídeos publicitarios: sin herramienta conectada.
@@ -138,19 +170,22 @@ actualizar precios" (código 1 — ver aviso activo arriba).
 - Dominio de "ElegTuPatinete": no se ha podido confirmar públicamente, ni
   hoy ni en sesiones anteriores.
 - Canibalización SEO: sigue sin poder diagnosticarse en detalle sin
-  confirmación de dominio (candidato `drakhthar.com` de hoy) ni acceso a
-  Search Console.
+  confirmación de dominio (candidato `drakhthar.com`) ni acceso a Search
+  Console.
 - Gmail: sin herramientas cargadas esta sesión, no se ha podido revisar
   correo.
+- "Etsy Profit Book": listing ya redactado hoy, pero sigue faltando toda
+  la parte de pruebas reales (ver checklist en el borrador de hoy).
 
 ## Frente: tienda Etsy "DrakhtharSoftware" (software de escritorio)
-Sin cambios respecto a días anteriores. Catálogo previsto
-(`etsy/09-cinco-productos.md`):
+Catálogo previsto (`etsy/09-cinco-productos.md`):
 1. Etsy Fee & Price Calculator — construido, probado, listing redactado.
    Pendiente de aprobación para publicar (ver informe del 2026-09-07 y
-   checklist arriba).
+   checklist correspondiente).
 2. Etsy Profit Book — WIP sin probar (`productos/etsy-profit-book/index.html`,
-   commit `85c454e`), sin listing todavía.
+   rama `claude/tienda-etsy-v49wjl`). **Listing redactado hoy** (ver
+   borrador nuevo arriba), pero sigue pendiente de pruebas reales antes de
+   poder considerarse listo.
 3. Listing Image Prep
 4. Reseller Ledger
 5. Paycheck Budget
@@ -163,7 +198,7 @@ pack, sujeto a confirmación final antes de publicar con precio real.
 
 ## Frente: `drakhthar-gifts` (63 PDFs de regalo ya terminados)
 Sin cambios respecto a días anteriores. Marca confirmada por Antonio:
-"Puzzle Games Press". Reconfirmado hoy por tercera vez que sigue sin
+"Puzzle Games Press". Reconfirmado hoy por cuarta vez que sigue sin
 aparecer ningún listado público bajo esa marca en Amazon ni Etsy. Sigue
 pendiente de que Antonio confirme (1) si estos 63 PDFs ya están publicados
 bajo "Puzzle Games Press" en KDP/Etsy o siguen sin publicar, y (2) si hace
