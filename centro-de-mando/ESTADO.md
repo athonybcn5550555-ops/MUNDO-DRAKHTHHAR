@@ -1,4 +1,4 @@
-# Estado · 2026-09-14 (barrido de la mañana)
+# Estado · 2026-09-15 (barrido de la mañana)
 
 ## Sin nada urgente que decidir hoy
 No hay renovaciones de dominio a menos de 60 días vista confirmadas, ni
@@ -6,20 +6,20 @@ ningún aviso nuevo que exija una decisión inmediata. Las decisiones ya
 pendientes de días anteriores siguen abiertas (ver abajo).
 
 ## Aviso activo
-- **Conector `centro-de-mando` (Centro de Mando local) sigue sin conectar
-  hoy.** Igual que el 09-13, el servidor MCP devolvió error de conexión
-  (502, `CLIENT_HTTP_NOT_IMPLEMENTED`) — no es que la herramienta se haya
-  retirado, es un fallo de conexión repetido dos días seguidos. No se ha
-  podido consultar `estado_de_las_tareas` ni `parte_de_hoy` hoy tampoco.
-  A partir de dos días seguidos de fallo, esto ya merece que Antonio lo
-  revise por su cuenta si le es posible (reiniciar el servicio del
-  Centro de Mando local, comprobar que el ordenador estaba encendido y
-  conectado en el momento del barrido).
+- **Conector `centro-de-mando` (Centro de Mando local) lleva ya TRES días
+  seguidos sin conectar (09-13, 09-14 y hoy 09-15).** Mismo error de
+  conexión (502, `CLIENT_HTTP_NOT_IMPLEMENTED`) los tres días — no es que
+  la herramienta se haya retirado, es un fallo de conexión repetido. No
+  se ha podido consultar `estado_de_las_tareas` ni `parte_de_hoy` en
+  ninguno de los tres días. **Esto ya merece que Antonio lo revise
+  directamente** (reiniciar el servicio del Centro de Mando local,
+  comprobar que el ordenador estaba encendido y conectado en el momento
+  del barrido) — tres días seguidos deja de ser un fallo puntual.
 - **`drakhthar.com` sigue sin confirmar.** Repetido hoy el intento de
   entrar a la web (`WebFetch`, error `EGRESS_BLOCKED`) y de buscar el
   registro WHOIS por `WebSearch` (solo páginas genéricas de herramientas
-  WHOIS de terceros, sin el registro real). Sigue sin confirmarse que sea
-  de Antonio. Detalle en
+  WHOIS de terceros, sin el registro real) — mismo resultado que los
+  últimos cinco días. Sigue sin confirmarse que sea de Antonio. Detalle en
   `centro-de-mando/pendientes/2026-09-10-informe-dominio-drakhthar-encontrado.md`
   y en `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
 - Sigue abierto (sin cambios) el aviso de canibalización SEO señalado el
@@ -45,31 +45,37 @@ pendientes de días anteriores siguen abiertas (ver abajo).
 - Sigue sin confirmar la causa real del fallo intermitente de
   "ElegTuPatinete - actualizar precios" — sin acceso hoy tampoco a
   `estado_de_las_tareas` (ver aviso activo).
-- **Nueva hoy:** ¿confirma Antonio si los coloring books de
-  `drakhthar-gifts` están publicados o parados, y bajo qué marca? Ver
-  informe nuevo de hoy sobre la tendencia "Bold & Easy Coloring Books" y
-  su posible conexión con el catálogo ya existente.
+- Sigue sin resolver (desde el 09-14): ¿confirma Antonio si los coloring
+  books de `drakhthar-gifts` están publicados o parados, y bajo qué marca?
+  Ver informe del 09-14 sobre la tendencia "Bold & Easy Coloring Books" y
+  el informe nuevo de hoy que añade el dato de que publicar como serie
+  (no libros sueltos) rinde más en KDP — otra razón más para cerrar esta
+  pregunta.
 - No se ha podido confirmar hoy si hay decisiones nuevas señaladas por el
-  Centro de Mando local (`parte_de_hoy` no disponible esta sesión).
+  Centro de Mando local (`parte_de_hoy` no disponible esta sesión, tercer
+  día seguido).
 
 ## Frentes abiertos
 - No se puede actualizar el contador hoy (sin acceso a `parte_de_hoy`
-  esta sesión, dos días seguidos). Última cifra conocida: 3 (09-12).
+  esta sesión, tercer día seguido). Última cifra conocida: 3 (09-12).
 
 ## Tareas automáticas del equipo local de Antonio
 No se ha podido consultar hoy (`estado_de_las_tareas` no disponible esta
-sesión, dos días seguidos — ver "Herramientas" abajo). Última foto
+sesión, tercer día seguido — ver "Herramientas" abajo). Última foto
 conocida (09-12): 13 tareas, 12 "bien", 1 rota ("ElegTuPatinete -
 actualizar precios").
 
 ## Borradores pendientes de aprobación (todos, con ruta)
+- `centro-de-mando/pendientes/2026-09-15-informe-kdp-estrategia-series-y-puzzle-games-press.md`
+  — **nuevo hoy.** Informe: cuarto intento (con búsqueda distinta) de
+  localizar "Puzzle Games Press" en Amazon/Etsy, sin resultado; añade un
+  dato de mercado con fuente real (publicar low-content como serie de
+  marca rinde más que libros sueltos en KDP 2026) relevante para la
+  decisión ya abierta sobre `drakhthar-gifts`. No propone publicar nada.
 - `centro-de-mando/pendientes/2026-09-14-informe-kdp-coloring-books-tendencia-y-catalogo.md`
-  — **nuevo hoy.** Informe: la tendencia 2025-2026 de "Bold & Easy
-  Coloring Books" en KDP sí conecta (a diferencia de nichos anteriores)
-  con los coloring books ya existentes en el catálogo `drakhthar-gifts`.
-  Pide a Antonio confirmar estado de publicación y si quiere valorar un
-  producto separado para público adulto/mayor. No es una cifra de ventas
-  verificada, solo señal de tendencia de blogs de terceros.
+  — informe: la tendencia 2025-2026 de "Bold & Easy Coloring Books" en
+  KDP conecta con los coloring books ya existentes en el catálogo
+  `drakhthar-gifts`. Pide a Antonio confirmar estado de publicación.
 - `centro-de-mando/pendientes/2026-09-13-informe-diagnostico-elegtupatinete-codigo1.md`
   — guía genérica (con fuentes públicas) de causas típicas del código de
   salida 1 en Task Scheduler y pasos concretos para localizar la causa
@@ -85,8 +91,7 @@ actualizar precios").
   reales — checklist propia incluida en el archivo.
 - `centro-de-mando/pendientes/2026-09-10-informe-dominio-drakhthar-encontrado.md`
   — informe: candidato de dominio `drakhthar.com` encontrado por búsqueda
-  pública, pendiente de que Antonio confirme si es suyo. Sin novedad hoy
-  más allá de reconfirmar que sigue sin poder verificarse.
+  pública, pendiente de que Antonio confirme si es suyo.
 - `centro-de-mando/pendientes/2026-09-08-informe-canibalizacion-seo-diagnostico-y-plan.md`
   — informe: qué es la canibalización SEO detectada el 09-08 y plan de
   solución estándar, a la espera de identificar dominio/páginas concretos.
@@ -98,7 +103,7 @@ actualizar precios").
   — informe: nichos de bajo contenido para KDP señalados por varias
   fuentes públicas (puzles/mazes/sudoku para mayores) que **no encajan**
   con el catálogo infantil/educativo ya hecho de `drakhthar-gifts`. Ver en
-  cambio el informe nuevo de hoy sobre coloring books, que sí conecta.
+  cambio los informes de coloring books (09-14 y 09-15), que sí conectan.
 - (De sesiones anteriores, en la rama sin fusionar `claude/tienda-etsy-v49wjl`,
   no en `pendientes/`): `productos/etsy-fee-calculator/paquete/10-textos-listing.md`
   con el listing completo del primer producto de Etsy, listo para
@@ -126,8 +131,9 @@ actualizar precios").
   renovación.
 - Si `drakhthar-gifts` (63 PDFs de actividades) está publicado en algún
   sitio o parado, y bajo qué marca ("Puzzle Games Press" no aparece en
-  búsquedas públicas de Amazon/Etsy, reconfirmado ya varias veces) —
-  relevante también para el informe nuevo de hoy sobre coloring books.
+  búsquedas públicas de Amazon/Etsy, reconfirmado hoy por cuarta vez con
+  una query distinta) — relevante también para los informes de coloring
+  books (09-14 y 09-15).
 - Precio final de "Etsy Profit Book" (producto 2) — sigue sin fijar, solo
   el rango orientativo del research (24–29 $) y la banda general ya
   acordada (9–29 € suelto / 39–49 € pack).
@@ -145,14 +151,13 @@ actualizar precios").
   - `add_repo`: sigue sin existir como herramienta en esta sesión (no
     aparece en la búsqueda de herramientas disponibles). El acceso de
     lectura/escritura al repo sigue viniendo concedido de fábrica
-    (confirmado hoy mismo leyendo y escribiendo en `centro-de-mando/`,
-    y también con `get_me` devolviendo el usuario autenticado), así que
-    no bloquea el trabajo, pero el guion diario sigue pidiendo un paso
-    que esta sesión no puede ejecutar literalmente.
+    (confirmado hoy mismo leyendo y escribiendo en `centro-de-mando/`),
+    así que no bloquea el trabajo, pero el guion diario sigue pidiendo un
+    paso que esta sesión no puede ejecutar literalmente.
   - `estado_de_las_tareas` / `parte_de_hoy` (Centro de Mando local):
     **hoy tampoco conectaron** — mismo error 502 /
-    `CLIENT_HTTP_NOT_IMPLEMENTED` que ayer. Dos días seguidos ya, a
-    revisar por Antonio si puede (ver aviso activo arriba).
+    `CLIENT_HTTP_NOT_IMPLEMENTED`. Tercer día seguido — a revisar por
+    Antonio si puede (ver aviso activo arriba).
   - `WebFetch`: bloqueada (`EGRESS_BLOCKED`) hoy en `drakhthar.com` y
     `laiayjudit.com`, igual que en sesiones anteriores. No se ha podido
     comprobar directamente ninguna web de Antonio.
@@ -181,9 +186,9 @@ actualizar precios").
 - Causa real del fallo intermitente de "ElegTuPatinete - actualizar
   precios": sin acceso al log de Windows ni a `estado_de_las_tareas` hoy
   tampoco — ver informe de diagnóstico genérico del 09-13.
-- El conector `centro-de-mando` (Centro de Mando local) lleva dos días
-  seguidos sin conectar — ya no parece algo puramente puntual, conviene
-  que Antonio lo revise.
+- El conector `centro-de-mando` (Centro de Mando local) lleva TRES días
+  seguidos sin conectar — ya no es algo puntual, conviene que Antonio lo
+  revise cuanto antes.
 
 ## Frente: tienda Etsy "DrakhtharSoftware" (software de escritorio)
 Catálogo previsto (`etsy/09-cinco-productos.md`):
@@ -207,11 +212,12 @@ pack, sujeto a confirmación final antes de publicar con precio real.
 ## Frente: `drakhthar-gifts` (63 PDFs de regalo ya terminados)
 Sin cambios respecto a días anteriores. Marca confirmada por Antonio:
 "Puzzle Games Press". Sigue sin aparecer ningún listado público bajo esa
-marca en Amazon ni Etsy. Sigue pendiente de que Antonio confirme (1) si
-estos 63 PDFs ya están publicados bajo "Puzzle Games Press" en KDP/Etsy o
-siguen sin publicar, y (2) si hace falta revisar los 63 antes de publicar
-cualquiera, por los errores de portada ya encontrados el 2026-09-07 (ej.
-"Coloring Book - Ocean World" con el texto de plantilla "Dinosaurios
-(Niños) · Serie 04" sin depurar). El informe nuevo de hoy sobre la
-tendencia de coloring books añade una razón más para priorizar esta
-revisión.
+marca en Amazon ni Etsy (cuarto intento hoy, con query distinta, mismo
+resultado). Sigue pendiente de que Antonio confirme (1) si estos 63 PDFs
+ya están publicados bajo "Puzzle Games Press" en KDP/Etsy o siguen sin
+publicar, y (2) si hace falta revisar los 63 antes de publicar cualquiera,
+por los errores de portada ya encontrados el 2026-09-07 (ej. "Coloring
+Book - Ocean World" con el texto de plantilla "Dinosaurios (Niños) · Serie
+04" sin depurar). El informe de hoy sobre estrategia de series en KDP
+añade una razón más para priorizar esta revisión: publicar como serie de
+marca reconocible rinde más que libros sueltos.
