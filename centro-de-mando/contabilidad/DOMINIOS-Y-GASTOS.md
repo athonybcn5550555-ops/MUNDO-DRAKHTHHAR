@@ -12,8 +12,8 @@ coste real solo lo sabe Antonio, por factura).
 | Activo (dominio/web) | Negocio | Proveedor | Coste anual | Próxima renovación | Renovación automática | Fuente del dato |
 |---|---|---|---|---|---|---|
 | laiayjudit.com | Laia & Judit (cosmética) | Shopify | ~16 $ | 2027-07-16 | Sí (activada) | Recordatorio programado por Antonio el 2026-07-30 (trigger existente) |
-| ElegTuPatinete (dominio y hosting) | Patinetes | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | Búsqueda pública (2026-09-07, repetida 2026-09-08, 2026-09-10 a 2026-09-17) no encuentra el dominio indexado — pendiente de que Antonio confirme si tiene dominio propio o corre sobre otra plataforma |
-| **drakhthar.com** (candidato) | Drakhthar / Proyecto JL | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | **2026-09-10:** `WebSearch` encuentra públicamente indexada la página `https://drakhthar.com/aldric.html` ("Aldric — The Wandering Sage · DRAKHTHAR"), con texto que coincide con el proyecto. Coincide en ortografía exacta con "Drakhthar" (no con el dominio distinto y no relacionado `drakthar.com`, una sola h). **No confirmado todavía que sea propiedad de Antonio** — falta que él lo confirme para tratarlo como dato real. **2026-09-11 a 2026-09-17:** repetido el intento de entrar a la web (`WebFetch`) y de buscar el registro WHOIS por `WebSearch` (sin resultado directo, solo páginas genéricas de herramientas WHOIS) — sigue sin poderse verificar titularidad, proveedor ni fecha de caducidad desde esta sesión. |
+| ElegTuPatinete (dominio y hosting) | Patinetes | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | Búsqueda pública (2026-09-07, repetida 2026-09-08, 2026-09-10 a 2026-09-18) no encuentra el dominio indexado — pendiente de que Antonio confirme si tiene dominio propio o corre sobre otra plataforma |
+| **drakhthar.com** (candidato) | Drakhthar / Proyecto JL | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | **2026-09-10:** `WebSearch` encuentra públicamente indexada la página `https://drakhthar.com/aldric.html` ("Aldric — The Wandering Sage · DRAKHTHAR"), con texto que coincide con el proyecto. Coincide en ortografía exacta con "Drakhthar" (no con el dominio distinto y no relacionado `drakthar.com`, una sola h). **No confirmado todavía que sea propiedad de Antonio** — falta que él lo confirme para tratarlo como dato real. **2026-09-11 a 2026-09-18:** repetido el intento de entrar a la web (`WebFetch`) y de buscar el registro WHOIS por `WebSearch` (sin resultado directo, solo páginas genéricas de herramientas WHOIS) — sigue sin poderse verificar titularidad, proveedor ni fecha de caducidad desde esta sesión. |
 | Web(s) de Drakhthar / Proyecto JL | Drakhthar | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | Ver fila de arriba (`drakhthar.com`) — candidato encontrado el 09-10, pendiente de confirmación de Antonio |
 | Tienda Etsy "DrakhtharSoftware" | Software (utilidades de escritorio) | Etsy (sin dominio propio) | Sin coste fijo — solo comisiones por venta (detalle en `etsy/06-precios-y-comisiones.md`, rama `claude/tienda-etsy-v49wjl`) | No aplica renovación de dominio | No aplica | Rama `claude/tienda-etsy-v49wjl` (comisiones verificadas 2026-09-06) |
 
@@ -34,38 +34,27 @@ coste real solo lo sabe Antonio, por factura).
 - Sin acceso a un conector de contabilidad/facturación real, este archivo
   es un registro manual mantenido por la Routine diaria — no sustituye una
   herramienta contable de verdad si el volumen crece.
-- **2026-09-07 a 09-13:** intentos repetidos de verificar por WHOIS/RDAP
+- **2026-09-07 a 09-17:** intentos repetidos de verificar por WHOIS/RDAP
   público la fecha de caducidad de `laiayjudit.com` y `drakhthar.com`, sin
   éxito — bloqueo del proxy de red (`EGRESS_BLOCKED`) a los dominios
   directamente y a herramientas WHOIS (`whois.com`, `www.namecheap.com`,
   `rdap.verisign.com`). `WebSearch` no encuentra tampoco ningún registro
-  de dominio público para "ElegTuPatinete".
-- **2026-09-14:** repetido el mismo intento: `WebFetch` a
-  `drakhthar.com/aldric.html` y a `laiayjudit.com` → mismo error
-  `EGRESS_BLOCKED` en ambos dominios. `WebSearch` de "drakhthar.com whois
-  domain registrant 2026" → mismo resultado que días anteriores: solo
-  páginas genéricas de herramientas WHOIS (Dynadot, DNS Robot,
-  Registros.com, DMARCguard, Who.is), sin datos reales del registro.
-- **2026-09-15:** tercer día seguido con el mismo bloqueo: `WebFetch`
-  a `drakhthar.com/aldric.html` y a `laiayjudit.com` → mismo error
-  `EGRESS_BLOCKED`. `WebSearch` de `"drakhthar.com" whois registrant
-  domain` → mismo resultado, solo páginas genéricas de herramientas WHOIS
-  (GoDaddy, Wix, Namecheap, Dynadot, Name.com, MxToolbox, Who.is), sin el
-  registro real.
-- **2026-09-16:** cuarto día seguido con el mismo bloqueo: `WebFetch`
-  a `drakhthar.com/aldric.html` y a `laiayjudit.com` → mismo error
-  `EGRESS_BLOCKED` en ambos. `WebSearch` de `"drakhthar.com" whois
-  registrant domain 2026` → mismo resultado que días anteriores: solo
-  páginas genéricas de WHOIS y una ficha de ScamAdviser sin datos de
-  registrante real. Ninguna fecha de esta tabla se modificó ese día.
-- **2026-09-17 (hoy):** quinto día seguido con el mismo bloqueo:
-  `WebFetch` a `drakhthar.com/aldric.html` y a `laiayjudit.com` → mismo
-  error `EGRESS_BLOCKED` en ambos. Hoy además `WebSearch` ha ido peor que
-  los días anteriores: la mayoría de las búsquedas (WHOIS de
-  `drakhthar.com`, "Puzzle Games Press", niche research KDP) han
-  devuelto solo enlaces genéricos de Wikipedia sin relación con la
-  consulta, o directamente un error "Web search error: unavailable" a
-  media respuesta. Ninguna fecha ni cifra de esta tabla se ha modificado
-  hoy — sigue pendiente de que Antonio aporte los datos directamente o
-  de que una sesión futura tenga el proxy de red desbloqueado hacia estos
-  dominios y un `WebSearch` que funcione con normalidad.
+  de dominio público para "ElegTuPatinete". Detalle día a día de esta
+  racha en el historial de commits de este archivo.
+- **2026-09-18 (hoy):** sexto día seguido con el mismo bloqueo: `WebFetch`
+  a `drakhthar.com/aldric.html` → mismo error `EGRESS_BLOCKED`. `WebSearch`
+  de `"drakhthar.com" whois registrant domain expiration 2026` → mismo
+  resultado que días anteriores: solo páginas genéricas de herramientas
+  WHOIS (instantdomainsearch, DNS Robot, DMARCguard, MxToolbox, Who.is,
+  Site24x7), sin el registro real. `WebSearch` de la renovación de
+  `laiayjudit.com` tampoco encuentra el dato específico del dominio (solo
+  guías genéricas de renovación de dominios Shopify) — la fecha
+  2027-07-16 de la tabla sigue viniendo solo del recordatorio ya
+  confirmado por Antonio, no de una fuente pública nueva. A diferencia de
+  ayer, hoy `WebSearch` sí ha dado resultados reales y útiles para otras
+  búsquedas (niche research KDP — ver `centro-de-mando/pendientes/2026-09-18-informe-kdp-spot-the-difference.md`),
+  así que el fallo de hoy en WHOIS es específico de esos dominios/consultas,
+  no un fallo general de la herramienta. Ninguna fecha ni cifra de esta
+  tabla se ha modificado hoy — sigue pendiente de que Antonio aporte los
+  datos directamente o de que el proxy de red se desbloquee hacia estos
+  dominios concretos.
