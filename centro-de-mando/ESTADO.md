@@ -1,10 +1,11 @@
-# Estado · 2026-09-18 (barrido de la mañana)
+# Estado · 2026-09-19 (barrido de la mañana)
 
 ## Sin nada urgente que decidir hoy
 No hay renovaciones de dominio a menos de 60 días vista confirmadas.
-Ningún fallo técnico nuevo grave. Trabajo nuevo de hoy: un informe de
-niche research KDP con datos reales y específicos (algo que no siempre
-se consigue — ver aviso de `WebSearch` abajo).
+Ningún fallo técnico nuevo grave (los bloqueos de hoy son continuación de
+los ya conocidos, no nuevos). Trabajo nuevo de hoy: un informe de niche
+research KDP sobre "dot to dot / connect the dots" para niños, con datos
+reales.
 
 ## Aviso activo
 - **`add_repo` sigue sin existir como herramienta en esta sesión**
@@ -19,17 +20,20 @@ se consigue — ver aviso de `WebSearch` abajo).
   Antonio han fallado en su ordenador. La última foto en vivo conocida
   sigue siendo la del 09-16: 14 tareas, 13 bien, "ElegTuPatinete -
   actualizar precios" rota con código 1.
-- **`drakhthar.com` sigue sin confirmar.** Sexto día seguido con el mismo
-  bloqueo: `WebFetch` a `drakhthar.com/aldric.html` → `EGRESS_BLOCKED`.
-  `WebSearch` de WHOIS para `drakhthar.com` y para la renovación de
-  `laiayjudit.com` tampoco encuentra el dato específico (solo páginas
-  genéricas). Detalle en
+- **`drakhthar.com` sigue sin confirmar.** Séptimo día seguido con el
+  mismo bloqueo: `WebFetch` a `drakhthar.com/aldric.html` →
+  `EGRESS_BLOCKED`. `WebSearch` de WHOIS para `drakhthar.com` y para la
+  renovación de `laiayjudit.com` tampoco encuentra el dato específico
+  (solo páginas genéricas). Detalle en
   `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
-- **`WebSearch` hoy ha funcionado mejor que ayer para niche research**,
-  pero sigue sin poder resolver las búsquedas WHOIS/registro de dominio
-  concretas (ver arriba) ni encontrar "Puzzle Games Press" en Amazon/Etsy
-  (sexto intento, mismo resultado negativo). No es un fallo general de la
-  herramienta hoy, sino específico de esas consultas.
+- **`WebSearch` hoy ha funcionado bien para niche research KDP** (nuevo
+  informe sobre dot-to-dot, con cifra de volumen de búsqueda real de una
+  fuente concreta), pero sigue sin poder resolver las búsquedas
+  WHOIS/registro de dominio concretas (ver arriba) ni encontrar
+  "ElegTuPatinete" entre resultados de búsqueda generales de tiendas de
+  patinetes en España (mismo resultado negativo que en intentos previos
+  centrados en WHOIS). No es un fallo general de la herramienta hoy, sino
+  específico de esas consultas.
 - Sigue abierto (sin cambios) el aviso de canibalización SEO señalado el
   09-08: `centro-de-mando/pendientes/2026-09-08-informe-canibalizacion-seo-diagnostico-y-plan.md`.
   Sigue bloqueado por lo mismo: sin dominio confirmado ni acceso a Search
@@ -39,15 +43,15 @@ se consigue — ver aviso de `WebSearch` abajo).
   ha visto.
 
 ## Trabajo nuevo de hoy
-- **Informe de niche research KDP: "Spot the Difference" para niños**
-  (nuevo hoy —
-  `centro-de-mando/pendientes/2026-09-18-informe-kdp-spot-the-difference.md`):
-  con datos reales de hoy (`WebSearch` funcionando bien para esta
-  consulta) sobre el peso de este sub-nicho dentro de los libros de
-  actividades infantiles más vendidos en KDP, segmentación por edad y
-  formato. Relevante para la decisión ya abierta sobre el catálogo
+- **Informe de niche research KDP: "Dot to Dot / Connect the Dots" para
+  niños** (nuevo hoy —
+  `centro-de-mando/pendientes/2026-09-19-informe-kdp-dot-to-dot-connect-the-dots.md`):
+  con datos reales de hoy (volumen de búsqueda de la keyword principal,
+  formato típico de producción, rango de precio orientativo de puzzle
+  books en general y ejemplos reales activos en Amazon, todo con fuente).
+  Relevante para la misma decisión ya abierta sobre el catálogo
   `drakhthar-gifts`. No propone publicar nada.
-- Repetido y registrado el intento diario de verificar dominios (sexto
+- Repetido y registrado el intento diario de verificar dominios (séptimo
   día bloqueado) — ver `DOMINIOS-Y-GASTOS.md`.
 
 ## Decisiones pendientes
@@ -68,9 +72,9 @@ se consigue — ver aviso de `WebSearch` abajo).
   local).
 - Sigue sin resolver (desde el 09-14): ¿confirma Antonio si los coloring
   books de `drakhthar-gifts` están publicados o parados, y bajo qué
-  marca? Nuevo dato de mercado hoy (informe "Spot the Difference") a
-  sumar a los ya entregados (09-14, 09-15, 09-16) para cuando Antonio
-  tome esta decisión.
+  marca? Nuevo dato de mercado hoy (informe "Dot to Dot") a sumar a los
+  ya entregados (09-14, 09-15, 09-16, 09-18) para cuando Antonio tome
+  esta decisión.
 - No se ha podido leer `parte_de_hoy` ni `estado_de_las_tareas` hoy (ver
   aviso activo) — puede haber avisos o decisiones nuevas del Centro de
   Mando local que esta sesión no ha visto.
@@ -90,9 +94,13 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
 ("ElegTuPatinete - actualizar precios", código 1).
 
 ## Borradores pendientes de aprobación (todos, con ruta)
+- `centro-de-mando/pendientes/2026-09-19-informe-kdp-dot-to-dot-connect-the-dots.md`
+  — **nuevo hoy.** Informe de niche research KDP: "dot to dot / connect
+  the dots" para niños, con datos reales de hoy. No propone publicar
+  nada.
 - `centro-de-mando/pendientes/2026-09-18-informe-kdp-spot-the-difference.md`
-  — **nuevo hoy.** Informe de niche research KDP: "spot the difference"
-  para niños, con datos reales de hoy. No propone publicar nada.
+  — informe de niche research KDP: "spot the difference" para niños, con
+  datos reales. No propone publicar nada.
 - `centro-de-mando/pendientes/2026-09-17-informe-qa-etsy-profit-book-primera-prueba-real.md`
   — informe de QA: primera prueba real en navegador (Chromium/Playwright)
   de "Etsy Profit Book". No publica nada, no fija precio.
@@ -139,7 +147,7 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
   fuentes públicas (puzles/mazes/sudoku para mayores) que **no encajan**
   con el catálogo infantil/educativo ya hecho de `drakhthar-gifts`. Ver en
   cambio los informes de coloring/actividades infantiles (09-14, 09-15,
-  09-16 y 09-18).
+  09-16, 09-18 y 09-19).
 - (De sesiones anteriores, en la rama sin fusionar `claude/tienda-etsy-v49wjl`,
   no en `pendientes/`): `productos/etsy-fee-calculator/paquete/10-textos-listing.md`
   con el listing completo del primer producto de Etsy, listo para
@@ -155,8 +163,8 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
 - Sin renovaciones a menos de 60 días vista confirmadas. Próximo pago
   conocido: **2027-07-16**, laiayjudit.com (~16 $, renovación automática
   vía Shopify) — muy lejos, no urgente.
-- Repetido hoy (sexto día) el intento de verificar por WHOIS/RDAP público
-  `drakhthar.com` y `laiayjudit.com`, y de localizar el dominio de
+- Repetido hoy (séptimo día) el intento de verificar por WHOIS/RDAP
+  público `drakhthar.com` y `laiayjudit.com`, y de localizar el dominio de
   ElegTuPatinete: sin éxito, mismo bloqueo de red (`EGRESS_BLOCKED`) que
   días anteriores. Detalle completo en
   `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
@@ -168,9 +176,8 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
   renovación.
 - Si `drakhthar-gifts` (63 PDFs de actividades) está publicado en algún
   sitio o parado, y bajo qué marca ("Puzzle Games Press" no aparece en
-  búsquedas públicas de Amazon/Etsy, reconfirmado hoy por sexta vez) —
-  relevante también para los informes de coloring/actividades (09-14,
-  09-15, 09-16 y 09-18).
+  búsquedas públicas de Amazon/Etsy) — relevante también para los
+  informes de coloring/actividades (09-14, 09-15, 09-16, 09-18 y 09-19).
 - Precio final de "Etsy Profit Book" (producto 2) — sigue sin fijar, solo
   el rango orientativo del research (24–29 $) y la banda general ya
   acordada (9–29 € suelto / 39–49 € pack).
@@ -185,9 +192,9 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
 - **Disponibles:** GitHub (lectura y escritura vía API, confirmado hoy
   leyendo y escribiendo varios archivos en `centro-de-mando/`),
   `WebSearch` (hoy ha dado resultados reales y útiles para niche research
-  KDP, mejor que ayer — aunque sigue sin resolver las consultas WHOIS
-  concretas), `WebFetch` (funciona como herramienta, pero bloqueada por
-  el proxy en `drakhthar.com`).
+  KDP — nuevo informe dot-to-dot — aunque sigue sin resolver las
+  consultas WHOIS concretas), `WebFetch` (funciona como herramienta, pero
+  bloqueada por el proxy en `drakhthar.com`).
 - **No disponibles hoy:**
   - `add_repo`: sigue sin existir como herramienta en esta sesión. El
     acceso de lectura/escritura al repo sigue viniendo concedido de
@@ -248,12 +255,12 @@ pack, sujeto a confirmación final antes de publicar con precio real.
 ## Frente: `drakhthar-gifts` (63 PDFs de regalo ya terminados)
 Sin cambios de fondo respecto a días anteriores. Marca confirmada por
 Antonio: "Puzzle Games Press". Sigue sin aparecer ningún listado público
-bajo esa marca en Amazon ni Etsy (sexto intento hoy, mismo resultado).
-Sigue pendiente de que Antonio confirme (1) si estos 63 PDFs ya están
-publicados bajo "Puzzle Games Press" en KDP/Etsy o siguen sin publicar, y
-(2) si hace falta revisar los 63 antes de publicar cualquiera, por los
-errores de portada ya encontrados el 2026-09-07 (ej. "Coloring Book -
-Ocean World" con el texto de plantilla "Dinosaurios (Niños) · Serie 04"
-sin depurar). Datos de mercado acumulados para cuando se tome esta
-decisión: estrategia de series (09-15), "Bold & Easy" (09-14), "grayscale
-coloring" (09-16) y "spot the difference" (09-18, nuevo hoy).
+bajo esa marca en Amazon ni Etsy. Sigue pendiente de que Antonio confirme
+(1) si estos 63 PDFs ya están publicados bajo "Puzzle Games Press" en
+KDP/Etsy o siguen sin publicar, y (2) si hace falta revisar los 63 antes
+de publicar cualquiera, por los errores de portada ya encontrados el
+2026-09-07 (ej. "Coloring Book - Ocean World" con el texto de plantilla
+"Dinosaurios (Niños) · Serie 04" sin depurar). Datos de mercado
+acumulados para cuando se tome esta decisión: estrategia de series
+(09-15), "Bold & Easy" (09-14), "grayscale coloring" (09-16), "spot the
+difference" (09-18) y "dot to dot" (09-19, nuevo hoy).
