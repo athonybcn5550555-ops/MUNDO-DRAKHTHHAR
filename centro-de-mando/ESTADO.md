@@ -1,58 +1,68 @@
-# Estado · 2026-09-19 (barrido de la mañana)
+# Estado · 2026-09-20 (barrido de la mañana)
 
-## Sin nada urgente que decidir hoy
-No hay renovaciones de dominio a menos de 60 días vista confirmadas.
-Ningún fallo técnico nuevo grave (los bloqueos de hoy son continuación de
-los ya conocidos, no nuevos). Trabajo nuevo de hoy: un informe de niche
-research KDP sobre "dot to dot / connect the dots" para niños, con datos
-reales.
+## Lo más urgente hoy
+**4 tareas programadas del ordenador de Antonio están rotas con el mismo
+código de error** (antes solo había 1 rota). Ver aviso activo y el informe
+nuevo de hoy. No hay renovaciones de dominio a menos de 60 días vista
+confirmadas.
 
-## Aviso activo
-- **`add_repo` sigue sin existir como herramienta en esta sesión**
-  (confirmado hoy con `ToolSearch`, igual que en sesiones anteriores). No
-  bloquea el trabajo: el acceso de lectura/escritura al repo viene
-  concedido de fábrica (confirmado hoy leyendo y escribiendo varios
-  archivos en `centro-de-mando/`).
-- **Conector `centro-de-mando` (Centro de Mando local) sin conectar hoy**
-  — mismo error que casi todos los días anteriores:
-  `CLIENT_HTTP_NOT_IMPLEMENTED` al intentar `estado_de_las_tareas`/
-  `parte_de_hoy`. No se ha podido ver hoy qué tareas automáticas de
-  Antonio han fallado en su ordenador. La última foto en vivo conocida
-  sigue siendo la del 09-16: 14 tareas, 13 bien, "ElegTuPatinete -
-  actualizar precios" rota con código 1.
-- **`drakhthar.com` sigue sin confirmar.** Séptimo día seguido con el
-  mismo bloqueo: `WebFetch` a `drakhthar.com/aldric.html` →
-  `EGRESS_BLOCKED`. `WebSearch` de WHOIS para `drakhthar.com` y para la
-  renovación de `laiayjudit.com` tampoco encuentra el dato específico
-  (solo páginas genéricas). Detalle en
+## Aviso activo — el más importante de hoy
+- **El conector `centro-de-mando` (Centro de Mando local) ha respondido en
+  vivo hoy**, tras varios días fallando con `CLIENT_HTTP_NOT_IMPLEMENTED`.
+  Datos en vivo obtenidos hoy con `estado_de_las_tareas` y `parte_de_hoy`:
+  - **14 tareas programadas, 4 rotas, las 4 con el mismo código
+    `2147946720` (hex `0x800710E0` = "el operador o administrador ha
+    rechazado la solicitud"):** Carruseles TikTok - generación nocturna,
+    ElegTuPatinete - actualizar precios, Informe tráfico webs (cada 3
+    días), TikTok - seguimiento diario. Las otras 10 están bien.
+  - `parte_de_hoy` menciona además un tercer aviso — **"Quick Share
+    Relaunch" terminó con error** — que no aparece en la lista de 14
+    tareas de `estado_de_las_tareas`; no se puede identificar qué es desde
+    aquí.
+  - **0 artículos y 0 vídeos publicados anoche** (según "PUBLICADO HOY").
+  - 2 decisiones pendientes de revisar hoy (sin detalle adicional en el
+    resumen que da la herramienta) y 12 frentes abiertos, sin frentes
+    nuevos.
+  - Detalle completo, diagnóstico del código de error y qué comprobar en
+    `centro-de-mando/pendientes/2026-09-20-informe-diagnostico-4-tareas-rotas-mismo-codigo.md`
+    (nuevo hoy). Complementa (no sustituye) el diagnóstico genérico ya
+    entregado el 09-13 para ElegTuPatinete en concreto, que sigue siendo
+    una de las 4 tareas afectadas.
+- **`drakhthar.com` sigue sin confirmar.** Octavo día seguido con el mismo
+  bloqueo: `WebFetch` a `drakhthar.com/aldric.html` → `EGRESS_BLOCKED`.
+  `WebSearch` de WHOIS para `drakhthar.com` y `laiayjudit.com` tampoco
+  encuentra el dato específico (solo páginas genéricas). Detalle en
   `centro-de-mando/contabilidad/DOMINIOS-Y-GASTOS.md`.
 - **`WebSearch` hoy ha funcionado bien para niche research KDP** (nuevo
-  informe sobre dot-to-dot, con cifra de volumen de búsqueda real de una
-  fuente concreta), pero sigue sin poder resolver las búsquedas
-  WHOIS/registro de dominio concretas (ver arriba) ni encontrar
-  "ElegTuPatinete" entre resultados de búsqueda generales de tiendas de
-  patinetes en España (mismo resultado negativo que en intentos previos
-  centrados en WHOIS). No es un fallo general de la herramienta hoy, sino
-  específico de esas consultas.
+  informe sobre word search / sopas de letras infantiles, con cifras
+  reales de mercado de fuentes concretas) y para investigar el código de
+  error del Task Scheduler, pero sigue sin poder resolver las búsquedas
+  WHOIS/registro de dominio concretas (ver arriba).
 - Sigue abierto (sin cambios) el aviso de canibalización SEO señalado el
   09-08: `centro-de-mando/pendientes/2026-09-08-informe-canibalizacion-seo-diagnostico-y-plan.md`.
   Sigue bloqueado por lo mismo: sin dominio confirmado ni acceso a Search
   Console.
-- Sin acceso a Gmail ni al Centro de Mando local hoy (ver "Herramientas"
-  abajo) — puede haber correos o avisos locales nuevos que esta sesión no
-  ha visto.
+- Sin acceso a Gmail hoy (ver "Herramientas" abajo) — puede haber correos
+  nuevos que esta sesión no ha visto.
 
 ## Trabajo nuevo de hoy
-- **Informe de niche research KDP: "Dot to Dot / Connect the Dots" para
+- **Informe de diagnóstico: 4 tareas rotas con el mismo código
+  `0x800710E0`** (nuevo hoy —
+  `centro-de-mando/pendientes/2026-09-20-informe-diagnostico-4-tareas-rotas-mismo-codigo.md`):
+  qué significa el código según fuentes públicas, por qué podría ser una
+  causa común y no 4 fallos independientes, y qué comprobar Antonio en su
+  propio equipo (Historial del Programador de tareas, energía, cuenta de
+  usuario). No se ha tocado ni se puede tocar la máquina de Antonio desde
+  aquí.
+- **Informe de niche research KDP: "word search / sopas de letras" para
   niños** (nuevo hoy —
-  `centro-de-mando/pendientes/2026-09-19-informe-kdp-dot-to-dot-connect-the-dots.md`):
-  con datos reales de hoy (volumen de búsqueda de la keyword principal,
-  formato típico de producción, rango de precio orientativo de puzzle
-  books en general y ejemplos reales activos en Amazon, todo con fuente).
-  Relevante para la misma decisión ya abierta sobre el catálogo
-  `drakhthar-gifts`. No propone publicar nada.
-- Repetido y registrado el intento diario de verificar dominios (séptimo
-  día bloqueado) — ver `DOMINIOS-Y-GASTOS.md`.
+  `centro-de-mando/pendientes/2026-09-20-informe-kdp-word-search-puzzle-books.md`):
+  con datos reales de hoy (tamaño de mercado, saturación, precio
+  orientativo, estrategia de nicho temático), relevante para la misma
+  decisión ya abierta sobre el catálogo `drakhthar-gifts`. No propone
+  publicar nada.
+- Repetido el intento diario de verificar dominios (octavo día bloqueado)
+  — ver `DOMINIOS-Y-GASTOS.md`.
 
 ## Decisiones pendientes
 - Sigue sin resolver la decisión ya señalada el 2026-09-07 sobre el
@@ -65,19 +75,19 @@ reales.
 - Sigue sin resolver si `drakhthar.com` es de Antonio (ver aviso activo
   arriba) — desatasca dos frentes a la vez (contabilidad de dominios y el
   informe de canibalización SEO).
-- La causa real del fallo intermitente de "ElegTuPatinete - actualizar
-  precios" sigue sin diagnóstico específico (última confirmación en vivo:
-  09-16, código 1) — ver guía genérica ya entregada el 09-13. Hoy no se
-  ha podido comprobar si sigue rota (sin acceso al Centro de Mando
-  local).
+- La causa real del fallo de "ElegTuPatinete - actualizar precios" (y de
+  las otras 3 tareas con el mismo código nuevo hoy) sigue sin diagnóstico
+  específico desde aquí — ver el informe nuevo de hoy con los pasos
+  concretos para que Antonio lo confirme en su equipo.
 - Sigue sin resolver (desde el 09-14): ¿confirma Antonio si los coloring
   books de `drakhthar-gifts` están publicados o parados, y bajo qué
-  marca? Nuevo dato de mercado hoy (informe "Dot to Dot") a sumar a los
-  ya entregados (09-14, 09-15, 09-16, 09-18) para cuando Antonio tome
-  esta decisión.
-- No se ha podido leer `parte_de_hoy` ni `estado_de_las_tareas` hoy (ver
-  aviso activo) — puede haber avisos o decisiones nuevas del Centro de
-  Mando local que esta sesión no ha visto.
+  marca? Nuevo dato de mercado hoy (informe "word search") a sumar a los
+  ya entregados (09-14, 09-15, 09-16, 09-18, 09-19) para cuando Antonio
+  tome esta decisión.
+- Las "2 decisiones pendientes de revisar hoy" que señala `parte_de_hoy`
+  no traen detalle en el resumen de la herramienta — probablemente
+  coinciden con alguna de las ya listadas aquí, pero no se puede confirmar
+  cuáles exactamente desde esta sesión.
 - Checklist de "Etsy Profit Book" (ver informe de QA del 09-17): sigue
   faltando prueba con un CSV real de Etsy 2026, prueba en Windows/móvil y
   capturas/vídeo reales. Estos pasos necesitan un export real de Antonio
@@ -85,19 +95,28 @@ reales.
   dato.
 
 ## Frentes abiertos
-- No se puede actualizar el contador exacto hoy (sin acceso a
-  `parte_de_hoy` esta sesión). Última cifra conocida: 3 (09-12).
+Según `parte_de_hoy` (dato en vivo de hoy): **12 frentes abiertos**, sin
+frentes nuevos desde la última vez. No se puede desglosar la lista
+completa desde el resumen que da la herramienta.
 
 ## Tareas automáticas del equipo local de Antonio
-Sin datos en vivo hoy (conector `centro-de-mando` sin conectar). Última
-foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
-("ElegTuPatinete - actualizar precios", código 1).
+**Datos en vivo de hoy** (conector `centro-de-mando` conectado):
+14 tareas programadas, **4 rotas** (mismo código `2147946720` /
+`0x800710E0`): Carruseles TikTok - generación nocturna, ElegTuPatinete -
+actualizar precios, Informe tráfico webs (cada 3 días), TikTok -
+seguimiento diario. Las 10 restantes bien. Ver informe nuevo de hoy para
+el detalle y el diagnóstico.
 
 ## Borradores pendientes de aprobación (todos, con ruta)
+- `centro-de-mando/pendientes/2026-09-20-informe-diagnostico-4-tareas-rotas-mismo-codigo.md`
+  — **nuevo hoy.** Diagnóstico de las 4 tareas rotas con el mismo código
+  de error, con pasos concretos para que Antonio confirme la causa.
+- `centro-de-mando/pendientes/2026-09-20-informe-kdp-word-search-puzzle-books.md`
+  — **nuevo hoy.** Informe de niche research KDP: sopas de letras
+  infantiles, con datos reales de hoy. No propone publicar nada.
 - `centro-de-mando/pendientes/2026-09-19-informe-kdp-dot-to-dot-connect-the-dots.md`
-  — **nuevo hoy.** Informe de niche research KDP: "dot to dot / connect
-  the dots" para niños, con datos reales de hoy. No propone publicar
-  nada.
+  — informe de niche research KDP: "dot to dot / connect the dots" para
+  niños, con datos reales. No propone publicar nada.
 - `centro-de-mando/pendientes/2026-09-18-informe-kdp-spot-the-difference.md`
   — informe de niche research KDP: "spot the difference" para niños, con
   datos reales. No propone publicar nada.
@@ -119,8 +138,8 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
   `drakhthar-gifts`. Pide a Antonio confirmar estado de publicación.
 - `centro-de-mando/pendientes/2026-09-13-informe-diagnostico-elegtupatinete-codigo1.md`
   — guía genérica (con fuentes públicas) de causas típicas del código de
-  salida 1 en Task Scheduler y pasos concretos para localizar la causa
-  real la próxima vez que falle la tarea de ElegTuPatinete.
+  salida 1 en Task Scheduler; complementa el informe nuevo de hoy sobre
+  las 4 tareas con el nuevo código `0x800710E0`.
 - `centro-de-mando/pendientes/2026-09-12-video-guion-etsy-profit-book.md`
   — guion de vídeo publicitario escena a escena (30-40 s) para "Etsy
   Profit Book", basado solo en funciones ya verificadas en el código
@@ -147,7 +166,7 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
   fuentes públicas (puzles/mazes/sudoku para mayores) que **no encajan**
   con el catálogo infantil/educativo ya hecho de `drakhthar-gifts`. Ver en
   cambio los informes de coloring/actividades infantiles (09-14, 09-15,
-  09-16, 09-18 y 09-19).
+  09-16, 09-18, 09-19 y 09-20).
 - (De sesiones anteriores, en la rama sin fusionar `claude/tienda-etsy-v49wjl`,
   no en `pendientes/`): `productos/etsy-fee-calculator/paquete/10-textos-listing.md`
   con el listing completo del primer producto de Etsy, listo para
@@ -163,7 +182,7 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
 - Sin renovaciones a menos de 60 días vista confirmadas. Próximo pago
   conocido: **2027-07-16**, laiayjudit.com (~16 $, renovación automática
   vía Shopify) — muy lejos, no urgente.
-- Repetido hoy (séptimo día) el intento de verificar por WHOIS/RDAP
+- Repetido hoy (octavo día) el intento de verificar por WHOIS/RDAP
   público `drakhthar.com` y `laiayjudit.com`, y de localizar el dominio de
   ElegTuPatinete: sin éxito, mismo bloqueo de red (`EGRESS_BLOCKED`) que
   días anteriores. Detalle completo en
@@ -177,10 +196,13 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
 - Si `drakhthar-gifts` (63 PDFs de actividades) está publicado en algún
   sitio o parado, y bajo qué marca ("Puzzle Games Press" no aparece en
   búsquedas públicas de Amazon/Etsy) — relevante también para los
-  informes de coloring/actividades (09-14, 09-15, 09-16, 09-18 y 09-19).
+  informes de coloring/actividades (09-14, 09-15, 09-16, 09-18, 09-19 y
+  09-20).
 - Precio final de "Etsy Profit Book" (producto 2) — sigue sin fijar, solo
   el rango orientativo del research (24–29 $) y la banda general ya
   acordada (9–29 € suelto / 39–49 € pack).
+- ¿Qué es "Quick Share Relaunch"? Mencionado hoy por `parte_de_hoy` como
+  tarea con error, pero no aparece en `estado_de_las_tareas`.
 
 ## Correos
 - Sigue sin acceso a Gmail en esta sesión hoy: no hay herramientas
@@ -192,15 +214,16 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
 - **Disponibles:** GitHub (lectura y escritura vía API, confirmado hoy
   leyendo y escribiendo varios archivos en `centro-de-mando/`),
   `WebSearch` (hoy ha dado resultados reales y útiles para niche research
-  KDP — nuevo informe dot-to-dot — aunque sigue sin resolver las
-  consultas WHOIS concretas), `WebFetch` (funciona como herramienta, pero
-  bloqueada por el proxy en `drakhthar.com`).
+  KDP y para el diagnóstico del código de error del Task Scheduler,
+  aunque sigue sin resolver las consultas WHOIS concretas), `WebFetch`
+  (funciona como herramienta, pero bloqueada por el proxy en
+  `drakhthar.com`), **conector `centro-de-mando`
+  (`estado_de_las_tareas`, `parte_de_hoy`) — ha respondido en vivo hoy**,
+  tras varios días fallando.
 - **No disponibles hoy:**
   - `add_repo`: sigue sin existir como herramienta en esta sesión. El
     acceso de lectura/escritura al repo sigue viniendo concedido de
     fábrica, así que no bloquea el trabajo.
-  - Conector `centro-de-mando` (`estado_de_las_tareas`, `parte_de_hoy`):
-    sin conectar hoy (`CLIENT_HTTP_NOT_IMPLEMENTED`).
   - `WebFetch`: bloqueada (`EGRESS_BLOCKED`) hoy en `drakhthar.com`.
   - Gmail: sin herramientas `mcp__Gmail__*` cargadas en esta sesión.
 
@@ -223,11 +246,12 @@ foto conocida (09-16, en vivo): 14 tareas programadas, 13 bien, 1 rota
 - "Etsy Profit Book": mecanismo de import confirmado con datos
   sintéticos (09-17), pero sigue faltando la prueba con un CSV real de
   Etsy 2026, prueba en Windows/móvil, capturas y vídeo reales.
-- Causa real del fallo intermitente de "ElegTuPatinete - actualizar
-  precios": sin diagnóstico específico, sin acceso hoy al log detallado
-  ni siquiera al estado general (Centro de Mando local caído hoy).
-- `parte_de_hoy` y `estado_de_las_tareas` del Centro de Mando local sin
-  conectar hoy.
+- Causa real de las 4 tareas rotas con el código `0x800710E0` (incluida
+  ElegTuPatinete): sin diagnóstico específico desde aquí — necesita que
+  Antonio revise el Historial del Programador de tareas en su propio
+  equipo (ver informe nuevo de hoy).
+- Identidad de "Quick Share Relaunch": mencionada hoy con error, sin poder
+  identificarla desde esta sesión.
 
 ## Frente: tienda Etsy "DrakhtharSoftware" (software de escritorio)
 Catálogo previsto (`etsy/09-cinco-productos.md`):
@@ -263,4 +287,5 @@ de publicar cualquiera, por los errores de portada ya encontrados el
 "Dinosaurios (Niños) · Serie 04" sin depurar). Datos de mercado
 acumulados para cuando se tome esta decisión: estrategia de series
 (09-15), "Bold & Easy" (09-14), "grayscale coloring" (09-16), "spot the
-difference" (09-18) y "dot to dot" (09-19, nuevo hoy).
+difference" (09-18), "dot to dot" (09-19) y "word search" (09-20, nuevo
+hoy).
