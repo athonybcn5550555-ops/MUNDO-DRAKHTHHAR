@@ -12,7 +12,7 @@ listing privado con el precio exacto.
 |---|---|
 | Sección de la tienda | Crear "Custom Apps" y poner aquí este listing |
 | Tipo | Digital · hecho a pedido |
-| Precio | **49 €** (precio de entrada; ver "Investigación de precio") |
+| Precio | **49,99 €** (precio de entrada; ver "Investigación de precio"). Neto tras comisiones: 43,82 € |
 | Cantidad | 999 (para que nunca aparezca como agotado) |
 | Personalización | Activar. Instrucción: *"Please message me before buying. Tell me which app you'd like adapted."* |
 | Pedidos personalizados | Activar en los ajustes de la tienda para que salga el botón "Request custom order" |
@@ -126,6 +126,6 @@ desde 100–125 $; freelance de hojas de cálculo 10–50 $/h.
 ~29 $ pagado, ~44 $ mostrado). TheSpreadsheetGuys (277 €) es un caso aislado.
 El precio de entrada es una señal o mínimo; el encargo final se cobra aparte.
 
-**Decisión: 49 €.** Parte alta del rango porque una app hace más que una
+**Decisión: 49,99 €.** Parte alta del rango porque una app hace más que una
 hoja de cálculo, sin llegar al caso aislado. Sin precio tachado permanente
 (norma europea de precio de referencia). Revisar cuando haya 5–10 reseñas.
