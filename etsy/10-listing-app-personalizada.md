@@ -12,7 +12,7 @@ listing privado con el precio exacto.
 |---|---|
 | Sección de la tienda | Crear "Custom Apps" y poner aquí este listing |
 | Tipo | Digital · hecho a pedido |
-| Precio | **[precio mínimo "desde", pendiente de fijar]** |
+| Precio | **49 €** (precio de entrada; ver "Investigación de precio") |
 | Cantidad | 999 (para que nunca aparezca como agotado) |
 | Personalización | Activar. Instrucción: *"Please message me before buying. Tell me which app you'd like adapted."* |
 | Pedidos personalizados | Activar en los ajustes de la tienda para que salga el botón "Request custom order" |
@@ -99,3 +99,33 @@ si fueran de clientes.
 - Banner de la tienda: *"Ready-made apps · Custom versions on request"*.
 - Anuncio, About y FAQ: ya actualizados en `04-politicas-y-textos-tienda.md`.
 - Última línea de la descripción de cada app: *"Want a custom version? Message me."*
+
+## Investigación de precio (25-sep-2026)
+
+Listings de Etsy de **hojas de cálculo hechas a medida** (el competidor más
+cercano: mismo modelo de "escríbeme antes y presupuesto"). Etsy está
+bloqueado desde el entorno de trabajo; los precios salen de los resultados
+del buscador y de una captura del usuario.
+
+| Tienda | Reseñas | Precio mostrado | Precio real pagado | Modelo |
+|---|---|---|---|---|
+| BocaBocaTemplates | 623 · 4,7★ | 40,48 $ −40 % | ~24 $ | Entrada; se habla antes |
+| Custom Spreadsheet for Excel (listing 1674180724) | Star Seller | 24,39 $ | 24,39 $ | Señal + tarifa por hora |
+| RainbowSheetsStudio | Star Seller | 36,77 $ −30 % | ~26 $ | Entrada; presupuesto tras hablar |
+| Listing sin identificar (mercado "custom spreadsheet") | — | 58 $ −50 % | ~29 $ | Entrada |
+| DanalyserTemplates | 143 · 5★ | CA$67,41 −10 % | CA$60,67 (~44 $) | Entrada |
+| SimplyOnBudget | — | 56,66 $ | 56,66 $ | Se habla antes |
+| TheSpreadsheetGuys | 375 · 4,8★ | 555,25 € −50 % | 277,62 € | Personalización al comprar |
+| Excellerated | — | no visible | — | — |
+
+Referencias fuera de Etsy: personalización de plantillas 25–100 $ (guía
+Insight Agent 2026); Fiverr hojas/paneles desde 25–45 $ y apps sin código
+desde 100–125 $; freelance de hojas de cálculo 10–50 $/h.
+
+**Lectura:** 6 de 7 precios visibles están entre ~24 $ y ~57 $ (mediana
+~29 $ pagado, ~44 $ mostrado). TheSpreadsheetGuys (277 €) es un caso aislado.
+El precio de entrada es una señal o mínimo; el encargo final se cobra aparte.
+
+**Decisión: 49 €.** Parte alta del rango porque una app hace más que una
+hoja de cálculo, sin llegar al caso aislado. Sin precio tachado permanente
+(norma europea de precio de referencia). Revisar cuando haya 5–10 reseñas.
