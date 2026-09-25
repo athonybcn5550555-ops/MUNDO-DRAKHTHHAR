@@ -1,0 +1,115 @@
+<title>Velmont · Prueba de fondo</title>
+<style>
+:root{color-scheme:dark}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;background:#000;overflow:hidden;font-family:Georgia,'Times New Roman',serif;color:#e8e0d0}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000}
+canvas{display:block;max-width:100%;max-height:100%;aspect-ratio:1376/768;width:100%;height:auto}
+#hud{position:fixed;left:16px;bottom:14px;font:13px/1.5 Arial,sans-serif;color:rgba(232,224,208,.7);text-shadow:0 1px 3px #000;pointer-events:none}
+#start{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.72);text-align:center;padding:0 16px}
+#start h1{font-weight:400;font-size:clamp(34px,6vw,64px);margin:0;letter-spacing:.02em}
+#start p{margin:0;max-width:34em;font-size:17px;line-height:1.5;color:#cfc5b3}
+#start button{margin-top:8px;background:none;border:1px solid rgba(232,224,208,.6);color:#e8e0d0;font:16px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;padding:12px 28px;cursor:pointer}
+#start button:hover,#start button:focus-visible{background:rgba(160,30,20,.5);outline:none}
+#dmg{position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 180px 40px rgba(150,0,0,.0);transition:box-shadow .4s}
+#load{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:13px Arial,sans-serif;letter-spacing:.3em;color:#9a9284;background:#000}
+</style>
+<div id="wrap"><canvas id="c" width="1376" height="768"></canvas></div>
+<div id="dmg"></div>
+<div id="hud">Mover: WASD / stick izquierdo · Correr: Mayús / B · Depurar colisiones: F2</div>
+<div id="start" hidden><h1>Mansión Velmont</h1><p>Prueba técnica: fondo generado por IA con personajes 3D animados encima. Muévete por el vestíbulo; un zombi vendrá a por ti.</p><button id="go">Empezar</button></div>
+<div id="load">CARGANDO</div>
+<script type="importmap">{"imports":{"three":"THREE_URL/build/three.module.js","three/addons/":"THREE_URL/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+import * as SU from 'three/addons/utils/SkeletonUtils.js';
+const $=id=>document.getElementById(id);
+const W=1376,H=768;
+const R=new THREE.WebGLRenderer({canvas:$('c'),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(W,H,false);
+R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1;R.autoClear=false;
+
+/* ---- cámara calibrada con el suelo de la imagen ---- */
+const cam=new THREE.PerspectiveCamera(45,W/H,.1,200);cam.rotation.order='YXZ';cam.rotation.set(0,15.8*Math.PI/180,0);cam.position.set(2.445,2.6,5.831);cam.updateMatrixWorld();
+
+/* ---- fondo ---- */
+const bgS=new THREE.Scene(),bgC=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const bgT=await new THREE.TextureLoader().loadAsync('hall.jpg');bgT.colorSpace=THREE.SRGBColorSpace;
+bgS.add((()=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(2,2),new THREE.MeshBasicMaterial({map:bgT,toneMapped:false,depthTest:false,depthWrite:false}));m.position.z=-.5;return m})());
+
+/* ---- escena 3D ---- */
+const S=new THREE.Scene();
+S.add(new THREE.HemisphereLight(0x6f86a8,0x1a120c,.55));
+const key=new THREE.PointLight(0xffb870,60,30,2);key.position.set(.6,5.6,-6.2);key.castShadow=true;key.shadow.mapSize.set(1024,1024);key.shadow.bias=-.001;key.shadow.radius=6;S.add(key);
+const moon=new THREE.DirectionalLight(0x8fa8d8,1.1);moon.position.set(-10,6,-3);S.add(moon);
+const rim=new THREE.DirectionalLight(0xffd0a0,.5);rim.position.set(3,4,-10);S.add(rim);
+// suelo invisible que solo recibe sombras
+const shadowFloor=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.55}));shadowFloor.rotation.x=-Math.PI/2;shadowFloor.receiveShadow=true;S.add(shadowFloor);
+
+/* ---- zona caminable y obstáculos (coordenadas de mundo) ---- */
+const WALK=[[-2.5,.6],[4.3,-1.35],[4.75,-2.4],[4.55,-6.1],[4.3,-9.3],[2.1,-9.35],[-1.7,-8.45],[-7.2,-8.3],[-5.8,-3.1],[-3.95,-.15]];
+const OBST=[[-4.55,-.38,.62],[-4.53,-4.07,.62],[4.16,-3.73,.6],[5.19,-5.34,.5],[5.4,-2.81,.55]];
+// oclusores: solo escriben profundidad, tapan a los personajes que pasen por detrás
+const occMat=new THREE.MeshBasicMaterial({colorWrite:false});
+const dbgMat=new THREE.MeshBasicMaterial({color:0xff0044,transparent:true,opacity:.35,depthWrite:false});
+const occ=[];
+for(const [x,z,r,h] of [[-4.55,-.38,.42,8],[-4.53,-4.07,.45,2.9],[4.16,-3.73,.45,2.9],[5.19,-5.34,.42,8],[5.4,-2.81,.46,8]]){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,24),occMat);m.position.set(x,h/2,z);m.renderOrder=-1;S.add(m);occ.push(m)}
+const dbg=new THREE.Group();dbg.visible=false;S.add(dbg);
+{const pts=WALK.map(p=>new THREE.Vector3(p[0],.02,p[1]));pts.push(pts[0].clone());dbg.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x00ff66})));
+ for(const m of occ){const d=new THREE.Mesh(m.geometry,dbgMat);d.position.copy(m.position);dbg.add(d)}}
+function inPoly(x,z){let c=false;for(let i=0,j=WALK.length-1;i<WALK.length;j=i++){const [xi,zi]=WALK[i],[xj,zj]=WALK[j];if(((zi>z)!==(zj>z))&&(x<(xj-xi)*(z-zi)/(zj-zi)+xi))c=!c}return c}
+function moveTo(p,nx,nz,r){for(const [ox,oz,orr] of OBST){const dx=nx-ox,dz=nz-oz,d=Math.hypot(dx,dz),m=orr+r;if(d<m&&d>1e-4){nx=ox+dx/d*m;nz=oz+dz/d*m}}
+  if(inPoly(nx,nz)){p.x=nx;p.z=nz}else if(inPoly(nx,p.z)){p.x=nx}else if(inPoly(p.x,nz)){p.z=nz}}
+
+/* ---- modelos ---- */
+const L=new GLTFLoader();L.setMeshoptDecoder(MeshoptDecoder);
+const [sol,zom]=await Promise.all([L.loadAsync('Soldier.glb'),L.loadAsync('zombie.glb')]);
+function rest(root){const m={};root.traverse(o=>{if(o.isBone)m[o.name]=o.quaternion.clone()});return m}
+const RS=rest(sol.scene);
+function retarget(clip,target){const RT=rest(target);const c=clip.clone();c.tracks=c.tracks.filter(t=>t.name.endsWith('.quaternion')&&RT[t.name.split('.')[0]]&&RS[t.name.split('.')[0]]);const q=new THREE.Quaternion(),a=new THREE.Quaternion();
+  c.tracks.forEach(t=>{const b=t.name.split('.')[0];const inv=RS[b].clone().invert(),rt=RT[b];for(let i=0;i<t.values.length;i+=4){q.fromArray(t.values,i);a.copy(rt).multiply(inv).multiply(q);a.toArray(t.values,i)}});return c}
+const shadowOn=o=>o.traverse(m=>{if(m.isMesh){m.castShadow=true;m.frustumCulled=false;if(m.material){m.material.envMapIntensity=.4}}});
+// jugador (tono oscuro táctico)
+const pl={o:sol.scene,pos:new THREE.Vector3(.4,0,-.8),yaw:Math.PI,spd:0,mx:new THREE.AnimationMixer(sol.scene),hurt:0};
+pl.o.traverse(m=>{if(m.isMesh&&m.material){m.material=m.material.clone();m.material.color.multiplyScalar(.55)}});shadowOn(pl.o);S.add(pl.o);
+const A={};for(const n of['Idle','Walk','Run']){A[n]=pl.mx.clipAction(sol.animations.find(a=>a.name===n));A[n].play();A[n].weight=n==='Idle'?1:0}
+// zombi
+const zo=zom.scene;zo.scale.setScalar(.0095);shadowOn(zo);S.add(zo);
+const zm=new THREE.AnimationMixer(zo);const zWalk=zm.clipAction(retarget(sol.animations.find(a=>a.name==='Walk'),zo));zWalk.play();zWalk.timeScale=.55;
+const zAtk=zm.clipAction(zom.animations[0]);zAtk.setLoop(THREE.LoopOnce);zAtk.clampWhenFinished=false;
+const bones={};zo.traverse(b=>{if(b.isBone)bones[b.name]=b});
+const zb={la:bones.mixamorigLeftArm,ra:bones.mixamorigRightArm,sp:bones.mixamorigSpine1,hd:bones.mixamorigHead};
+const z={pos:new THREE.Vector3(-1.2,0,-7.6),yaw:0,state:'walk',t:0,cool:0};
+
+/* ---- entrada ---- */
+const keys=new Set();addEventListener('keydown',e=>{keys.add(e.code);if(e.code==='F2'){dbg.visible=!dbg.visible;e.preventDefault()}});addEventListener('keyup',e=>keys.delete(e.code));addEventListener('blur',()=>keys.clear());
+function input(){let x=0,y=0,run=keys.has('ShiftLeft')||keys.has('ShiftRight');if(keys.has('KeyW')||keys.has('ArrowUp'))y+=1;if(keys.has('KeyS')||keys.has('ArrowDown'))y-=1;if(keys.has('KeyA')||keys.has('ArrowLeft'))x-=1;if(keys.has('KeyD')||keys.has('ArrowRight'))x+=1;
+  const gp=[...(navigator.getGamepads?navigator.getGamepads():[])].find(g=>g&&g.connected);if(gp){const ax=v=>Math.abs(v)<.18?0:v;x+=ax(gp.axes[0]||0);y-=ax(gp.axes[1]||0);if(gp.buttons[1]&&gp.buttons[1].pressed)run=true;if(gp.buttons[10]&&gp.buttons[10].pressed)run=true}
+  const m=Math.hypot(x,y);if(m>1){x/=m;y/=m}return{x,y,run}}
+// direcciones de pantalla proyectadas al suelo
+const fwd=new THREE.Vector3();cam.getWorldDirection(fwd);fwd.y=0;fwd.normalize();const right=new THREE.Vector3().crossVectors(fwd,new THREE.Vector3(0,1,0)).normalize();
+
+/* ---- bucle ---- */
+let last=performance.now(),running=false;
+function blend(name,dt){for(const n in A){const tgt=n===name?1:0;A[n].weight+=(tgt-A[n].weight)*Math.min(1,dt*8)}}
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(running){const inp=input();const mag=Math.hypot(inp.x,inp.y);
+    const sp=mag>.1?(inp.run&&mag>.6?3.6:1.5*Math.max(.5,mag)):0;pl.spd+=(sp-pl.spd)*Math.min(1,dt*10);
+    if(mag>.1){const dx=fwd.x*inp.y+right.x*inp.x,dz=fwd.z*inp.y+right.z*inp.x;const ty=Math.atan2(dx,dz);let d=ty-pl.yaw;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;pl.yaw+=d*Math.min(1,dt*10)}
+    moveTo(pl.pos,pl.pos.x+Math.sin(pl.yaw)*pl.spd*dt,pl.pos.z+Math.cos(pl.yaw)*pl.spd*dt,.3);
+    blend(pl.spd>2.4?'Run':pl.spd>.2?'Walk':'Idle',dt);A.Walk.timeScale=Math.max(.6,pl.spd/1.5);
+    // zombi
+    const dx=pl.pos.x-z.pos.x,dz=pl.pos.z-z.pos.z,d=Math.hypot(dx,dz);z.cool-=dt;z.t+=dt;
+    const ty=Math.atan2(dx,dz);let dd=ty-z.yaw;while(dd>Math.PI)dd-=Math.PI*2;while(dd<-Math.PI)dd+=Math.PI*2;z.yaw+=dd*Math.min(1,dt*2);
+    if(z.state==='walk'){moveTo(z.pos,z.pos.x+Math.sin(z.yaw)*.62*dt,z.pos.z+Math.cos(z.yaw)*.62*dt,.3);if(d<1.05&&z.cool<=0){z.state='atk';z.t=0;zWalk.fadeOut(.2);zAtk.reset().fadeIn(.2).play()}}
+    else if(z.state==='atk'){if(z.t>.6&&z.t<.7&&d<1.3){pl.hurt=1}if(z.t>zAtk.getClip().duration){z.state='walk';z.cool=1.5;zAtk.fadeOut(.3);zWalk.reset().fadeIn(.3).play()}}
+    pl.hurt=Math.max(0,pl.hurt-dt*.8);$('dmg').style.boxShadow=`inset 0 0 180px 40px rgba(150,0,0,${pl.hurt*.7})`;}
+  pl.mx.update(dt);zm.update(dt);
+  // postura de zombi: brazos al frente y cabeza caída, sumado a la animación de andar
+  if(z.state==='walk'){zb.la&&zb.la.rotateX(-.9);zb.ra&&zb.ra.rotateX(-.8);zb.sp&&zb.sp.rotateX(.25);zb.hd&&zb.hd.rotateZ(.35)}
+  pl.o.position.copy(pl.pos);pl.o.rotation.y=pl.yaw;zo.position.copy(z.pos);zo.rotation.y=z.yaw;
+  R.clear();R.render(bgS,bgC);R.clearDepth();R.render(S,cam)}
+$('load').hidden=true;$('start').hidden=false;$('go').onclick=()=>{$('start').hidden=true;running=true};
+requestAnimationFrame(frame);window.ready=1;
+</script>

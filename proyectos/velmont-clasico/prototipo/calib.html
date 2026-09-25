@@ -1,0 +1,16 @@
+<body style="margin:0;background:#000"><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const P=Object.fromEntries(new URLSearchParams(location.search));const fov=+P.fov||45,h=+P.h||2.6,pitch=(+P.p||0)*Math.PI/180,yaw=(+P.y||-15.8)*Math.PI/180;
+const W=1376,H=768;const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});R.setSize(W,H);document.body.appendChild(R.domElement);
+const S=new THREE.Scene();const tx=await new THREE.TextureLoader().loadAsync('hall.jpg');tx.colorSpace=THREE.SRGBColorSpace;S.background=tx;
+const cam=new THREE.PerspectiveCamera(fov,W/H,.1,200);cam.rotation.order='YXZ';cam.rotation.set(pitch,yaw,0);cam.position.set(0,h,0);cam.updateMatrixWorld();
+const rc=new THREE.Raycaster();const pl=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+function hit(px,py){rc.setFromCamera(new THREE.Vector2(px/W*2-1,-(py/H*2-1)),cam);const v=new THREE.Vector3();rc.ray.intersectPlane(pl,v);return v}
+const b=hit(+P.bx||570,768);cam.position.x=-b.x;cam.position.z=-b.z+(+P.dz||0);cam.updateMatrixWorld();
+const cw=+P.cw||1.8,tile=+P.t||.9;const M=new THREE.LineBasicMaterial({color:0x00ff66});const Mr=new THREE.LineBasicMaterial({color:0xff2222});
+const line=(a,b,m)=>{const g=new THREE.BufferGeometry().setFromPoints([a,b]);S.add(new THREE.Line(g,m))};
+for(let k=-12;k<=12;k++){line(new THREE.Vector3(k*tile+cw/2,0.001,5),new THREE.Vector3(k*tile+cw/2,0.001,-30),M);line(new THREE.Vector3(-12,0.001,-k*tile-12+5),new THREE.Vector3(12,0.001,-k*tile-12+5),M)}
+line(new THREE.Vector3(-cw/2,.002,5),new THREE.Vector3(-cw/2,.002,-30),Mr);line(new THREE.Vector3(cw/2,.002,5),new THREE.Vector3(cw/2,.002,-30),Mr);
+const pts={lcol:[95,690],lstat:[362,595],rstat:[1140,660],rcol1:[1215,625],rcol2:[1330,705],stL:[690,542],stR:[925,542],lcoA:[200,545],lcoB:[500,512],rco:[1110,525],bl:[170,768],br:[1260,768],mid:[800,600],farL:[600,500]};const o={cam:cam.position};for(const k in pts){const v=hit(...pts[k]);o[k]=[+v.x.toFixed(2),+v.z.toFixed(2)]}R.render(S,cam);window.info=JSON.stringify(o);window.done=1;
+</script>
