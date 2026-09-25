@@ -20,7 +20,7 @@ I build small, focused tools for Windows and Mac for the tasks nobody enjoys: re
 
 Every tool in this shop is designed and built by me. If something doesn't work on your setup, send me a message: I answer within 24 hours.
 
-Custom versions: I can adapt any app in this shop to your business, shop or classroom: your logo and colors, your language, your own fields and categories. Send me a message describing what you need and I'll reply with a price and a delivery date before you pay anything.
+Custom versions: I can adapt any app in this shop to the way you work: your own fields, sections and categories, or new features you need. Send me a message and I'll send you a short questionnaire. With your answers I'll reply with a price and a delivery date before you pay anything.
 ```
 
 Etsy pide declarar quién crea los artículos digitales: añade a la persona
@@ -72,7 +72,7 @@ Will I get updates?
 Minor updates for 30 days after purchase. Re-download from your purchases page.
 
 Can you customize an app for me?
-Yes. Message me with what you need (branding, language, fields or new features). I'll send you a quote and a delivery time. Once you agree, I'll create a private listing for you to purchase.
+Yes. Message me and I'll send you a short questionnaire about what you need. With your answers I'll send you a quote and a delivery time. Once you agree, I'll create a private listing for you to purchase.
 ```
 
 ## Mensaje automático tras la compra
@@ -100,39 +100,59 @@ Thanks for your message. I reply to every message within 24 hours (Spain time). 
 Guárdalo como respuesta guardada en los mensajes de Etsy y envíalo cuando
 alguien pregunte por una versión personalizada. Todo dentro de Etsy: no
 enviar formularios externos (la política de Etsy prohíbe sacar la venta de
-la plataforma).
+la plataforma). Cada encargo se presupuesta según lo que pida el cliente.
 
 ```
-Thanks for your interest in a custom version! Please answer these 5 questions so I can tell you if it's possible, the price and the delivery time.
+Thanks for your interest in a custom version! The more detail you give me, the more accurate my quote will be. Short answers are fine where they fit.
 
+Before you start: my apps work on your own device (PC, Mac or tablet), even without internet. They don't use accounts, online syncing or data shared between several people.
+
+ABOUT YOU
 1. Which app from my shop do you want customized?
+2. Who will use it and for what? (for example: "I run a small bakery and want to track orders", "I'm a primary school teacher")
+3. What problem do you want to solve? What is missing or getting in your way today?
 
-2. What do you want changed? (choose all that apply)
-   a) Logo, colors or name
-   b) Language (which one?)
-   c) Add, remove or rename fields, categories or sections
-   d) Something new the app doesn't do today (please describe it)
+WHAT YOU NEED
+4. Fields, sections or categories: what should be added, removed or renamed? Please list them.
+5. New features: describe step by step what you want to happen. (for example: "When I mark an order as paid, it moves to a 'Paid' list and adds up the monthly total")
+6. Of everything you've asked for, what is essential and what would be nice to have?
+7. Examples: screenshots, photos of your current paper/Excel system, or other apps you like. Anything helps.
 
-3. Describe exactly what you need. Examples or screenshots help a lot.
+YOUR DATA
+8. What information will you enter, and roughly how much? (for example: "about 200 clients", "30 students per class")
+9. Do you need to bring in data you already have (Excel, CSV...)? Do you need to export, print or save as PDF?
+10. Where will you use it: PC, Mac, tablet? Do you prefer to open it in the browser or install it as a program?
 
-4. Will you send me your logo or files? If yes, in what format (PNG, SVG, PDF...)?
+LOOK
+11. Do you want your logo, colors or a different language? (optional)
 
-5. When do you need it?
-   a) No rush  b) Within 2 weeks  c) Specific date: ___
+DELIVERY
+12. When do you need it? (no rush / specific date)
+13. Do you have a budget in mind? (optional, it helps me suggest the best option)
+14. Anything else I should know?
 
-Once I have your answers I'll reply within 24 hours with a quote. You won't pay anything until you accept it.
+Once I have your answers I'll reply within 24 hours with a quote, or with a few questions if something isn't clear. You won't pay anything until you accept the quote.
 ```
 
-### Guía interna para decidir (no se envía al cliente)
+### Guía interna para decidir y presupuestar (no se envía al cliente)
 
-| Nivel | Respuesta en la pregunta 2 | ¿Se hace? | Precio |
-|---|---|---|---|
-| A · Aspecto | a, b | Sí | [pendiente de fijar] |
-| B · Contenido | c | Sí | [pendiente de fijar] |
-| C · Algo nuevo | d | Solo si cabe en el mismo HTML y está claro y acotado | Presupuesto a medida |
-| No | Cuentas de usuario, servidor, datos compartidos entre personas, app de móvil nativa | No | — |
+1. **¿Se puede hacer?** Todo debe caber en un archivo HTML que funcione en
+   el dispositivo del cliente. No se aceptan: cuentas de usuario, servidor,
+   sincronización online, datos compartidos entre varias personas ni app de
+   móvil nativa.
+2. **¿Está claro?** Si las respuestas 4 y 5 son vagas ("que haga más
+   cosas"), no presupuestar: pedir ejemplos concretos primero.
+3. **Tamaño del encargo**, según las respuestas:
+   - Contenido (pregunta 4): cambiar campos, secciones o categorías.
+   - Funciones nuevas (pregunta 5): cálculos, listas, filtros, avisos, etc.
+   - Datos (preguntas 8 y 9): importar Excel/CSV, exportar o imprimir suma trabajo.
+   - Aspecto (pregunta 11): logo, colores e idioma, normalmente lo más rápido.
+4. **Presupuesto**: horas estimadas × [tu tarifa por hora] + comisiones de
+   Etsy (usar `calculadora_precio.py`). Recargo si la fecha de la pregunta 12
+   es muy cercana.
+5. **Cerrar por escrito** en el mensaje de Etsy qué incluye y qué no, y
+   cuántas rondas de cambios entran (recomendado: una).
 
 Toda versión personalizada se entrega igual que los productos de la tienda:
 el HTML y, si el cliente lo quiere instalable, el `.exe` (Windows) y el
 `.dmg` (Mac) generados con el sistema de `productos/etsy-fee-calculator/desktop`.
-Si la descripción de la pregunta 3 es vaga, pedir ejemplos antes de dar precio.
