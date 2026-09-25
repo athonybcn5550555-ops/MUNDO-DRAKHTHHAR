@@ -72,11 +72,20 @@ WHAT A CUSTOM VERSION CAN'T DO
 • Data shared by several people at the same time
 • Native phone apps
 
+Already bought this listing? No problem: your payment counts toward the final price, and if we can't agree on a quote or your idea isn't possible, I'll refund it in full.
+
 Not sure if your idea fits? Send me a message and ask before buying.
 
 LICENSE
 Personal and commercial use on your own devices. Do not resell or redistribute.
 ```
+
+## Archivo digital
+
+Subir `productos/custom-app/Custom-App-Order-Next-Steps.pdf` (1 página, A4).
+Explica los pasos tras la compra: cuestionario, presupuesto, el pago se
+descuenta del total (reembolso íntegro si no hay acuerdo) y entrega.
+Se regenera con `node productos/custom-app/generar-pdf.js`.
 
 ## Imágenes
 
