@@ -17,6 +17,7 @@
 
 **Producto**
 - [ ] Ficha `02` completa, incluida validación.
+- [ ] Cumple la regla `12` (compra única): sin año fijado en el código, datos que pasan de año, exportar/importar visible, tasas editables en calculadoras. Título con año + "Reusable every year".
 - [ ] ZIP probado en un Windows limpio (máquina virtual sin herramientas de desarrollo).
 - [ ] ZIP < 20 MB o entrega alternativa definida.
 - [ ] PDF de inicio rápido dentro del ZIP (instalación, SmartScreen, contacto).

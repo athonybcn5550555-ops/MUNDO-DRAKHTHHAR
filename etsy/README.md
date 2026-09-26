@@ -16,6 +16,8 @@ Documentación de trabajo para lanzar y operar la tienda de Etsy
 | `herramientas/parsear_listing.py` | Extrae título, precio, valoración y reseñas de páginas de listing guardadas como HTML. |
 | `09-cinco-productos.md` | Los 5 productos elegidos: competencia, quejas con fuente, y en qué seremos mejores. |
 | `10-listing-app-personalizada.md` | Listing "Custom App" para vender versiones personalizadas: título, tags, descripción e imágenes. |
+| `11-presupuesto-competencia-actualizacion.md` | Actualización de competencia del presupuesto por nómina (26-sep-2026). |
+| `12-regla-apps-compra-unica.md` | **Regla obligatoria para todas las apps:** compra única, sirve cada año, tasas editables. |
 | `calculadora_precio.py` | Script que calcula el neto por venta con las comisiones de Etsy (España o EE. UU.). |
 
 Orden de trabajo recomendado: leer `01`, tomar las decisiones pendientes que
