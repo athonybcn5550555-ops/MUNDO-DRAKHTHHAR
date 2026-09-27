@@ -4,7 +4,7 @@ Para anuncios y redes (TikTok / Instagram Reels / Pinterest / YouTube Shorts). P
 Formato: vertical 9:16. Sin música con derechos. Sin marcas ajenas.
 
 **Regla:** el vídeo solo enseña la portada y las páginas REALES del libro. Nada de páginas inventadas por la IA. Un anuncio que muestra algo que el libro no trae genera devoluciones y reseñas malas.
-**FALTA CONFIRMAR antes de montar:** número de páginas y edad recomendada. Si no se confirman, esos textos no se ponen.
+**Datos confirmados (en la portada):** 50 páginas para colorear · niños de 7 a 9 años · lema de la portada "Spooky Fun for Everyone!".
 
 ## Material que tiene que preparar Antonio
 1. `portada.png`: la portada frontal en alta resolución.
@@ -13,10 +13,10 @@ Formato: vertical 9:16. Sin música con derechos. Sin marcas ajenas.
 ## Storyboard (5 planos, 15 s)
 | Tiempo | Plano | Herramienta | Texto en pantalla |
 |---|---|---|---|
-| 0–3 s | La portada aparece sobre una mesa de madera, de noche, con velas y calabazas desenfocadas. Luz cálida naranja. | Flow · imagen a vídeo con `portada.png` | **Spooky fun for little artists 🎃** |
+| 0–3 s | La portada aparece sobre una mesa de madera, de noche, con velas y calabazas desenfocadas. Luz cálida naranja. | Flow · imagen a vídeo con `portada.png` | **Spooky fun for kids 7–9 🎃** |
 | 3–6 s | Página 1 en blanco y negro; los colores se van rellenando solos, como con ceras. | Flow · imagen a vídeo con `pagina1.png` | **Big, easy pages to color** |
 | 6–9 s | Página 2, mismo efecto de coloreado. | Flow · imagen a vídeo con `pagina2.png` | *(sin texto; deja respirar)* |
-| 9–12 s | Página 3 ya coloreada, con ceras alrededor. | Flow · imagen a vídeo con `pagina3.png` | **[N] Halloween designs** ← solo si se confirma N |
+| 9–12 s | Página 3 ya coloreada, con ceras alrededor. | Flow · imagen a vídeo con `pagina3.png` | **50 Halloween pages to color** |
 | 12–15 s | Vuelve la portada, quieta y centrada. | Imagen fija | **My Big Halloween Coloring Book** · **Available on Amazon** |
 
 ## Prompts para Flow (imagen a vídeo; pegar tal cual)
@@ -31,7 +31,7 @@ Formato: vertical 9:16. Sin música con derechos. Sin marcas ajenas.
 
 ## Voz (Gemini TTS en AI Studio, opcional)
 Estilo: *warm, playful, slightly spooky storyteller voice, for parents and kids*.
-> "Looking for a not-so-scary Halloween activity? Big, easy pages full of pumpkins, witches and friendly ghosts. My Big Halloween Coloring Book. On Amazon now."
+> "Looking for a not-so-scary Halloween activity? 50 pages full of pumpkins, witches and friendly ghosts, for kids 7 to 9. My Big Halloween Coloring Book. On Amazon now."
 
 (~11 s. Si no se confirma algún dato, la frase no se cambia por uno inventado.)
 
@@ -41,6 +41,9 @@ Si Google Vids pone marca de agua, se deja o se monta en CapCut. **No se quita c
 
 ## Antes de publicar (checklist)
 - [ ] Las páginas que salen son reales y la IA no las ha deformado (revisar fotograma a fotograma).
-- [ ] Ningún texto promete algo no confirmado (páginas, edad).
+- [ ] Ningún texto promete algo que no esté en el libro.
 - [ ] Nada de "best seller", precios ni reseñas en pantalla.
 - [ ] Vertical 9:16 y legible en el móvil.
+
+## Nota sobre la imagen de la portada
+La imagen del A+ (970×600, portada sobre la mesa) vale para vídeos horizontales y para el plano final. Para el vídeo vertical 9:16 la portada sale demasiado pequeña (~250 px de ancho) y se vería borrosa. Se necesita la portada plana en alta resolución (PDF de cubierta de KDP o PNG original).
