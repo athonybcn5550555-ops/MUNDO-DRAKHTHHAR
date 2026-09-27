@@ -20,7 +20,7 @@ Los youtubers cobran por promocionar algunas herramientas (Hostinger, TopView). 
 | Imágenes para pruebas de portada y páginas de colorear | **Google Flow** (Nano Banana, 0 créditos por imagen 🟡) | Gratis | 🔴 Alta |
 | Voz en off para vídeos | **Gemini TTS** en Google AI Studio | Gratis | 🟠 Media |
 | Música para vídeos y OncoCare | **Treblo** | Gratis 🟡 | 🟠 Media (licencia pendiente de revisar) |
-| Seguir programando sin créditos (Orion, apps de Etsy) | **Ollama + app de Codex** (`ollama launch codex-app`) | Gratis (modelos locales o cloud gratis) | 🟠 Media (solo diagnóstico) |
+| Seguir programando sin créditos (Orion, apps de Etsy) | **Ollama + Codex** o **Ollama + Claude Desktop** con un modelo grande en la nube | Gratis con límites | 🔴 Alta |
 | **Seguir usando Claude Desktop (Chat, Cowork y Code) cuando se acaba el plan** | **Ollama + Claude Desktop** (`ollama launch claude-desktop`) | Gratis con modelos locales o cloud gratis de Ollama | 🔴 Alta (Antonio se queda sin límite semanal) |
 | Saber qué modelos locales aguanta el PC | **CanIRun.ai** | Gratis, sin registro | 🟠 Media |
 | Chat de IA ilimitado para tareas generales | **ChatGPT gratis con GPT‑5.6 Luna** 🟡 | Gratis | 🟢 Baja |
@@ -159,7 +159,7 @@ Ver la sección 9.
 - **Usos:**
   1. Diagnosticar Orion cuando no queden créditos. Orion se hizo con Codex el 20 sep 2026.
   2. Pequeñas tareas en apps de Etsy.
-- ⚠️ Los modelos gratuitos programan peor. **Solo leer y diagnosticar; no cambiar el código de Orion con ellos.**
+- Los modelos grandes en la nube programan bien; los pequeños locales, solo para tareas sencillas. En Orion se aplican las 4 reglas de seguridad (ver 6.1b).
 - ⚠️ Con modelos "cloud", el código viaja a los servidores de Ollama.
 - **Para volver a los modelos oficiales** 🟡: se ejecuta el comando de restaurar que da Ollama.
 
@@ -175,7 +175,14 @@ Ver la sección 9.
 - **Usos para nosotros:**
   1. **Cuando se agote el límite semanal de Claude** (como ahora, hasta el 30 sep): seguir usando Cowork y Code para tareas sencillas. Por ejemplo: leer archivos de Orion, ordenar carpetas, borradores de textos.
   2. Tareas repetitivas y de poco riesgo con modelos baratos, guardando el límite de Claude para lo importante (código de Orion, apps de Etsy, libros).
-- ⚠️ **Calidad:** los modelos alternativos son peores que Claude en código y en razonamiento largo. Para Orion y para las apps que se venden, **solo diagnóstico y borradores**; los cambios reales, con Claude o Codex oficiales.
+- **Calidad para programar:**
+  - **Modelos grandes en la nube** (GLM 5.x, Qwen 3.8, DeepSeek V4, MiniMax M3): **sí sirven para programar**. Según los rankings que cita el vídeo 🟡, compiten con los mejores.
+  - **Modelos pequeños locales** (8–12B): solo para tareas sencillas.
+  - **En Orion, con cualquier modelo (incluidos Claude y Codex):**
+    1. copia de seguridad de la carpeta antes de empezar;
+    2. explicación del cambio antes de hacerlo;
+    3. un arreglo cada vez, y probarlo;
+    4. no tocar lo que funciona.
 - ⚠️ **Privacidad:**
   - Con OpenRouter, DeepSeek u otros proveedores, los datos del negocio (correos, ventas, clientes) viajan a sus servidores. Algunos están en China, con otras leyes de datos.
   - **No usar con datos de clientes ni contraseñas.**
