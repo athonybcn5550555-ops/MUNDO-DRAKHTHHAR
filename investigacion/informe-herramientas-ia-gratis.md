@@ -267,6 +267,22 @@ Ver la sección 9.
 - **Veredicto:** no es para el PC de Antonio (es para Linux) y **ahora no compensa**: hay que pagar un VPS, hay costes por uso y hay más que mantener. Flow y Vibes cubren lo básico gratis.
 - **Si se prueba algún día:** solo en un VPS nuevo y vacío, nunca en el PC ni en un servidor con otras webs.
 
+#### Plan de adaptación de AS Video Studio a herramientas gratuitas (30 sep 2026)
+Fuente: README, INSTALAR.md y docs de `NeverBlink/as-video-studio` (archivos públicos leídos). **No se ha leído el código de `pasos/` ni `motores/`.**
+- **Corrección:** el *instalador* es solo para VPS, pero la *aplicación* también arranca en un PC propio (`python app.py --puerto 8020`, con Python 3.12, ffmpeg, Edge y fuentes), y trae pruebas para PowerShell.
+- **Piezas de pago o con consumo y su posible sustituto:**
+
+| Pieza | Hoy usa | Coste hoy | Alternativa gratuita | Estado |
+|---|---|---|---|---|
+| Guion, rótulos, catálogo visual, asistente | CLI de Claude con sesión | Consume el límite de la suscripción | Un modelo de Ollama (por ejemplo `glm-5.3:cloud`) apuntando el CLI a Ollama, que ya acepta el formato de Claude (Ollama 0.31.2+) | 🟡 Hay que probarlo; la app comprueba la sesión de Claude y puede negarse |
+| Imágenes de cada plano | API de OpenAI (`imagen_openai/`) | ~4,4 $ por un vídeo de 4 min (126 imágenes, calidad baja) | Modelo local (necesita GPU, ver CanIRun.ai); generar las imágenes por lotes en Flow y **subirlas a mano**; API de Gemini si tiene capa gratuita (sin verificar) | 🔴 Es lo más difícil: Flow no tiene API |
+| Voz y marcas de tiempo por palabra | Cartesia (`voz_cartesia/`) | Plan gratuito para empezar | Gemini TTS, edge-tts o Piper. Las marcas de palabra que necesita el montaje se podrían sacar con Whisper local | 🟡 Por comprobar |
+| Música y efectos | Jamendo y FreeSound | Gratis | Ya lo son | ✅ |
+
+- **Facilidad de cambio:** los motores (`voz_cartesia`, `imagen_openai`) son carpetas independientes que leen las claves de `secretos/claves.json`, así que sustituir uno es viable sin rehacer el sistema.
+- **Licencia:** no se encontró archivo LICENSE en el repositorio (404), por lo que por defecto rigen los derechos de autor del autor. Adaptarlo para uso propio parece razonable; **redistribuirlo o venderlo, no** sin permiso del autor. No es asesoramiento legal.
+- **Pendiente:** Antonio dice que en su Escritorio ya hay una versión adaptada por GPT. Hay que revisarla (subir el ZIP **sin** `secretos/`, `.env` ni claves).
+
 ### 6.2 ChatGPT gratis con GPT‑5.6 Luna 🟡
 - **Qué dice el vídeo:**
   - GPT‑5.6 tiene tres versiones: Sol (la más potente), Terra y Luna;
