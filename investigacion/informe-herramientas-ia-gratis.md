@@ -1,7 +1,7 @@
 # Informe: herramientas de IA gratuitas y cómo usarlas en el Proyecto JL
 
 **Estado:** BORRADOR VIVO. Se actualiza con cada material nuevo que aporta Antonio.
-**Última actualización:** 27 sep 2026 · Fuentes recopiladas: 3 vídeos de YouTube (transcripciones) + enlaces de la descripción.
+**Última actualización:** 27 sep 2026 · Fuentes recopiladas: 5 vídeos de YouTube (transcripciones) + enlaces de la descripción.
 
 **Cómo leer este informe:**
 - ✅ **Verificado:** comprobado en la web oficial o en fuentes independientes.
@@ -56,6 +56,38 @@ Ver la sección 9.
   4. **Carruseles de TikTok:** la herramienta de la comunidad podría sustituir o apoyar la tarea nocturna de Orion.
   5. **My Tools:** crear una herramienta propia que traduzca las imágenes A+ y de listing a varios idiomas (amazon.com / .es / .de).
   6. **Personajes consistentes:** pruebas de concept art de Drakhthar. ⚠️ Siempre respetando el canon; la IA propone y el canon decide.
+
+
+### 2.1b Google Flow: novedades (Vídeo E) 🟡
+- **Marca de agua visible desactivable** en los ajustes del proyecto, también en cuentas gratis. Google sigue metiendo una marca invisible (SynthID) que detecta la IA.
+  - **Esto resuelve el problema de la marca de agua de forma legítima: sin quitamarcas.**
+- **Imágenes a 0 créditos** con cualquier modelo Nano Banana (el Lite tarda unos 3 s). Descarga en 2K.
+- **Vídeo:** unos 50 créditos al día, clips de hasta 10 s. Modos "fotogramas" (inicio y fin) e "ingredientes" (mezclar varias imágenes, citándolas con @).
+- **Personajes:** cara y cuerpo desde 3 ángulos, se pueden crear desde una foto propia y **se les asigna una voz fija**, que se puede personalizar ("susurra", "voz malvada"). Varios personajes pueden hablar entre sí en un mismo vídeo.
+- **Edición:**
+  - cambiar algo de una imagen describiéndolo;
+  - seleccionar una zona con caja o lazo;
+  - editar varias imágenes a la vez (Shift + clic);
+  - editar vídeos subidos siguiendo a la persona.
+  - ⚠️ En la UE la edición de vídeos reales está restringida; el youtuber usa VPN (línea roja).
+- **Escenas:** unir clips, recortar y **publicar directo en YouTube**.
+- **Modo agente:**
+  - organiza el proyecto en colecciones;
+  - genera 12 escenas coherentes;
+  - cambia el estilo de varias imágenes a la vez;
+  - encadena 5 vídeos de 10 s en uno de ~50 s.
+- **Herramientas:**
+  - 22 ángulos de un personaje;
+  - **subtítulos automáticos**;
+  - **Storyboard** (vídeo largo);
+  - **Remix/Mockups** (poner una marca en productos);
+  - crear herramientas propias.
+- **Usos nuevos para nosotros:**
+  1. **Mockups para A+ de KDP y fotos de listings de Etsy** con Remix/Mockups.
+  2. **Personajes de Drakhthar con cara, cuerpo y voz fijos** para tráilers, sin tocar el canon.
+  3. **Subtítulos automáticos** para TikTok y Reels.
+  4. **Vídeo de Halloween sin marca de agua visible, de forma legítima.**
+- **Patrocinio del Vídeo E:** HeyGen (avatares y doblaje, de pago).
 
 ### 2.2 Google Vids ✅ (workspace.google.com/products/vids)
 - **Qué es:** editor de vídeo de Google Workspace, ahora con el modelo de vídeo avanzado en cuentas gratuitas 🟡.
@@ -200,6 +232,26 @@ Ver la sección 9.
 - Suscripción desde 10 €/mes con acceso a GPT, Claude, Gemini, Grok, etc., y una API compatible con OpenAI.
 - **Veredicto:** no hace falta mientras las opciones gratuitas cubran. Pagar una capa intermedia añade coste y otro sitio por donde pasan los datos.
 
+
+### 6.1e OmniRoute 🟡 (Vídeo D, sin verificar: la búsqueda falló por límite de uso)
+- **Qué dice el vídeo:**
+  - pasarela de código abierto (licencia MIT) que se instala en el PC con Node.js;
+  - une más de 300 proveedores de IA; más de 90 con modelos gratuitos;
+  - rota automáticamente al siguiente modelo gratis cuando uno falla o llega al límite;
+  - comprime el contexto;
+  - ofrece una API propia compatible con OpenAI, conectable a Claude Code, Hermes o n8n.
+- **Tipos de proveedor:**
+  - **sin cuenta** (OpenCode, etc.);
+  - **con clave API gratuita** (OpenRouter, Groq, Orca Router, NVIDIA NIM);
+  - **con inicio de sesión** (Google Antigravity, Kiro).
+- **Uso posible para nosotros:** dar a **Orion un "cerebro" gratuito con respaldo automático**. Si un modelo cae, usa otro, en vez de colgarse como pasó con el puerto 7788.
+- ⚠️ **Riesgos:**
+  1. **Privacidad:** los datos pasan por proveedores desconocidos y sin cuenta. Nada de datos de clientes.
+  2. **Conectar cuentas de suscripción** (Antigravity, Kiro) a un proxy para usar Claude u otros modelos por la puerta de atrás **probablemente incumple sus condiciones**. Riesgo de bloqueo de cuenta. No hacerlo.
+  3. Trae la contraseña por defecto "changeme": cambiarla lo primero.
+  4. Proyecto nuevo (desde este verano): posibles fallos. Probar primero fuera de Orion.
+- **Decisión:** interesante para una fase posterior. Primero hay que estabilizar Orion. Verificar el proyecto (repositorio oficial, actividad, licencia) antes de instalar nada.
+
 ### 6.2 ChatGPT gratis con GPT‑5.6 Luna 🟡
 - **Qué dice el vídeo:**
   - GPT‑5.6 tiene tres versiones: Sol (la más potente), Terra y Luna;
@@ -261,7 +313,9 @@ Ver la sección 9.
 ## 9. Líneas rojas (no se hacen, aunque los vídeos lo enseñen)
 | Práctica | Por qué no |
 |---|---|
-| Quitar marcas de agua (magiceraser.org u otras) | Incumple las condiciones de Google. Riesgo para la marca si se detecta en anuncios. |
+| Quitar marcas de agua con herramientas externas (magiceraser.org u otras) | Incumple las condiciones de Google. **Alternativa legítima: desactivar la marca visible en los ajustes de Flow.** |
+| Conectar cuentas de suscripción a proxies (OmniRoute con Antigravity o Kiro) | Probable incumplimiento de las condiciones; riesgo de perder la cuenta. |
+| VPN para editar vídeos reales en Flow desde la UE | Incumple las restricciones regionales. |
 | VPN para usar Muse o clonar voz fuera de los países permitidos | Incumple las condiciones y arriesga el cierre de la cuenta. |
 | Clonar la voz de otra persona | Legal y éticamente inaceptable sin consentimiento. |
 | Marcas o personajes ajenos (GTA 6, famosos) en anuncios | Amazon y Etsy lo rechazan o lo retiran; riesgo de infracción. |
@@ -288,3 +342,5 @@ Ver la sección 9.
 1. Vídeo A: "Vídeos de calidad por IA" (Google Vids, Flow, Muse, Vibes, Gemini TTS; patrocinio TopView). Enlaces de la descripción incluidos. Nota: menciona "23 de octubre", así que puede ser del año pasado.
 2. Vídeo B: "7 casos IA gratis e ilimitada" (GPT‑5.6 Luna, Ollama + Codex, Qwen Studio, Treblo, Flow Tools, Vibes, Perchance; patrocinio Hostinger).
 3. Vídeo C: "Claude Desktop desbloqueado" (Ollama + Claude Desktop, modelos de código abierto, CanIRun.ai, OpenRouter, Orca Router, API de DeepSeek; patrocinio Mammoth AI).
+4. Vídeo D: "OmniRoute" (pasarela de modelos gratuitos, combos, Claude Code, Hermes, n8n; patrocinio Saily eSIM).
+5. Vídeo E: "Flow: novedades" (marca de agua desactivable, personajes con voz, edición, modo agente, herramientas; patrocinio HeyGen).
