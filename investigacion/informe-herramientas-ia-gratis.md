@@ -252,6 +252,21 @@ Ver la sección 9.
   4. Proyecto nuevo (desde este verano): posibles fallos. Probar primero fuera de Orion.
 - **Decisión:** interesante para una fase posterior. Primero hay que estabilizar Orion. Verificar el proyecto (repositorio oficial, actividad, licencia) antes de instalar nada.
 
+
+### 6.6 AS Video Studio (Adrián Sáenz) 🟡 — instalador revisado, NO instalado
+- **Qué es:** estudio que convierte un texto, artículo o guion en un vídeo animado con narración, en varios pasos con revisión. Se instala en un **servidor VPS**, no en el PC.
+- **Instalador leído (30 sep 2026):** `instalar.sh`, 795 líneas, del repositorio `NeverBlink/as-video-studio`. Se leyó lo esencial (comprobaciones, paquetes, servicios, cortafuegos, claves). **No se ha auditado el código de la aplicación** que descarga.
+- **Requisitos que comprueba el propio script:**
+  - Ubuntu 22.04 o 24.04, procesador x86_64;
+  - ejecutarse como **root**;
+  - mínimo 4 GB de RAM (8 recomendados) y 15 GB de disco.
+- **Qué instala y cambia en el servidor:** nginx (borra el sitio por defecto), **activa el cortafuegos ufw**, Node 22, Edge o Chrome, fuentes de Microsoft, el CLI de Claude, un entorno de Python, servicios de systemd y un acceso con contraseña con HTTPS.
+- **Qué hay que aportar (lo dice el script al final):**
+  - **una cuenta de Claude**: el guion y los rótulos los escribe **tu suscripción de Claude**, así que consume el mismo límite que ya se agota;
+  - **una clave de OpenAI** y **una clave de Cartesia** (voz). Suelen cobrar por uso; precios sin verificar.
+- **Veredicto:** no es para el PC de Antonio (es para Linux) y **ahora no compensa**: hay que pagar un VPS, hay costes por uso y hay más que mantener. Flow y Vibes cubren lo básico gratis.
+- **Si se prueba algún día:** solo en un VPS nuevo y vacío, nunca en el PC ni en un servidor con otras webs.
+
 ### 6.2 ChatGPT gratis con GPT‑5.6 Luna 🟡
 - **Qué dice el vídeo:**
   - GPT‑5.6 tiene tres versiones: Sol (la más potente), Terra y Luna;
