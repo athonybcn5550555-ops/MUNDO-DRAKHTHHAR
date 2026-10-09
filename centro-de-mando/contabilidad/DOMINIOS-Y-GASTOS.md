@@ -11,15 +11,16 @@ coste real solo lo sabe Antonio, por factura).
 
 | Activo (dominio/web) | Negocio | Proveedor | Coste anual | Próxima renovación | Renovación automática | Fuente del dato |
 |---|---|---|---|---|---|---|
-| laiayjudit.com | Laia & Judit (cosmética) | Shopify | ~16 $ | 2027-07-16 | Sí (activada) | Recordatorio programado por Antonio el 2026-07-30 (trigger existente) |
+| ~~laiayjudit.com~~ (DADO DE BAJA) | Laia & Judit (cosmética) | Shopify (ya no se usa) | Sin coste: ya no se paga | **No hay renovación** | No aplica | **Antonio, 2026-10-09:** "Shopify ya no lo tenemos, no hay renovación". Sustituye al dato anterior (~16 $, 2027-07-16, recordatorio de 2026-07-30). Pendiente de que Antonio diga si hay que cancelar también el recordatorio programado existente. |
 | ElegTuPatinete (dominio y hosting) | Patinetes | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | Búsqueda pública (2026-09-07, repetida 2026-09-08, 2026-09-10 a 2026-09-23) no encuentra el dominio indexado — pendiente de que Antonio confirme si tiene dominio propio o corre sobre otra plataforma |
-| **drakhthar.com** (candidato) | Drakhthar / Proyecto JL | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | **2026-09-10:** `WebSearch` encuentra públicamente indexada la página `https://drakhthar.com/aldric.html` ("Aldric — The Wandering Sage · DRAKHTHAR"), con texto que coincide con el proyecto. Coincide en ortografía exacta con "Drakhthar" (no con el dominio distinto y no relacionado `drakthar.com`, una sola h). **No confirmado todavía que sea propiedad de Antonio** — falta que él lo confirme para tratarlo como dato real. **2026-09-11 a 2026-09-23:** repetido el intento de entrar a la web (`WebFetch`) y de buscar el registro WHOIS por `WebSearch` (sin resultado directo, solo páginas genéricas de herramientas WHOIS) — sigue sin poderse verificar titularidad, proveedor ni fecha de caducidad desde esta sesión. |
+| **drakhthar.com** (candidato) | Drakhthar / Proyecto JL | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | **2026-09-10:** `WebSearch` encuentra públicamente indexada la página `https://drakhthar.com/aldric.html` ("Aldric — The Wandering Sage · DRAKHTHAR"), con texto que coincide con el proyecto. Coincide en ortografía exacta con "Drakhthar" (no con el dominio distinto y no relacionado `drakthar.com`, una sola h). **No confirmado todavía que sea propiedad de Antonio** — falta que él lo confirme para tratarlo como dato real. **2026-09-11 a 2026-10-09:** repetidos los intentos de entrar a la web (`WebFetch`: `EGRESS_BLOCKED`, luego `ENOTFOUND`) y de buscar el registro WHOIS — sigue sin poderse verificar titularidad, proveedor ni fecha de caducidad desde esta sesión. |
 | Web(s) de Drakhthar / Proyecto JL | Drakhthar | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | FALTA CONFIRMAR | Ver fila de arriba (`drakhthar.com`) — candidato encontrado el 09-10, pendiente de confirmación de Antonio |
 | Tienda Etsy "DrakhtharSoftware" | Software (utilidades de escritorio) | Etsy (sin dominio propio) | Sin coste fijo — solo comisiones por venta (detalle en `etsy/06-precios-y-comisiones.md`, rama `claude/tienda-etsy-v49wjl`) | No aplica renovación de dominio | No aplica | Rama `claude/tienda-etsy-v49wjl` (comisiones verificadas 2026-09-06) |
 
 ## Próximos pagos (ordenado por fecha, solo con datos confirmados)
 
-1. **2027-07-16** — laiayjudit.com, ~16 $ (renovación automática vía Shopify). Sin renovaciones a menos de 60 días vista confirmadas hoy.
+Ninguno confirmado ahora mismo. (Antes figuraba laiayjudit.com, 2027-07-16;
+Antonio confirmó el 2026-10-09 que Shopify ya no existe y no hay renovación.)
 
 ## Huecos pendientes de cerrar
 
@@ -27,30 +28,19 @@ coste real solo lo sabe Antonio, por factura).
   tengas activo, al menos: nombre del dominio, en qué proveedor está
   (registrador/hosting), qué pagas al año, y cuándo se renueva. Con eso lo
   dejo siempre actualizado y programo un recordatorio automático antes de
-  cada renovación, igual que ya existe para laiayjudit.com.
+  cada renovación.
   - **Pregunta concreta, sigue abierta:** ¿es `drakhthar.com` tu web del
     universo Drakhthar / Proyecto JL? Si es así, dime proveedor, coste
     anual y fecha de renovación para dejarlo registrado.
+  - **Nueva:** el recordatorio programado de laiayjudit.com (creado el
+    2026-07-30) ya no tiene sentido; desde esta sesión no puedo borrarlo.
+    ¿Lo cancelas tú? Y ¿el dominio laiayjudit.com sigue siendo tuyo en
+    algún registrador aparte de Shopify, o también lo has soltado?
 - Sin acceso a un conector de contabilidad/facturación real, este archivo
   es un registro manual mantenido por la Routine diaria — no sustituye una
   herramienta contable de verdad si el volumen crece.
-- **2026-09-07 a 09-20:** intentos repetidos de verificar por WHOIS/RDAP
-  público la fecha de caducidad de `laiayjudit.com` y `drakhthar.com`, sin
-  éxito — bloqueo del proxy de red (`EGRESS_BLOCKED`) a los dominios
-  directamente y a herramientas WHOIS (`whois.com`, `www.namecheap.com`,
-  `rdap.verisign.com`). `WebSearch` no encuentra tampoco ningún registro
-  de dominio público para "ElegTuPatinete". Detalle día a día de esta
-  racha en el historial de commits de este archivo.
-- **2026-09-23 (hoy):** mismo bloqueo de nuevo, sin cambios: `WebFetch` a
-  `drakhthar.com/aldric.html` → `EGRESS_BLOCKED`. `WebSearch` de
-  `"drakhthar.com" whois registrant domain expiration 2026` y
-  `"laiayjudit.com" domain expiration whois 2026` → mismo resultado que
-  días anteriores: solo páginas genéricas de herramientas WHOIS
-  (instantdomainsearch, GoDaddy, MxToolbox, DNS Robot, Who.is, Zoho,
-  Domainyze, AlertSleep), sin el registro real de ninguno de los dos
-  dominios. Ninguna fecha ni cifra de esta tabla se ha modificado hoy —
-  sigue pendiente de que Antonio aporte los datos directamente o de que el
-  proxy de red se desbloquee hacia estos dominios concretos. No hubo
-  sesión de esta Routine el 09-21 ni el 09-22 (sin archivos nuevos en
-  `pendientes/` con esas fechas), así que este es el primer intento desde
-  el 09-20.
+- **2026-09-07 a 10-09:** intentos repetidos de verificar por WHOIS/RDAP
+  público la fecha de caducidad de `drakhthar.com`, sin éxito — bloqueo o
+  fallo de red de la sesión (`EGRESS_BLOCKED` / `ENOTFOUND`). `WebSearch`
+  no encuentra tampoco ningún registro de dominio público para
+  "ElegTuPatinete". Ninguna fecha ni cifra se ha inventado.
