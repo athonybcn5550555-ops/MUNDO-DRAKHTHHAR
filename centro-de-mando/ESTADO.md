@@ -1,40 +1,43 @@
-# Estado · 2026-10-09 (barrido diario)
+# Estado · 2026-10-09 (barrido diario + actualización de Antonio)
 
 ## Lo más urgente hoy
-Nada que exija una decisión de dinero hoy. Sin renovaciones a menos de 60
-días vista confirmadas. **El conector `centro-de-mando` sigue caído**
-(502 / CLIENT_HTTP_NOT_IMPLEMENTED, ya varios barridos): sin datos en vivo
-de tareas rotas, avisos, decisiones ni frentes. Último dato conocido: 09-23.
-Hoy **no se ha producido ningún borrador nuevo**: no hay base real nueva
-(sin conector, sin Gmail, sin encargo nuevo de libro) y no voy a rellenar
-con suposiciones.
+Nada que exija una decisión de dinero hoy. **No hay ningún pago ni
+renovación próxima**: Antonio confirmó el 10-09 que Shopify ya no existe, así
+que laiayjudit.com queda dado de baja en el registro de contabilidad (ya no
+figura el pago de ~16 $ del 2027-07-16).
 
-Comprobación web de hoy: `WebFetch` a `drakhthar.com` y a `laiayjudit.com`
-devuelve `getaddrinfo ENOTFOUND` para ambos. Como `laiayjudit.com` (que
-sabemos que existe, en Shopify) falla igual, **es casi seguro un límite de la
-red de esta sesión, no un dominio caducado**. Aun así, conviene que Antonio
-compruebe a mano que ambas webs cargan.
+**El conector `centro-de-mando` sigue caído** (502 /
+CLIENT_HTTP_NOT_IMPLEMENTED, varios barridos). Eso no se puede arreglar desde
+esta sesión: hay que reconectarlo desde la configuración de la cuenta.
+Sin él no hay datos en vivo de tareas rotas, avisos, decisiones ni frentes
+(último dato: 09-23). Hoy no hay borradores nuevos: no hay base real nueva.
 
-## Avisos activos (último dato conocido, 09-23, no refrescado hoy)
+`WebFetch` a `drakhthar.com` da `ENOTFOUND`; es casi seguro un límite de red
+de esta sesión (falló igual con laiayjudit.com), no prueba de caducidad.
+Conviene que Antonio compruebe a mano que `drakhthar.com` carga.
+
+## Avisos activos (último dato conocido, 09-23, no refrescado)
 - Tareas programadas locales rotas con código `2147946720` / `0x800710E0`:
   "TikTok - seguimiento diario" y "Actualizar Publicado Hoy". Detalle en
   `pendientes/2026-09-23-informe-diagnostico-tareas-programadas-cambio-de-estado.md`.
 - "Quick Share Relaunch": sin identificar.
 - `drakhthar.com` sigue sin confirmar.
-- Aviso de canibalización SEO (09-08) sigue abierto, bloqueado por lo mismo.
+- Aviso de canibalización SEO (09-08) abierto, bloqueado por lo mismo.
 - Gmail: sin herramientas en esta sesión; bandeja sin revisar.
 
-## Decisiones pendientes (sin cambios)
+## Decisiones pendientes
 - Informe Etsy Fee Calculator (09-07): falta checklist final y decidir si
   fusionar `claude/tienda-etsy-v49wjl`.
 - ¿Es `drakhthar.com` de Antonio? Desatasca contabilidad y SEO.
-- ¿Qué pasa con "TikTok - seguimiento diario" y "Actualizar Publicado Hoy"
-  en el Historial del Programador de tareas?
+- ¿Qué pasa con "TikTok - seguimiento diario" y "Actualizar Publicado Hoy"?
 - ¿Los 63 PDFs de `drakhthar-gifts` están publicados o parados?
 - "Etsy Profit Book": faltan CSV real de Etsy 2026, prueba Windows/móvil,
   capturas y vídeo reales; precio sin fijar.
 - ¿Qué es "Quick Share Relaunch"?
-- Arreglar el conector `centro-de-mando` (caído varios barridos).
+- Reconectar el conector `centro-de-mando`.
+- **Nuevo:** cancelar el recordatorio programado de laiayjudit.com (creado
+  2026-07-30; desde aquí no puedo borrarlo) y decir si el dominio también se
+  ha soltado.
 
 ## Frentes abiertos
 Último dato (09-23): 12 frentes abiertos. Hoy sin datos (conector caído).
@@ -61,9 +64,7 @@ compruebe a mano que ambas webs cargan.
 - En la rama sin fusionar `claude/tienda-etsy-v49wjl`: `productos/etsy-fee-calculator/paquete/10-textos-listing.md`, `etsy/09-cinco-productos.md`, `productos/etsy-profit-book/index.html`.
 
 ## Pagos/renovaciones
-- Sin renovaciones a menos de 60 días vista confirmadas. Próximo pago
-  conocido: **2027-07-16**, laiayjudit.com (~16 $, renovación automática
-  vía Shopify).
+- Ninguno confirmado. laiayjudit.com/Shopify: dado de baja (Antonio, 10-09).
 
 ## Datos de contabilidad que faltan por confirmar (Antonio)
 - ElegTuPatinete: dominio, proveedor, coste anual, renovación.
@@ -76,7 +77,7 @@ compruebe a mano que ambas webs cargan.
 Sin acceso a Gmail en esta sesión. Bandeja sin revisar; sin borradores preparados.
 
 ## Herramientas disponibles hoy / no disponibles
-- **Disponibles:** GitHub (lectura/escritura), `WebSearch`, `WebFetch` (hoy: `ENOTFOUND` en `drakhthar.com` y `laiayjudit.com`).
+- **Disponibles:** GitHub (lectura/escritura), `WebSearch`, `WebFetch` (hoy `ENOTFOUND`).
 - **No disponibles:** conector `centro-de-mando` (502); `add_repo` (no existe como herramienta; el acceso al repo funciona igualmente); Gmail.
 
 ## Huecos sin cubrir
