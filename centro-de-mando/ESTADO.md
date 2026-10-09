@@ -1,25 +1,26 @@
-# Estado · 2026-10-08 (barrido diario)
+# Estado · 2026-10-09 (barrido diario)
 
 ## Lo más urgente hoy
 Nada que exija una decisión de dinero hoy. Sin renovaciones a menos de 60
-días vista confirmadas. **Sigue sin conexión con el conector
-`centro-de-mando`** (502 / CLIENT_HTTP_NOT_IMPLEMENTED): sin datos en vivo
+días vista confirmadas. **El conector `centro-de-mando` sigue caído**
+(502 / CLIENT_HTTP_NOT_IMPLEMENTED, ya varios barridos): sin datos en vivo
 de tareas rotas, avisos, decisiones ni frentes. Último dato conocido: 09-23.
 Hoy **no se ha producido ningún borrador nuevo**: no hay base real nueva
-(sin datos del conector, sin Gmail, sin encargo nuevo de libro) y no voy a
-rellenar con suposiciones.
+(sin conector, sin Gmail, sin encargo nuevo de libro) y no voy a rellenar
+con suposiciones.
 
-Novedad menor: `WebFetch` a `drakhthar.com/aldric.html` devolvió hoy
-`getaddrinfo ENOTFOUND` (antes `EGRESS_BLOCKED`). Puede ser solo la red de
-esta sesión; **no es evidencia fiable** de que el dominio haya caducado, pero
-conviene que Antonio compruebe que la web carga y su fecha de caducidad.
+Comprobación web de hoy: `WebFetch` a `drakhthar.com` y a `laiayjudit.com`
+devuelve `getaddrinfo ENOTFOUND` para ambos. Como `laiayjudit.com` (que
+sabemos que existe, en Shopify) falla igual, **es casi seguro un límite de la
+red de esta sesión, no un dominio caducado**. Aun así, conviene que Antonio
+compruebe a mano que ambas webs cargan.
 
 ## Avisos activos (último dato conocido, 09-23, no refrescado hoy)
 - Tareas programadas locales rotas con código `2147946720` / `0x800710E0`:
   "TikTok - seguimiento diario" y "Actualizar Publicado Hoy". Detalle en
   `pendientes/2026-09-23-informe-diagnostico-tareas-programadas-cambio-de-estado.md`.
 - "Quick Share Relaunch": sin identificar.
-- `drakhthar.com` sigue sin confirmar (ver novedad arriba).
+- `drakhthar.com` sigue sin confirmar.
 - Aviso de canibalización SEO (09-08) sigue abierto, bloqueado por lo mismo.
 - Gmail: sin herramientas en esta sesión; bandeja sin revisar.
 
@@ -33,7 +34,7 @@ conviene que Antonio compruebe que la web carga y su fecha de caducidad.
 - "Etsy Profit Book": faltan CSV real de Etsy 2026, prueba Windows/móvil,
   capturas y vídeo reales; precio sin fijar.
 - ¿Qué es "Quick Share Relaunch"?
-- Arreglar el conector `centro-de-mando` (lleva caído varios barridos).
+- Arreglar el conector `centro-de-mando` (caído varios barridos).
 
 ## Frentes abiertos
 Último dato (09-23): 12 frentes abiertos. Hoy sin datos (conector caído).
@@ -75,7 +76,7 @@ conviene que Antonio compruebe que la web carga y su fecha de caducidad.
 Sin acceso a Gmail en esta sesión. Bandeja sin revisar; sin borradores preparados.
 
 ## Herramientas disponibles hoy / no disponibles
-- **Disponibles:** GitHub (lectura/escritura), `WebSearch`, `WebFetch` (hoy: `ENOTFOUND` en `drakhthar.com`).
+- **Disponibles:** GitHub (lectura/escritura), `WebSearch`, `WebFetch` (hoy: `ENOTFOUND` en `drakhthar.com` y `laiayjudit.com`).
 - **No disponibles:** conector `centro-de-mando` (502); `add_repo` (no existe como herramienta; el acceso al repo funciona igualmente); Gmail.
 
 ## Huecos sin cubrir
@@ -83,9 +84,9 @@ Sin acceso a Gmail en esta sesión. Bandeja sin revisar; sin borradores preparad
 - Etsy: sin conector para publicar.
 - Contabilidad: sin conector; registro manual.
 - Estado real de publicación de los 63 PDFs de `drakhthar-gifts`.
-- Dominios de ElegTuPatinete y `drakhthar.com` sin confirmar.
+- Dominios de ElegTuPatinete y `drakhthar.com` sin confirmar; WHOIS no verificable desde esta red.
 - Tareas locales: sin diagnóstico en vivo.
-- Sin barridos registrados del 10-02 al 10-07 aparte de este.
+- Sin barridos registrados del 10-02 al 10-07; sí 10-08 y 10-09.
 
 ## Frente: tienda Etsy "DrakhtharSoftware"
 Catálogo previsto (`etsy/09-cinco-productos.md`): 1) Fee & Price Calculator (construido, listing redactado, pendiente de aprobación); 2) Etsy Profit Book (QA parcial); 3) Listing Image Prep; 4) Reseller Ledger; 5) Paycheck Budget. Decisiones D1–D6 resueltas desde el 09-07 (D6: banda 9–29 € suelto / 39–49 € pack, sujeta a confirmación final).
